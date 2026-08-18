@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- The visits API now returns a clear bad-request response for malformed date ranges on both time-based and area-based queries, instead of failing or silently ignoring the filter.
 - Existing saved places now appear in Map v2 visit searches and can be assigned to visits (#3083)
 - Daily and monthly distance statistics now include the distance traveled across midnight (e.g. overnight flights); previously the segment between the last point of one day and the first point of the next was silently dropped (#2843)
 ## [1.13.0] - 2026-08-17, Berlin
