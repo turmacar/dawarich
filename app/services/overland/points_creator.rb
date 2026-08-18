@@ -30,6 +30,7 @@ class Overland::PointsCreator
       Tracks::BackfillScheduler.new(user_id, timestamps).call
       Visits::RealtimeDebouncer.new(user_id).trigger
       Points::LiveBroadcaster.new(user_id, result, payload).call
+      evaluate_geofences(result)
     end
 
     result
@@ -40,6 +41,18 @@ class Overland::PointsCreator
   def unusable_location?(location)
     location[:lonlat].nil? || location[:timestamp].nil? ||
       Points::NullIsland.lonlat?(location[:lonlat])
+  end
+
+  def evaluate_geofences(result)
+    point_ids = result.map { |row| row['id'] }.compact
+    return if point_ids.empty?
+
+    user = User.find_by(id: user_id)
+    return unless user
+
+    Point.where(id: point_ids).find_each do |point|
+      GeofenceEvents::Evaluator::ForPoint.call(user, point)
+    end
   end
 
   def upsert_points(locations)

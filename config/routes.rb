@@ -83,6 +83,9 @@ Rails.application.routes.draw do
   post 'settings/generate_api_key', to: 'settings#generate_api_key', as: :generate_api_key
   patch 'settings/changelog_consent', to: 'settings#changelog_consent', as: :changelog_consent
 
+  resources :geofence_events, only: [:index]
+  resources :user_devices, only: [:destroy]
+
   get  'auth/account_link', to: 'auth/account_links#show', as: :auth_account_link
   get  'auth/account_link/challenge', to: 'auth/account_links#challenge', as: :auth_account_link_challenge
   post 'auth/account_link/challenge', to: 'auth/account_links#confirm', as: :confirm_auth_account_link
@@ -159,6 +162,12 @@ Rails.application.routes.draw do
     end
   end
   resources :tags, except: [:show]
+  resources :webhooks do
+    member do
+      post :test
+      post :regenerate_secret
+    end
+  end
 
   # Public shared-link viewer
   get  '/s/:id',         to: 'shared/links#show',     as: :public_shared_link
@@ -327,6 +336,7 @@ Rails.application.routes.draw do
         collection do
           delete :bulk_destroy
           post :reapply_anomaly_filter
+          post 'transitions', to: 'points#create_transition'
         end
       end
       resources :visits, only: %i[index show create update destroy] do
@@ -435,6 +445,17 @@ Rails.application.routes.draw do
         post 'google',   to: 'google#create'
         post 'otp_challenge', to: 'otp_challenges#create'
       end
+
+      resources :webhooks do
+        member do
+          post :test
+          post :regenerate_secret
+        end
+      end
+
+      resources :geofence_events, only: [:index]
+
+      resources :user_devices, only: %i[index create destroy]
     end
   end
 end

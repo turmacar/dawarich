@@ -33,8 +33,20 @@ class Points::Create
       Tracks::BackfillScheduler.new(user.id, timestamps).call
       Visits::RealtimeDebouncer.new(user.id).trigger
       Points::LiveBroadcaster.new(user.id, created_points, deduplicated_data).call
+      evaluate_geofences(created_points)
     end
 
     created_points
+  end
+
+  private
+
+  def evaluate_geofences(created_points)
+    point_ids = created_points.map { |row| row['id'] }.compact
+    return if point_ids.empty?
+
+    Point.where(id: point_ids).find_each do |point|
+      GeofenceEvents::Evaluator::ForPoint.call(user, point)
+    end
   end
 end

@@ -43,6 +43,9 @@ class User < ApplicationRecord
   has_many :shared_links, dependent: :destroy
   has_many :achievement_progresses, class_name: 'Achievements::Progress', dependent: :destroy
   has_many :user_achievements, dependent: :destroy
+  has_many :geofence_events, dependent: :destroy
+  has_many :webhooks, dependent: :destroy
+  has_many :user_devices, dependent: :destroy
 
   after_create :create_api_key
   after_commit :activate, on: :create, if: -> { DawarichSettings.self_hosted? && !skip_auto_trial }
