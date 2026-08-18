@@ -22,7 +22,8 @@ module TransportationModes
       rows = Preprocessor.call(FeatureExtractor.call(@track.id))
       return default_unknown_segment if degenerate?(rows)
 
-      windows = Windower.call(rows)
+      spatial_hints = SpatialHintEnricher.call(@track)
+      windows = Windower.call(rows, spatial_hints: spatial_hints)
       return default_unknown_segment if windows.empty?
 
       decoded = Decoder.call(windows, enabled: @enabled_modes)
