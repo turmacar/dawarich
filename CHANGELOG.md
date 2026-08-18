@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- Manually named places now persist across re-visits: a suggested visit reuses your curated place instead of falling back to the reverse-geocoded address or minting a duplicate when the cluster center drifts. (#3086)
 - Trip note text now uses consistent left alignment on every line (#3104).
 - Four scheduled jobs (app version check, cache preheat, family location request expiry, points counter correction) were queued onto `default` instead of the queues their job classes declare, so they competed with higher-priority work — the cache preheat in particular could hold up imports, track generation and stats for minutes at a time. They now run on `app_version_checking`, `cache`, `families` and `low_priority` respectively.
 
