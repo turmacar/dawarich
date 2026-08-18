@@ -13,6 +13,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Daily and monthly distance statistics now include the distance traveled across midnight (e.g. overnight flights); previously the segment between the last point of one day and the first point of the next was silently dropped (#2843)
 ## [1.13.0] - 2026-08-17, Berlin
 
+2. **Points with missing coordinates:** the `points.lonlat` column is now `NOT NULL` at the database level. Older versions could save points without coordinates (the bug behind the points-API 500s fixed in this release); a migration resolves them automatically before adding the constraint — it rebuilds `lonlat` from the legacy `latitude`/`longitude` columns wherever those still hold values, deletes any remaining points that have no coordinates at all (`lonlat`, `latitude`, and `longitude` all NULL) and re-syncs the affected users' `points_count`, then sets the `NOT NULL` constraint via a validated check constraint (so the change does not lock the table for a full scan). To preview how many points will be affected before upgrading, run with `bundle exec rails dbconsole` (or `psql`):
+
+   ```sql
+   -- Points missing coordinates (the migration will recover or remove these)
+   SELECT COUNT(*) FROM points WHERE lonlat IS NULL;
+
+   -- Of those, how many are recoverable from the legacy columns
+   SELECT COUNT(*) FROM points
+   WHERE lonlat IS NULL AND latitude IS NOT NULL AND longitude IS NOT NULL;
+   ```
+
+   The difference between the two counts is the number of points that will be deleted as unrecoverable.
+
 ### Added
 
 - The map has a new opt-in "Tiled rendering" beta in map settings: the points layer is drawn from vector tiles built by the database, so the browser only downloads what the current view needs. Dense areas arrive as aggregated markers carrying a point count — the heatmap weighs them accordingly — and long date ranges over large histories pan and zoom smoothly instead of stalling on one huge download. On a test account with 1 million points, opening the full three-year history classically pulls the whole range up front — 992 requests and roughly 590 MB of JSON, which crashed the browser tab a third of the way in; tiled rendering drew the same city view from 12 requests and 146 KB in a fraction of a second, and re-opening the map shortly after costs no requests at all. Individual points keep their popups, though a merged marker has no single point to open — zoom in to separate it. Dragging points to edit them is unavailable while tiled mode is on, and turning on Routes, Fog of War or Scratch map temporarily switches back to classic loading (the settings panel says which layer is blocking). Tiles are cached privately in the browser and refresh automatically when your location history changes, so the live trail can lag up to five minutes behind. (#2691)
@@ -328,6 +341,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Per-day trip stats are now computed in a single PostGIS query (`ST_MakeLine`/`ST_Length`) instead of a Ruby Geocoder loop; cache key now also invalidates when individual trip points are updated.
 - Trip replay now plays back proportional to the real time between points, and the map/trip/public-share pages all share one replay implementation.
 - Ruby version updated to 3.4.9
+- The `points.lonlat` column is now `NOT NULL` at the database level, enforcing that every point has coordinates.
 
 ### Fixed
 
@@ -338,6 +352,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Users signed in via Google will now be able to sign in with new password after setting it up, instead of being locked out by the old password being ignored.
 - Suggested visits now always show a Confirm and Delete control, including visits with no matched place — which previously rendered no action and got stuck with no way to confirm or remove them. #2917
 - Searching for a place by name now also matches your areas by name, so an area outside the nearby radius shows up in the results instead of being hidden. #2918
+- Importers no longer persist points with missing coordinates, which previously caused the points API to return a 500 when serializing them. (#2519)
 - Dragging the map during replay no longer snaps the view back to the moving marker; auto-follow yields until you reopen the replay panel.
 - [Cloud] Signing in with Google resolves to a single account across web and mobile, and the account settings page shows which provider an OAuth account is connected with instead of offering a sign-in button. #2969
 
@@ -438,7 +453,6 @@ Upgrade notes:
 - `POST /api/v1/visits` no longer links a new visit to a place owned by another user. Passing a foreign `place_id` is ignored — the visit gets a place owned by the requester at the requested coordinates, and the response no longer echoes the other user's place id or coordinates.
 - Map v2 settings panel: "Apply Settings" now actually saves your changes. Points rendering mode, speed-colored routes, live mode, and fog-of-war toggles all persist on click and reload. Apply/Reset buttons moved above the Transportation Mode section so they sit inside the outer form. #2680
 - The app no longer trips firewall blocks by repeatedly checking family status when you're not part of a family.
-
 
 ## [1.7.10] - 2026-05-26
 

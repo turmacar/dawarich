@@ -42,7 +42,7 @@ class DataMigrations::BackfillAltitudeUserJob < ApplicationJob
       if updates.any?
         update_cols = [:altitude]
         update_cols << :altitude_decimal if Point.altitude_decimal_supported?
-        Point.upsert_all(updates, unique_by: :id, update_only: update_cols)
+        Points::BulkUpdater.call(updates, update_cols)
         stats[:updated] += updates.size
       end
 
@@ -109,7 +109,7 @@ class DataMigrations::BackfillAltitudeUserJob < ApplicationJob
 
     update_cols = [:altitude]
     update_cols << :altitude_decimal if Point.altitude_decimal_supported?
-    Point.upsert_all(meaningful_updates, unique_by: :id, update_only: update_cols)
+    Points::BulkUpdater.call(meaningful_updates, update_cols)
     stats[:archived] += meaningful_updates.size
   end
 
