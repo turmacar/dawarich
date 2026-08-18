@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'openssl'
+
 module SmtpConfig
   ALLOWED_AUTHENTICATIONS = %i[plain login cram_md5 digest_md5 gssapi ntlm xoauth2].freeze
   NO_AUTHENTICATION_VALUES = %w[none nil false off disabled].freeze
@@ -21,7 +23,8 @@ module SmtpConfig
       ssl:             ssl,
       enable_starttls: !ssl && env.fetch('SMTP_STARTTLS', 'true') == 'true',
       open_timeout:    timeout(env, 'SMTP_OPEN_TIMEOUT', DEFAULT_OPEN_TIMEOUT),
-      read_timeout:    timeout(env, 'SMTP_READ_TIMEOUT', DEFAULT_READ_TIMEOUT)
+      read_timeout:    timeout(env, 'SMTP_READ_TIMEOUT', DEFAULT_READ_TIMEOUT),
+      openssl_verify_mode: openssl_verify_mode(env)
     }
   end
 
@@ -63,4 +66,9 @@ module SmtpConfig
     raw.to_i
   end
   private_class_method :timeout
+
+  def self.openssl_verify_mode(env)
+    env.fetch('SMTP_IGNORE_CERT_ERRORS', 'false') == 'true' ? OpenSSL::SSL::VERIFY_NONE : OpenSSL::SSL::VERIFY_PEER
+  end
+  private_class_method :openssl_verify_mode
 end
