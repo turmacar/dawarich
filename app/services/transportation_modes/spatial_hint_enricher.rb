@@ -40,8 +40,7 @@ module TransportationModes
       return {} unless DawarichSettings.reverse_geocoding_enabled?
 
       hints = {}
-      [origin_lonlat(track), destination_lonlat(track)].compact.uniq.each do |lo
-nlat|
+      [origin_lonlat(track), destination_lonlat(track)].compact.uniq.each do |lonlat|
         detected = spatial_hints_at(lonlat)
         hints.merge!(detected) { |_k, a, b| [a, b].max }
       end
