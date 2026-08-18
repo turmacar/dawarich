@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 class Settings::IntegrationsController < ApplicationController
+  MAX_FLIGHT_IMPORT_SIZE = 10.megabytes
+
   before_action :authenticate_user!
-  before_action :authenticate_active_user!, only: %i[update]
-  before_action :require_pro!, only: %i[update]
+  before_action :authenticate_active_user!, only: %i[update import_flights]
+  before_action :require_pro!, only: %i[update import_flights]
 
   def index
     @pro_required = !current_user.full_access?
+    @flight_import_formats = Flights::Parsers::Registry.formats
+    @flight_import_accept = Flights::Parsers::Registry.accept_attribute
   end
 
   def update
@@ -22,7 +26,44 @@ class Settings::IntegrationsController < ApplicationController
     redirect_to settings_integrations_path
   end
 
+  def import_flights
+    file = params[:file]
+    if file.blank?
+      redirect_to settings_integrations_path, alert: 'Please select a flight export file to import.'
+      return
+    end
+
+    unless valid_flight_import_file?(file)
+      extensions = Flights::Parsers::Registry.accepted_extensions.join(', ')
+      redirect_to settings_integrations_path,
+                  alert: "Invalid file. Please upload a supported flight export (#{extensions}, max 10 MB)."
+      return
+    end
+
+    format = params[:format].presence
+    format = nil if format == 'auto'
+
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: file.to_io,
+      filename: file.original_filename,
+      content_type: file.content_type
+    )
+    Flights::ImportFromFileJob.perform_later(current_user.id, blob.id, format)
+
+    redirect_to settings_integrations_path,
+                notice: 'Flight import started. You will be notified when it completes.'
+  end
+
   private
+
+  def valid_flight_import_file?(file)
+    return false if file.size > MAX_FLIGHT_IMPORT_SIZE
+
+    Flights::Parsers::Registry.supported_format?(
+      filename: file.original_filename,
+      content_type: file.content_type
+    )
+  end
 
   def settings_params
     params.require(:settings).permit(
