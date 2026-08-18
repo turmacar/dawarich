@@ -15,8 +15,8 @@ RSpec.describe Photoprism::RequestPhotos do
 
   let(:start_date) { '2024-01-01' }
   let(:end_date) { '2024-12-31' }
-  let(:expected_after_date) { '2024-01-01' }
-  let(:expected_before_date) { '2025-01-01' }
+  let(:expected_before_date) { '2025-01-01T00:00:00Z' }
+  let(:expected_after_date) { '2024-01-01T00:00:00Z' }
   let(:service) { described_class.new(user, start_date: start_date, end_date: end_date) }
 
   around { |example| Time.use_zone('UTC') { example.run } }
@@ -151,6 +151,10 @@ RSpec.describe Photoprism::RequestPhotos do
     ]
   end
 
+  let(:expected_params) do
+    { q: '', public: true, quality: 3, after: expected_after_date, count: 1000, before: expected_before_date }
+  end
+
   describe '#call' do
     context 'when end_date is provided' do
       it 'sends before param as end_date + 1 day to include photos from end_date' do
@@ -188,8 +192,7 @@ RSpec.describe Photoprism::RequestPhotos do
         stub_request(
           :any,
           "#{user.settings['photoprism_url']}/api/v1/photos?" \
-            "after=#{expected_after_date}&before=#{expected_before_date}" \
-            '&count=1000&public=true&q=&quality=3&offset=1000'
+            "after=#{expected_after_date}&before=#{expected_before_date}&count=1000&public=true&q=&quality=3&offset=1000"
         ).to_return(status: 200, body: [].to_json, headers: { 'Content-Type' => 'application/json' })
       end
 
@@ -226,11 +229,7 @@ RSpec.describe Photoprism::RequestPhotos do
 
       it 'logs the error' do
         expect(Rails.logger).to receive(:error).with('Photoprism photo fetch failed: Request failed: 400')
-        expect(Rails.logger).to receive(:debug).with(
-          "Photoprism API request params: #{{ q: '', public: true, quality: 3, after: expected_after_date, count: 1000,
-before: expected_before_date }}"
-        )
-
+        expect(Rails.logger).to receive(:debug).with("Photoprism API request params: #{expected_params}")
         service.call
       end
     end
