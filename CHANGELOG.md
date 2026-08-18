@@ -189,6 +189,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Visit suggestion failures no longer show a raw stack trace in your notifications, and repeated failures within an hour no longer create a notification each time (#3091)
 - Points at exactly (0,0) — a common GPS glitch — are no longer accepted from any ingestion path (API, OwnTracks, Overland, Traccar, file imports) and no longer produce suggested visits at "Null Island". Existing (0,0) points are flagged as anomalies by a one-time cleanup that also removes visits placed at (0,0), tolerates legacy points without timestamps, and recalculates affected stats and tracks.
 - Point uploads from all ingestion paths (REST API, OwnTracks, Overland, Traccar) now retry transient statement and lock-wait timeouts, not just deadlocks, instead of failing the upload.
+- Self-hosted instances can now use Immich/Photoprism integration URLs that resolve to link-local addresses (e.g. Podman host-gateway) instead of being wrongly blocked as SSRF; the cloud metadata endpoint stays blocked everywhere and the resolved IP is logged when a URL is rejected. (#3005)
 - The DNS caching layer no longer crashes with a misleading `NoMethodError` when the SMTP server is not configured in the background worker, so email delivery surfaces the real configuration error instead. (#3038)
 
 
