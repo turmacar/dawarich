@@ -34,8 +34,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Add an experimental read-only MCP Streamable HTTP endpoint at `/api/v1/mcp`, authenticated with the existing API key. MCP clients can inspect a bounded timeline and the user's latest visible location.
 
+### Added
+
+- New `point_sources` and `point_motions` reference tables deduplicate the device/importer metadata and motion payloads that were repeated on every point. A resumable background backfill links existing points to them and resolves missing country references. Self-hosted instances start it automatically after migrating (to opt out, set `SKIP_POINT_DIMENSION_BACKFILL=1` before migrating, on every service including Sidekiq — the app and worker containers have separate environments); Dawarich Cloud is backfilled in a staged rollout. It walks the whole `points` table in paused batches and rewrites every row once, so on instances with millions of points expect it to run for hours in the background and to temporarily grow the database until autovacuum catches up. Nothing changes in the UI while it runs, and it can be re-run at any time to pick up rows it has not reached. Adding the two linking columns needs a brief exclusive lock on `points`; instances with heavy write traffic that cannot win it during startup hand the change to a background job so boot still completes, and the backfill starts once that job succeeds.
+
 ### Changed
 
+- Removed three superseded `points` indexes (the old dedup index and two composites) now that the consolidated `(user_id, timestamp, lonlat)` index from 1.12.2 serves their queries. The migration refuses to run unless that consolidated index is present and valid, and any other invalid leftover index is cleaned up first. Frees several gigabytes on large instances and further reduces the write cost of every point.
+- Removed a fourth `points` index, the partial `(user_id, timestamp) WHERE visit_id IS NULL` used by visit detection, which the same consolidated index now serves.
 - Removed three superseded `points` indexes (the old dedup index and two composites) now that the consolidated `(user_id, timestamp, lonlat)` index from 1.12.2 serves their queries. The migration cleans up any invalid leftover index first, rebuilds the consolidated index automatically when an interrupted build left it invalid, and refuses to run only when it is missing entirely. Frees several gigabytes on large instances and further reduces the write cost of every point.
 - The nightly cache preheat now runs as one background job per user instead of a single job looping over every user. Its duration is bounded by the slowest individual user rather than by the sum of all of them, so one account with a large history no longer delays the preheat for everyone else. On Dawarich Cloud it now only preheats active and trial accounts; self-hosted instances continue to preheat every user.
 
