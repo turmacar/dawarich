@@ -15,8 +15,8 @@ class CountriesAndCities
 
   def call
     points
-      .reject { |point| point[:country_name].nil? || point[:city].nil? || flyover?(point) }
-      .group_by { |point| canonical_country_name(point) }
+      .reject { |point| resolved_country(point).nil? || resolved_city(point).nil? || flyover?(point) }
+      .group_by { |point| resolved_country(point) }
       .transform_values { |country_points| process_country_points(country_points) }
       .map { |country, cities| CountryData.new(country: country, cities: cities) }
   end
@@ -29,11 +29,17 @@ class CountriesAndCities
     (point[:velocity].to_f * MS_TO_KMH) > FLYOVER_VELOCITY_THRESHOLD_KMH
   end
 
-  def canonical_country_name(point)
-    country_id = point[:country_id]
-    return point[:country_name] if country_id.blank?
+  # Resolve the country from the denormalized columns only — never from the
+  # geodata blob, which is empty whenever STORE_GEODATA is disabled (cloud
+  # production). country_id is the spatial source backfilled for every point;
+  # the country_name column is the fallback.
+  def resolved_country(point)
+    by_id = country_names_by_id[point[:country_id]] if point[:country_id].present?
+    by_id.presence || point[:country_name].presence
+  end
 
-    country_names_by_id[country_id] || point[:country_name]
+  def resolved_city(point)
+    point[:city].presence
   end
 
   def country_names_by_id
@@ -45,7 +51,7 @@ class CountriesAndCities
 
   def process_country_points(country_points)
     country_points
-      .group_by { |point| point[:city] }
+      .group_by { |point| resolved_city(point) }
       .transform_values { |city_points| create_city_data_if_valid(city_points) }
       .values
       .compact
@@ -54,7 +60,7 @@ class CountriesAndCities
   def create_city_data_if_valid(city_points)
     timestamps = city_points.pluck(:timestamp)
     duration = calculate_duration_in_minutes(timestamps)
-    city = city_points.first[:city]
+    city = resolved_city(city_points.first)
     points_count = city_points.size
 
     build_city_data(city, points_count, timestamps, duration)
