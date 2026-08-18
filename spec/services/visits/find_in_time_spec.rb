@@ -92,7 +92,7 @@ RSpec.describe Visits::FindInTime do
     end
 
     context 'with visits at the boundaries of the time range' do
-      let(:boundary_place) { create(:place) }
+      let(:boundary_place) { create(:place, user: user) }
 
       let!(:visit_at_start) do
         create(
