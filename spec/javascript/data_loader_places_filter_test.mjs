@@ -22,7 +22,10 @@ dataLoaderSource = dataLoaderSource
   .concat("\nglobalThis.DataLoader = DataLoader\n")
 let settingsManagerSource = await readFile(settingsManagerPath, "utf8")
 settingsManagerSource = settingsManagerSource
+  .replace(/import\s*\{[\s\S]*?\}\s*from\s*['"][^'"]+['"]\s*;?/g, "")
+  .replace(/^import .+$/gm, "")
   .replaceAll("export const ", "const ")
+  .replace(/^export function /gm, "function ")
   .replace("export class SettingsManager", "class SettingsManager")
   .concat("\nglobalThis.SettingsManager = SettingsManager\n")
 

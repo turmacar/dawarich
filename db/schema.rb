@@ -127,6 +127,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150200) do
     t.index ["user_id"], name: "index_exports_on_user_id"
   end
 
+  create_table "achievement_progresses", force: :cascade do |t|
+    t.string "achievement_key", null: false
+    t.datetime "created_at", null: false
+    t.boolean "sharing_enabled", default: false, null: false
+    t.string "sharing_uuid"
+    t.jsonb "state", default: {}, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["sharing_uuid"], name: "index_achievement_progresses_on_sharing_uuid", unique: true
+    t.index ["user_id", "achievement_key"], name: "index_achievement_progresses_on_user_id_and_achievement_key", unique: true
+  end
+
   create_table "families", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "creator_id", null: false
@@ -207,6 +219,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150200) do
     t.index ["user_id", "departure_time"], name: "index_flights_on_user_id_and_departure_time"
     t.index ["user_id", "external_id"], name: "index_flights_on_user_id_and_external_id", unique: true
     t.index ["user_id"], name: "index_flights_on_user_id"
+  end
+
+  create_table "geofence_events", force: :cascade do |t|
+    t.bigint "area_id", null: false
+    t.datetime "created_at", null: false
+    t.string "device_id"
+    t.integer "event_type", null: false
+    t.geography "lonlat", limit: {srid: 4326, type: "st_point", geographic: true}, null: false
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "occurred_at", null: false
+    t.datetime "received_at", null: false
+    t.integer "accuracy_m"
+    t.integer "source", null: false
+    t.boolean "synthetic", default: false, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["area_id", "occurred_at"], name: "index_geofence_events_on_area_id_and_occurred_at", order: {occurred_at: :desc}
+    t.index ["area_id"], name: "index_geofence_events_on_area_id"
+    t.index ["lonlat"], name: "index_geofence_events_on_lonlat", using: :gist
+    t.index ["user_id", "occurred_at"], name: "index_geofence_events_on_user_id_and_occurred_at", order: {occurred_at: :desc}
+    t.index ["user_id"], name: "index_geofence_events_on_user_id"
   end
 
   create_table "flipper_features", force: :cascade do |t|
@@ -421,6 +454,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150200) do
     t.index ["user_id"], name: "index_points_raw_data_archives_on_user_id"
   end
 
+  create_table "regions", force: :cascade do |t|
+    t.string "code", null: false
+    t.datetime "created_at", null: false
+    t.geometry "geom", limit: {srid: 4326, type: "multi_polygon"}, null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_regions_on_code", unique: true
+    t.index ["geom"], name: "index_regions_on_geom", using: :gist
+  end
+
   create_table "posters", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -565,6 +607,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150200) do
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
+  create_table "user_achievements", force: :cascade do |t|
+    t.string "achievement_key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "earned_at", null: false
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "achievement_key"], name: "index_user_achievements_on_user_id_and_achievement_key", unique: true
+  end
+
+  create_table "user_devices", force: :cascade do |t|
+    t.string "app_version"
+    t.datetime "created_at", null: false
+    t.string "device_id", null: false
+    t.string "device_name"
+    t.datetime "last_seen_at"
+    t.integer "platform", null: false
+    t.string "push_token"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "device_id"], name: "index_user_devices_on_user_id_and_device_id", unique: true
+    t.index ["user_id"], name: "index_user_devices_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "active_until"
     t.boolean "admin", default: false
@@ -650,6 +716,38 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150200) do
     t.index ["user_id"], name: "index_visits_on_user_id"
   end
 
+  create_table "webhook_deliveries", force: :cascade do |t|
+    t.integer "attempt_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "delivered_at"
+    t.string "error_message"
+    t.bigint "geofence_event_id", null: false
+    t.string "response_body"
+    t.integer "response_status"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "webhook_id", null: false
+    t.index ["geofence_event_id"], name: "index_webhook_deliveries_on_geofence_event_id"
+    t.index ["webhook_id", "created_at"], name: "index_webhook_deliveries_on_webhook_id_and_created_at", order: {created_at: :desc}
+    t.index ["webhook_id"], name: "index_webhook_deliveries_on_webhook_id"
+  end
+
+  create_table "webhooks", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.bigint "area_ids", array: true, default: [], null: false
+    t.integer "consecutive_failures", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.integer "event_types", array: true, default: [0, 1], null: false
+    t.datetime "last_delivery_at"
+    t.datetime "last_success_at"
+    t.string "name", null: false
+    t.string "secret", null: false
+    t.datetime "updated_at", null: false
+    t.string "url", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_webhooks_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "areas", "users"
@@ -663,6 +761,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150200) do
   add_foreign_key "family_memberships", "families"
   add_foreign_key "family_memberships", "users"
   add_foreign_key "flights", "users"
+  add_foreign_key "geofence_events", "areas"
+  add_foreign_key "geofence_events", "users"
   add_foreign_key "notes", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "pending_imports", "users", column: "claimed_by_user_id", on_delete: :nullify
@@ -680,7 +780,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150200) do
   add_foreign_key "track_segments", "tracks"
   add_foreign_key "tracks", "users"
   add_foreign_key "trips", "users"
+  add_foreign_key "user_achievements", "users"
+  add_foreign_key "user_devices", "users"
   add_foreign_key "visits", "areas"
   add_foreign_key "visits", "places"
   add_foreign_key "visits", "users"
+  add_foreign_key "webhook_deliveries", "geofence_events"
+  add_foreign_key "webhook_deliveries", "webhooks"
+  add_foreign_key "webhooks", "users"
 end
