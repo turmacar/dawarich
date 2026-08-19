@@ -141,7 +141,7 @@ module Achievements
       ::Notifications::Create.new(
         user: user, kind: :info,
         title: "#{newly_earned.size} new regions explored!",
-        content: 'Your latest data unlocked new regions — see them all on the Achievements page.'
+        content: 'Your latest data unlocked new regions - see them all on the Achievements page.'
       ).call
     end
 

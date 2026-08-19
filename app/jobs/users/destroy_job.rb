@@ -23,7 +23,7 @@ class Users::DestroyJob < ApplicationJob
 
     Users::DestructionWebhookJob.perform_later(user_id, user_email)
   rescue ActiveRecord::RecordInvalid => e
-    # User cannot be deleted (e.g., owns a family with members) — not transient, retrying won't help
+    # User cannot be deleted (e.g., owns a family with members) - not transient, retrying won't help
     Rails.logger.error "User deletion blocked for user_id #{user_id}: #{e.message}"
     ExceptionReporter.call(e, "User deletion blocked for user_id #{user_id}")
   rescue StandardError => e

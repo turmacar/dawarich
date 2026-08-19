@@ -65,7 +65,7 @@ class Tracks::BoundaryResolverJob < ApplicationJob
     session_manager.mark_completed
   end
 
-  # Chunks that are still completing mean the fan-out is working, just slowly —
+  # Chunks that are still completing mean the fan-out is working, just slowly -
   # on a low-priority queue that can take far longer than the retry budget. Only
   # a session that made no progress since the last look burns an attempt.
   def reschedule_boundary_resolution

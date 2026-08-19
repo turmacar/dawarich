@@ -44,7 +44,7 @@ RSpec.describe TransportationModes::Emissions do
   end
 
   it 'still reaches train for a clear rail signature despite a generic vehicle hint' do
-    # ICE-like: sustained 180 km/h, near-zero heading change — no car does this.
+    # ICE-like: sustained 180 km/h, near-zero heading change - no car does this.
     w = window(speed_p50: 180.0, speed_p95: 210.0, heading_change_rate: 0.15,
                motion_variance: 6.0, stop_fraction: 0.02, hints: VEHICLE_HINTS)
     ll = described_class.log_likelihoods(w, enabled: described_class::INFERRED_MODES)

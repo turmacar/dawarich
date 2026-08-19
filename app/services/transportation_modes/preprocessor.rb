@@ -2,7 +2,7 @@
 
 module TransportationModes
   # Cleans FeatureExtractor rows into per-point speeds the classifier can
-  # trust: stored velocity wins (including 0.0 — parked points must not
+  # trust: stored velocity wins (including 0.0 - parked points must not
   # inherit GPS-drift speeds), derived dist/dt is the fallback, and samples
   # are invalidated on poor accuracy, zero dt, or implausible acceleration.
   class Preprocessor
@@ -28,7 +28,7 @@ module TransportationModes
     def self.resolve_speed(row, previous_valid_speed)
       # Negative stored velocity marks an anomalous fix (iOS CLLocation /
       # Traccar Client JSON report -1 when unreliable). The whole sample is
-      # masked — deriving a speed from a suspect fix would launder it.
+      # masked - deriving a speed from a suspect fix would launder it.
       stored = row[:velocity]
       return if stored&.negative?
 
@@ -40,7 +40,7 @@ module TransportationModes
     end
 
     # Displacement across a tracking gap says nothing about how the user
-    # moved during it — 15 km over a 20 minute hole is not a 45 km/h sample.
+    # moved during it - 15 km over a 20 minute hole is not a 45 km/h sample.
     # A stored velocity is an instantaneous reading and stays trusted.
     def self.derived_speed(row)
       return nil if row[:dt].nil? || row[:dt] <= 0 || row[:dist_m].nil?

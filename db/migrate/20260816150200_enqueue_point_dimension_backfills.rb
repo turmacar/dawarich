@@ -37,7 +37,7 @@ class EnqueuePointDimensionBackfills < ActiveRecord::Migration[8.0]
 
   # Nothing retries this: the migration is recorded as applied either way and
   # this is the only place that enqueues the chain, so the log has to carry the
-  # manual remedy. A NameError still aborts — that is a broken deploy, not an
+  # manual remedy. A NameError still aborts - that is a broken deploy, not an
   # infrastructure hiccup, and must not be swallowed.
   def enqueue(job_class)
     job_class.perform_later

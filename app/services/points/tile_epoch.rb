@@ -4,10 +4,10 @@
 # the user's points change. Opaque random tokens, NOT counters, read/written
 # raw: Rails.cache.increment silently no-ops against redis_cache_store's
 # marshalled values, and an evicted counter would roll back into already-issued
-# ETags — a reseeded token never collides, so eviction costs one refetch, never
+# ETags - a reseeded token never collides, so eviction costs one refetch, never
 # staleness. Year buckets keep historical tiles cached while live tracking only
 # touches the current year. If Redis is down, the failsafe makes tokens
-# unstable: every request refetches — slower, never stale, never crashing.
+# unstable: every request refetches - slower, never stale, never crashing.
 class Points::TileEpoch
   KEY_PREFIX = 'points:tile_epoch'
   # For writers that can't cheaply know which years they touched; part of every

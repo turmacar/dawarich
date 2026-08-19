@@ -34,7 +34,7 @@ export async function submitPrintOrder({
   return { token: body.token, checkoutUrl: body.checkout_url }
 }
 
-// XMLHttpRequest instead of fetch solely for upload progress events —
+// XMLHttpRequest instead of fetch solely for upload progress events -
 // print PDFs run tens of MB and fetch has no upload progress API.
 function postForm(url, form, onProgress) {
   return new Promise((resolve, reject) => {

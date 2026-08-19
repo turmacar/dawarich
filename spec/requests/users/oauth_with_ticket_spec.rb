@@ -126,7 +126,7 @@ RSpec.describe 'OAuth sign-in with pending import ticket', type: :request do
       expect(cookies['apple_pending_import_ticket']).to be_present
 
       # Apple's callback is a cross-site form POST: SameSite=Lax means the
-      # browser does not send the session cookie. Simulate that by dropping it —
+      # browser does not send the session cookie. Simulate that by dropping it -
       # the encrypted ticket cookie (SameSite=None) is all the callback gets.
       session_cookie_name = Rails.application.config.session_options[:key] ||
                             cookies.to_hash.keys.find { |k| k.include?('session') }

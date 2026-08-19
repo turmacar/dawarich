@@ -19,7 +19,7 @@ end
 
 # Disabled in the test environment so request specs aren't throttled by
 # accumulated counters across examples (login throttle is 5/min by IP,
-# 20/min by email — easy to trip when many specs hit /users/sign_in).
+# 20/min by email - easy to trip when many specs hit /users/sign_in).
 # `spec/requests/api/v1/rate_limiting_spec.rb` re-enables it locally to
 # exercise the throttling behavior.
 Rack::Attack.enabled = false if Rails.env.test?
@@ -62,7 +62,7 @@ Rack::Attack.throttle('api/token',
   api_key
 end
 
-# Vector tile requests, exempted from api/token above. Keyed by raw token —
+# Vector tile requests, exempted from api/token above. Keyed by raw token -
 # no plan lookup, no DB query; browser caching absorbs most repeats anyway.
 Rack::Attack.throttle('api/tiles',
                       limit: proc { Rack::Attack.tiles_limit },
@@ -138,7 +138,7 @@ Rack::Attack.throttle('logins/ip', limit: 20, period: 1.minute) do |req|
   req.ip
 end
 
-# Mobile login API — same brute-force protection as the web sign-in endpoint.
+# Mobile login API - same brute-force protection as the web sign-in endpoint.
 # Mirrors the limits above (5/min per email, 20/min per IP) because the threat
 # model is identical: an attacker grinding passwords against /api/v1/auth/login
 # would otherwise bypass the Devise web throttles entirely.
@@ -326,7 +326,7 @@ Rack::Attack.throttled_responder = lambda do |request|
 
   headers = {
     'Content-Type' => 'application/json',
-    # 429s must never be cached — tiles are the dominant throttled URL shape
+    # 429s must never be cached - tiles are the dominant throttled URL shape
     # and a heuristically-cached rejection would outlive the throttle window.
     'Cache-Control' => 'no-store',
     'Retry-After' => (period - (now.to_i % period)).to_s

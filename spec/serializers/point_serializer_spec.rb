@@ -39,6 +39,9 @@ RSpec.describe PointSerializer do
         'raw_data_archived' => point.raw_data_archived,
         'raw_data_archive_id' => point.raw_data_archive_id,
         'motion_data' => point.motion_data,
+        'motion_id' => point.motion_id,
+        'source_id' => point.source_id,
+        'visits_scanned_at' => point.visits_scanned_at,
         'anomaly' => point.anomaly
       }
     end

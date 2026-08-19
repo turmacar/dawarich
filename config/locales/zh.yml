@@ -114,7 +114,7 @@ zh:
         cancel_my_account: 注销我的帐户
         delete_your_account: 删除您的帐户
         this_is_permanent_and_removes_all_your_data_this_cannot: 此操作是永久性的，将删除您的所有数据，且无法撤销。
-        this_is_permanent_and_removes_all_your_data_this_cannot_2: 此操作是永久性的，将删除您的所有数据，且无法撤销。我们会向您的邮箱发送确认链接 — 只有点击该链接后，您的帐户才会被删除。
+        this_is_permanent_and_removes_all_your_data_this_cannot_2: 此操作是永久性的，将删除您的所有数据，且无法撤销。我们会向您的邮箱发送确认链接 - 只有点击该链接后，您的帐户才会被删除。
         type_your_email: 输入您的邮箱（
         to_confirm: ）进行确认
         enter_your_current_password_to_confirm: 输入您当前的密码进行确认
@@ -238,7 +238,7 @@ zh:
       title: 编辑家庭
     lapsed:
       family_plan_no_longer_active: 家庭计划不再有效
-      your_family_plan_is_no_longer_active_so_family_features: 您的家庭计划已失效，所有人的家庭功能均已暂停。您的家庭和成员将被保留 — 续订即可恢复全部功能。
+      your_family_plan_is_no_longer_active_so_family_features: 您的家庭计划已失效，所有人的家庭功能均已暂停。您的家庭和成员将被保留 - 续订即可恢复全部功能。
       your_family_s_plan_is_no_longer_active_so_family: 您所在家庭的计划已失效，家庭功能已暂停。家庭所有者续订后即可恢复，您无需自行订阅。
       members: 成员
       remove: 移除
@@ -492,11 +492,11 @@ zh:
       extract_additional_data_from_this_import: 从此导入中提取附加数据
       dawarich_originally_imported_your_file_as_raw_gps_points_the: Dawarich 最初将您的文件作为原始 GPS 轨迹点导入。该文件还包含：
       visits: 到访记录
-      places_where_the_source_app_recorded_you_spending_time_with: — 源应用记录您停留的位置，以及开始和结束时间。
+      places_where_the_source_app_recorded_you_spending_time_with: "- 源应用记录您停留的位置，以及开始和结束时间。"
       tracks: 轨迹
-      journeys_identified_between_those_visits_with_their_classified_transport: — 这些到访记录之间的行程，以及其分类交通方式（驾车、步行、骑行、公共交通等）。
+      journeys_identified_between_those_visits_with_their_classified_transport: "- 这些到访记录之间的行程，以及其分类交通方式（驾车、步行、骑行、公共交通等）。"
       places: 地点
-      the_named_places_home_work_frequent_restaurants_the_source_app: — 源应用为您的到访记录关联的命名地点（家、工作地点、常去的餐厅）。
+      the_named_places_home_work_frequent_restaurants_the_source_app: "- 源应用为您的到访记录关联的命名地点（家、工作地点、常去的餐厅）。"
       extract: 提取
       extract_to_add_html: 点击 <strong>提取</strong> 即可将此数据添加到您的 Dawarich
         帐户。现有轨迹点不会被修改。Dawarich 从您的轨迹点中检测到的到访记录和地点将与导入数据一同保留。
@@ -576,7 +576,7 @@ zh:
     new:
       back_to_imports: 返回导入
       google_timeline_file_too_large: Google 时间线文件太大？
-      your_data_never_leaves_your_browser: — 您的数据永远不会离开您的浏览器。
+      your_data_never_leaves_your_browser: "- 您的数据永远不会离开您的浏览器。"
       new_import: 新建导入
       split_it_with_our_free_private_tool: 使用我们免费的私密工具拆分文件
       new_import_2: 新导入
@@ -789,22 +789,32 @@ zh:
     map:
       you_re_viewing_demo_data: 您正在查看演示数据。
       delete: 删除
+      tiled_rendering:
+        inactive_note:
+          one: "Inactive while %{layers} is on - it needs the full point set."
+          other: "Inactive while %{layers} are on - those need the full point set."
+        editing_unavailable: "Not available with tiled rendering, vector tiles have no draggable points"
+        failed: "Could not load map tiles. Try a shorter date range, or turn off tiled rendering in map settings."
+        blockers:
+          routes: "Routes"
+          fog: "Fog of War"
+          scratch: "Scratch map"
     shared:
       dawarich: Dawarich
       try_dawarich_cloud: 试用 Dawarich 云
       shared_with_dawarich: 与 Dawarich 共享
       map_your_own_journeys: 在地图上呈现您的旅程。
-      dawarich_turns_your_own_location_history_into_maps_worth_sharing: Dawarich 将您的位置历史记录变成值得分享的地图 — 开源、可自托管、数据归您所有。
+      dawarich_turns_your_own_location_history_into_maps_worth_sharing: Dawarich 将您的位置历史记录变成值得分享的地图 - 开源、可自托管、数据归您所有。
       see_how_it_works: 了解其工作原理
       open_source: 开源
       self_hostable: 自托管
-      managed_cloud_no_setup: 托管云 — 无需设置
+      managed_cloud_no_setup: 托管云 - 无需设置
       shared_on_dawarich: 在 Dawarich 上共享
       dawarich_logo: Dawarich 徽标
   map:
     onboarding_modal:
       welcome_to_dawarich: 欢迎使用 Dawarich！
-      your_map_starts_with_your_next_step_literally: 您的地图从您的下一步开始 — 字面意义上的。
+      your_map_starts_with_your_next_step_literally: 您的地图从您的下一步开始 - 字面意义上的。
       start_tracking_now: 立即开始记录
       minutes: 2 分钟
       get_the_app_scan_a_qr_code_and_watch_your: 下载应用，扫描二维码，今天就能看到您的第一个轨迹点出现在地图上。
@@ -836,7 +846,7 @@ zh:
       or: 或
       grab_your_api_key_from: 请前往
       and_follow_the: 获取 API 密钥并按照
-      have_old_location_history_like_a_google_takeout_tracking_works: 有旧的位置历史记录（比如 Google Takeout）？跟踪立即生效 — 您可以随时导入历史记录
+      have_old_location_history_like_a_google_takeout_tracking_works: 有旧的位置历史记录（比如 Google Takeout）？跟踪立即生效 - 您可以随时导入历史记录
       import_your_history_anytime: 随时导入历史记录
       got_it_let_s_start: 好的，开始吧！
       close: 关闭
@@ -882,6 +892,10 @@ zh:
         allow_dragging_points_to_correct_their_position: 允许拖动轨迹点来修正位置。
         editing_points_is_a_pro_feature_this_stays_on_for: 编辑轨迹点是一项 Pro 功能，仅在当前会话中生效，且移动不会保存在 Lite 计划中。
         allow_dragging_points_to_correct_their_position_remembered_across_sessio: 允许拖动轨迹点来修正位置。此设置会跨会话保留。
+        tiled_rendering: "Tiled rendering"
+        beta: "Beta"
+        tiled_rendering_description: "Draws points from vector tiles as you pan, so a long date range loads only what is in view."
+        tiled_rendering_caveats: "Dense areas merge into markers with a point count - zoom in to open individual points. Editing is unavailable and the live trail can lag a few minutes."
         routes: 路线
         show_connected_route_lines: 显示连通的路线
         color_by_speed: 按速度着色
@@ -922,7 +936,7 @@ zh:
         show_family_member_locations: 显示家庭成员位置
         click_to_center_on_member: 点击以家庭成员为中心
         appearance: 外观
-        custom_map_colors_layer_colors_and_vector_tiles_are_pro: 自定义地图颜色、图层颜色和矢量瓦片是 Pro 功能 — 您可以在此预览，但在 Lite 计划下不会保存。
+        custom_map_colors_layer_colors_and_vector_tiles_are_pro: 自定义地图颜色、图层颜色和矢量瓦片是 Pro 功能 - 您可以在此预览，但在 Lite 计划下不会保存。
         map_style: 地图样式
         light: 浅色
         dark: 深色
@@ -946,8 +960,8 @@ zh:
           URL。留空则使用内置瓦片。
         base_map_layers: 底图图层
         toggle_base_map_elements_changes_apply_immediately: 切换底图元素。更改立即生效。
-        pro_feature_you_can_preview_changes_here_but_they_won: Pro 功能 — 您可以在此预览更改，但在 Lite 计划下不会保存。
-        the_custom_style_draws_no_labels_or_points_of_interest: 自定义样式不绘制标签或兴趣点 — 该样式启用时这些开关会被禁用。
+        pro_feature_you_can_preview_changes_here_but_they_won: Pro 功能 - 您可以在此预览更改，但在 Lite 计划下不会保存。
+        the_custom_style_draws_no_labels_or_points_of_interest: 自定义样式不绘制标签或兴趣点 - 该样式启用时这些开关会被禁用。
         points_of_interest: 兴趣点
         choose_which_poi_categories_appear_on_the_map: 选择地图上显示的 POI 类别。
         meters_between_routes: 路线间隔（米）
@@ -968,7 +982,7 @@ zh:
         fog_of_war_threshold: 战争迷雾阈值
         minimum_points_to_clear_fog: 清除迷雾所需的最少轨迹点
         gps_noise_filtering: GPS 噪声过滤
-        hide_readings_that_cannot_be_a_real_position_impossible_jumps: 隐藏不可能为真实位置的读数 — 如不可能的跳跃、损坏的坐标。禁用后显示每个原始轨迹点。
+        hide_readings_that_cannot_be_a_real_position_impossible_jumps: 隐藏不可能为真实位置的读数 - 如不可能的跳跃、损坏的坐标。禁用后显示每个原始轨迹点。
         re_evaluate_past_data: 重新评估过去的数据
         clears_existing_anomaly_flags_and_re_runs_the_filter_on: 清除现有异常标记，并使用当前设置对所有轨迹点重新运行过滤器。之后将重建轨迹、统计数据和摘要，整个过程在后台运行。
         recalculate_tracks_stats: 重新计算轨迹和统计数据
@@ -1235,7 +1249,7 @@ zh:
       no_tags: 无标签
       recent_visits: 最近到访
       rarr: →
-      on: 于
+      "on": 于
       no_visits_yet: 尚无到访记录
       rename: 重命名
       merge: 合并
@@ -1294,7 +1308,7 @@ zh:
       last_month: 上个月
       close_studio: 关闭工作室
       recenter: 居中
-      drag_to_pan_scroll_to_zoom_the_frame_is_what: 拖动可平移，滚动可缩放 — 导出的是画面中的内容。
+      drag_to_pan_scroll_to_zoom_the_frame_is_what: 拖动可平移，滚动可缩放 - 导出的是画面中的内容。
       layout: 布局
       theme: 主题
       customize_colors: 自定义颜色
@@ -1310,7 +1324,7 @@ zh:
       track_opacity: 轨迹透明度
       track_width: 轨迹宽度
       recent_posters: 最近的海报
-      server_rendered_posters_from_save_to_gallery_they_stay_here: 通过“保存到图库”在服务器端渲染的海报 — 它们会跨会话保留在这里。
+      server_rendered_posters_from_save_to_gallery_they_stay_here: 通过“保存到图库”在服务器端渲染的海报 - 它们会跨会话保留在这里。
       export_a_file: 导出文件
       format: 格式
       png: PNG
@@ -1363,7 +1377,7 @@ zh:
         gps_noise_detection_changed_in_this_release_so_your_existing:
           GPS
           噪声检测在本版本中有所更改，因此您的现有轨迹点已排入队列进行一次性重新检查。轨迹、统计数据和摘要会根据检查结果重建；历史记录较多时可能需要一些时间
-          — 完成后，某些轨迹点可能会在地图上出现或消失。不会删除任何轨迹点，且该检查在最低优先级队列中运行，因此其他任务始终优先。
+          - 完成后，某些轨迹点可能会在地图上出现或消失。不会删除任何轨迹点，且该检查在最低优先级队列中运行，因此其他任务始终优先。
         start_reverse_geocoding: 开始反向地理编码
         this_job_will_re_run_reverse_geocoding_process_for_all: 此任务将重新为数据库中的所有轨迹点运行反向地理编码。根据轨迹点数量，可能需要几天甚至几周！
         continue_reverse_geocoding: 继续反向地理编码
@@ -1707,7 +1721,7 @@ zh:
       create_new_place: 创建新地点
       place_name: 地点名称 *
       note: 备注
-      optional_add_any_notes_or_details_about_this_place: 可选 — 添加有关此地点的一些备注或详细信息
+      optional_add_any_notes_or_details_about_this_place: 可选 - 添加有关此地点的一些备注或详细信息
       tags: 标签
       click_tags_to_select_them_for_this_place: 点击标签即可为此地点选择标签
       suggested_places: 建议地点
@@ -1739,7 +1753,7 @@ zh:
       previous_point: 上一个轨迹点
       point_1_of_1: 第 1 个轨迹点，共 1 个
       next_point: 下一个轨迹点
-      replay_scrubber_time_of_day: 重播进度条 — 时刻
+      replay_scrubber_time_of_day: 重播进度条 - 时刻
     sharing_link:
       sharing_link: 共享链接
       copy: 复制
@@ -1788,15 +1802,15 @@ zh:
       not_found:
         this_shared_link_is_no_longer_available: 此共享链接不再可用
         the_owner_may_have_revoked_the_link_or_it_may: 所有者可能已撤销该链接或该链接已过期。
-        not_found_dawarich: 未找到 — Dawarich
+        not_found_dawarich: 未找到 - Dawarich
       phrase_prompt:
         enter_the_magic_phrase: 输入魔法短语
         this_shared_link_is_protected_ask_the_owner_for_the: 此共享链接受保护。请向所有者询问该短语。
         magic_phrase: 魔法短语
         unlock: 解锁
-        enter_phrase_dawarich: 输入短语 — Dawarich
+        enter_phrase_dawarich: 输入短语 - Dawarich
       show:
-        name_shared_on_dawarich: "%{name} — 在 Dawarich 上共享"
+        name_shared_on_dawarich: "%{name} - 在 Dawarich 上共享"
         shared_from_dawarich: 从 Dawarich 共享
     map:
       date_navigation_v2:
@@ -2005,7 +2019,7 @@ zh:
         stop_duration: 停留 · %{duration}
         transfer: 换乘
         moving: 移动中
-        mode_unclear: 模式不明确 — 检测置信度过低，无法认定具体模式
+        mode_unclear: 模式不明确 - 检测置信度过低，无法认定具体模式
         short_segments:
           one: 1 个短分段
           other: "%{count} 个短分段"
@@ -2021,7 +2035,7 @@ zh:
     resume:
       show:
         finish_setting_up_your_account: 完成帐户设置
-        your_account_is_almost_ready_to_start_tracking_your_location: 您的帐户即将准备就绪。要开始记录位置数据，请完成订阅结算。7 天免费试用期间不会收取任何费用 — 在试用期结束前随时取消即可，不会产生账单。
+        your_account_is_almost_ready_to_start_tracking_your_location: 您的帐户即将准备就绪。要开始记录位置数据，请完成订阅结算。7 天免费试用期间不会收取任何费用 - 在试用期结束前随时取消即可，不会产生账单。
         resume_checkout: 继续结算
         or_delete_my_account: 或删除我的帐户
         are_you_sure_this_cannot_be_undone: 您确定吗？此操作无法撤销。
@@ -2042,7 +2056,7 @@ zh:
     recalculate_button:
       recalculating_hellip: 正在重新计算…
       recalculate: 重新计算
-      recalculation_failed_try_again: 重新计算失败 — 重试。
+      recalculation_failed_try_again: 重新计算失败 - 重试。
       recalculate_this_trip_s_path_distance_and_countries_from_your: 根据您的最新轨迹点重新计算此行程的路径、距离和国家/地区？
     trip:
       no_points_found: 未找到轨迹点
@@ -2153,7 +2167,7 @@ zh:
         total_distance: 总距离
         track_your_own_adventures_with: 使用
         dawarich: Dawarich
-        your_personal_memories_mapper: — 您的个人记忆地图工具。
+        your_personal_memories_mapper: "- 您的个人记忆地图工具。"
         month: 月份
         distance: 距离
         first_time_count:
@@ -2270,21 +2284,21 @@ zh:
       once_confirmed_all_your_location_history_tracks_areas_visits_trips: 确认后，您的所有位置历史记录、轨迹、区域、到访记录、行程和家庭关系都将被永久删除。
       permanently_delete_my_account: 永久删除我的帐户
       didn_t_request_this: 未请求此操作？
-      ignore_this_email_the_link_expires_in_1_hour_and: 请忽略此邮件 — 链接将在 1 小时后过期，您的帐户不会受到影响。如果您不断收到此类邮件，请立即更改密码。
+      ignore_this_email_the_link_expires_in_1_hour_and: 请忽略此邮件 - 链接将在 1 小时后过期，您的帐户不会受到影响。如果您不断收到此类邮件，请立即更改密码。
       if_you_have_an_active_apple_or_google_subscription_remember: 如果您有有效的 Apple 或 Google 订阅，请记得在相应平台的设置中取消订阅，以免继续扣费。
       link: 链接：
       confirm_account_deletion_hi: 确认删除帐户
       we_received_a_request_to_delete_your_dawarich_account_this: 您好，我们收到了删除您的
         Dawarich
         帐户的请求。这是您停止删除的最后机会。确认后，您的所有位置历史记录、轨迹、区域、到访记录、行程和家庭关系都将被永久删除。永久删除我的帐户：
-      didn_t_request_this_ignore_this_email_the_link_expires: 未请求此操作？请忽略此邮件 — 链接将在 1
+      didn_t_request_this_ignore_this_email_the_link_expires: 未请求此操作？请忽略此邮件 - 链接将在 1
         小时后过期，您的帐户不会受到任何影响。如果您不断收到此类邮件，请立即更改密码。如果您有有效的 Apple 或 Google
         订阅，请记得在相应平台的设置中取消订阅，以免继续扣费。
       we_received_a_request_to_delete_your_dawarich_account_this_2:
         我们收到删除您的 Dawarich
         帐户的请求。这是您停止删除的最后机会。确认后，您的所有位置历史记录、轨迹、区域、到访记录、行程和家庭关系都将被永久删除。
       permanently_delete_my_account_2: 永久删除我的帐户：
-      didn_t_request_this_ignore_this_email_the_link_expires_2: 未请求此操作？请忽略此邮件 — 链接将在 1 小时后过期，您的帐户不会受到任何影响。如果您不断收到此类邮件，请立即更改密码。
+      didn_t_request_this_ignore_this_email_the_link_expires_2: 未请求此操作？请忽略此邮件 - 链接将在 1 小时后过期，您的帐户不会受到任何影响。如果您不断收到此类邮件，请立即更改密码。
     archival_approaching:
       your_data_history_is_filling_up: 您的数据历史记录即将存满
       hi: 您好
@@ -2293,28 +2307,28 @@ zh:
       your_oldest_location_data_will_be_archived_in_about: 您最早的位置数据将于约
       weeks: 2 周
       on_the_lite_plan_your_most_recent_12_months_of: 在 Lite 计划中，您最近 12
-        个月的数据仍可完全搜索和交互。更早的数据会被存档 — 随时可以导出，但不会出现在您的地图、搜索、统计数据或时间线重播中。
+        个月的数据仍可完全搜索和交互。更早的数据会被存档 - 随时可以导出，但不会出现在您的地图、搜索、统计数据或时间线重播中。
       upgrade_to_pro_to_keep_your_full_history: 升级到 Pro 以保留完整历史记录：
-      unlimited_searchable_history_every_month_every_year: 无限可搜索历史记录 — 每月、每年
+      unlimited_searchable_history_every_month_every_year: 无限可搜索历史记录 - 每月、每年
       heatmap_fog_of_war_and_globe_view: 热图、战争迷雾和地球视图
       full_write_api_access: 完整写入 API 访问
       immich_and_photoprism_integrations: Immich 和 PhotoPrism 集成
       upgrade_to_pro: 升级到 Pro
-      your_data_is_always_yours_pro_simply_makes_all_of: 您的数据始终属于您 — Pro 只是让全部数据都可在应用内搜索和交互。
+      your_data_is_always_yours_pro_simply_makes_all_of: 您的数据始终属于您 - Pro 只是让全部数据都可在应用内搜索和交互。
       questions_drop_me_a_message_at_hi_dawarich_app_or: 有疑问吗？请发送邮件到 hi@dawarich.app，或直接回复此邮件。
       best_regards: 此致，
       evgenii_from_dawarich: 来自 Dawarich 的 Evgenii
       your_data_history_is_filling_up_hi: 您的数据历史记录即将存满 您好
       this_is_evgenii_from_dawarich_heads_up_your_oldest_location:
         ，我是来自 Dawarich 的 Evgenii。注意：您最早的位置数据将于约 2 周后被存档。在 Lite 计划中，您最近 12
-        个月的数据仍可完全搜索和交互。更早的数据会被存档 — 随时可以导出，但不会出现在您的地图、搜索、统计数据或时间线重播中。升级到 Pro
-        即可保留完整历史记录： - 无限可搜索的历史记录 — 每个月、每一年 - 热图、战争迷雾和地球视图 - 完整写入 API 访问 - Immich
+        个月的数据仍可完全搜索和交互。更早的数据会被存档 - 随时可以导出，但不会出现在您的地图、搜索、统计数据或时间线重播中。升级到 Pro
+        即可保留完整历史记录： - 无限可搜索的历史记录 - 每个月、每一年 - 热图、战争迷雾和地球视图 - 完整写入 API 访问 - Immich
         和 PhotoPrism 集成 立即升级：
-      your_data_is_always_yours_pro_simply_makes_all_of_2: 您的数据始终属于您 — Pro
+      your_data_is_always_yours_pro_simply_makes_all_of_2: 您的数据始终属于您 - Pro
         只是让全部数据都可在应用内搜索和交互。有疑问？请发送邮件到 hi@dawarich.app，或直接回复此邮件。此致，来自 Dawarich 的
         Evgenii
       heads_up_your_oldest_location_data_will_be_archived_in: 注意：您最早的位置数据将于约 2 周后被存档。
-      unlimited_searchable_history_every_month_every_year_2: "- 无限可搜索的历史记录 — 每月、每年"
+      unlimited_searchable_history_every_month_every_year_2: "- 无限可搜索的历史记录 - 每月、每年"
       heatmap_fog_of_war_and_globe_view_2: "- 热图、战争迷雾和地球视图"
       full_write_api_access_2: "- 完整写入 API 访问"
       immich_and_photoprism_integrations_2: "- Immich 和 PhotoPrism 集成"
@@ -2358,9 +2372,9 @@ zh:
       account_link_request_text: 有人（希望是您）正在尝试将 %{provider} 登录关联到您的 Dawarich 帐户。点击下面的链接后，该登录方式今后即可访问此帐户。
       link: 链接
       didn_t_request_this: 未请求此操作？
-      ignore_this_email_the_link_expires_in_15_minutes_and: 请忽略此邮件 — 链接将在 15 分钟后过期，您的帐户不会发生任何更改。如果您不断收到此类邮件，请更改密码。
+      ignore_this_email_the_link_expires_in_15_minutes_and: 请忽略此邮件 - 链接将在 15 分钟后过期，您的帐户不会发生任何更改。如果您不断收到此类邮件，请更改密码。
       link_2: 链接：
-      didn_t_request_this_ignore_this_email_the_link_expires: 未请求此操作？请忽略此邮件 — 链接将在 15 分钟后过期，您的帐户不会发生任何更改。如果您不断收到此类邮件，请更改密码。
+      didn_t_request_this_ignore_this_email_the_link_expires: 未请求此操作？请忽略此邮件 - 链接将在 15 分钟后过期，您的帐户不会发生任何更改。如果您不断收到此类邮件，请更改密码。
     otp_account_locked:
       account_temporarily_locked: 帐户暂时锁定
       hi: 您好
@@ -2525,7 +2539,7 @@ zh:
       finish_signup: 完成注册
       resume: 恢复
       subscribe: 订阅
-      pro_preview: 在 Pro 上可用 — 点击预览
+      pro_preview: 在 Pro 上可用 - 点击预览
       pro_only: 在 Pro 上可用
       pro_badge: Pro
     timeline:
@@ -3004,12 +3018,12 @@ zh:
     tracks:
       recalculations:
         re_classification_already_running: 重新分类已在运行
-        re_classification_started_your_tracks_will_update_over_the_next: 重新分类已开始 — 您的轨迹将在接下来的几分钟内更新
+        re_classification_started_your_tracks_will_update_over_the_next: 重新分类已开始 - 您的轨迹将在接下来的几分钟内更新
       segments:
         segment_updated: 轨迹段已更新
         mode_not_enabled: 您的设置中未启用该模式
         update_failed: 无法更新轨迹段
-        reprocess_failed: 重新检测失败 — 您的更正已保留
+        reprocess_failed: 重新检测失败 - 您的更正已保留
       share_links:
         not_found: 未找到
     trial:
@@ -3019,8 +3033,8 @@ zh:
         this_welcome_link_has_already_been_used: 此欢迎链接已被使用。
         link_invalid_or_expired_please_sign_in: 链接无效或过期。请登录。
         account_no_longer_exists_please_sign_up_again: 帐户不再存在。请重新注册。
-        trial_active_until: 欢迎使用 Dawarich — 您的 7 天免费试用期将持续到 %{date}。
-        trial_activating: 欢迎使用 Dawarich — 您的试用正在激活中。
+        trial_active_until: 欢迎使用 Dawarich - 您的 7 天免费试用期将持续到 %{date}。
+        trial_activating: 欢迎使用 Dawarich - 您的试用正在激活中。
     trips:
       notes:
         invalid_date: 无效日期
@@ -3030,8 +3044,8 @@ zh:
       trip_was_successfully_created_data_is_being_calculated_in_the: 行程创建成功。数据正在后台计算。
       trip_was_successfully_updated: 行程已成功更新。
       trip_was_successfully_destroyed: 行程已成功删除。
-      already_recalculating_this_page_will_update_when_it_s_done: 正在重新计算 — 完成后此页面将自动更新。
-      recalculating_the_page_will_update_automatically_when_it_s_ready: 正在重新计算 — 完成后页面将自动更新。
+      already_recalculating_this_page_will_update_when_it_s_done: 正在重新计算 - 完成后此页面将自动更新。
+      recalculating_the_page_will_update_automatically_when_it_s_ready: 正在重新计算 - 完成后页面将自动更新。
       unsupported_export_format_choose_gpx_or_geojson: 导出格式不受支持。选择 GPX 或 GeoJSON。
       trip_export_initiated_check_the_exports_page_when_it_s: 行程导出已启动。完成后请查看“导出”页面。
       export_failed_to_initiate_please_try_again: 导出启动失败。请重试。
@@ -3043,7 +3057,7 @@ zh:
         missing_email: Apple 这次没有将您的邮箱分享给我们，我们也找不到您现有的帐户。请访问 appleid.apple.com → 使用
           Apple 登录 → Dawarich → 停止使用“使用 Apple 登录”，然后重试。
         did_not_complete: Apple 登录未完成。请重试。
-        state_mismatch: 登录时 Apple 状态不匹配 — 请重试。
+        state_mismatch: 登录时 Apple 状态不匹配 - 请重试。
       destroy_confirmations:
         this_deletion_link_has_already_been_used: 该删除链接已被使用。
         deletion_link_invalid_or_expired: 删除链接无效或已过期。
@@ -3112,7 +3126,7 @@ zh:
       visits_merged: 到访记录已合并。
       visit_removed: 到访记录已删除。您的轨迹点仍然保留。
       too_many_visits: 您一次最多可更新 %{count} 条到访记录。请缩小选择范围后重试。
-      missing_visits: 部分到访记录已不在此处 — 可能是在其他标签页中被修改的。请刷新后重试。
+      missing_visits: 部分到访记录已不在此处 - 可能是在其他标签页中被修改的。请刷新后重试。
       plan_window_visits: 部分到访记录超出 Lite 计划的 12 个月时间范围。升级到 Pro 即可管理更早的数据。
       bulk_removed:
         one: "%{count} 条到访记录已删除。您的轨迹点仍然保留。"
@@ -3135,7 +3149,7 @@ zh:
       explore_features:
         subject: 探索 Dawarich 功能！
       archival_approaching:
-        subject: 保留您的完整历史记录 — 升级到 Pro
+        subject: 保留您的完整历史记录 - 升级到 Pro
       oauth_account_link:
         subject: 确认将 %{provider} 关联到您的 Dawarich 帐户
       account_destroy_confirmation:
@@ -3146,7 +3160,7 @@ zh:
         year_end:
           subject: 您的 %{year} 年度回顾 - Dawarich
         monthly:
-          subject: 您的 %{month} %{year} 回顾 — Dawarich
+          subject: 您的 %{month} %{year} 回顾 - Dawarich
   models:
     family:
       location_request:
@@ -3325,7 +3339,7 @@ zh:
           个轨迹点，这些轨迹点都已以相同的坐标和时间戳存在于您的时间线中，因此未导入任何内容。如果这并非预期情况，请删除该日期范围内的现有轨迹点后重新导入。
         source_missing: 导入源不能为空
         unsupported_source: 不受支持的源：%{source}
-        zip_unclassified: 无法识别 ZIP 内容 — 文件可能已损坏
+        zip_unclassified: 无法识别 ZIP 内容 - 文件可能已损坏
       source_detector:
         amazon_order: 这是 Amazon 订单导出文件，不是位置数据。Dawarich 从 Google Takeout、OwnTracks、GPX
           等来源导入位置历史记录。
@@ -3738,6 +3752,16 @@ zh:
       collapse_all_days: 折叠所有日期
     map:
       places_layer: 地点图层
+      tiled_rendering:
+        inactive_note:
+          one: "Inactive while %{layers} is on - it needs the full point set."
+          other: "Inactive while %{layers} are on - those need the full point set."
+        editing_unavailable: "Not available with tiled rendering, vector tiles have no draggable points"
+        failed: "Could not load map tiles. Try a shorter date range, or turn off tiled rendering in map settings."
+        blockers:
+          routes: "Routes"
+          fog: "Fog of War"
+          scratch: "Scratch map"
       confirm_delete_point: 您确定要删除该轨迹点吗？
       confirm_delete_point_permanently: |-
         删除此轨迹点吗？
@@ -3933,8 +3957,8 @@ zh:
         要继续吗？
       custom_style_load_failed: 无法加载自定义地图样式；恢复到默认样式。
       invalid_tile_url: 瓦片 URL 必须包含 {z}、{x} 和 {y} 占位符，或者是 MapLibre 样式 URL
-      layer_unavailable_custom_style: 不适用于自定义地图样式 — 它不会绘制标签或兴趣点
-      layer_unavailable_foreign_basemap: 不适用于自定义栅格或样式底图 — 这些图层来自内置矢量瓦片
+      layer_unavailable_custom_style: 不适用于自定义地图样式 - 它不会绘制标签或兴趣点
+      layer_unavailable_foreign_basemap: 不适用于自定义栅格或样式底图 - 这些图层来自内置矢量瓦片
       make_changes_to_apply: 请先进行更改，以启用“应用”按钮
       re_evaluation_queued: 重新评估已加入队列。任务完成后，地图将更新。
       recalculation_queued: 重新计算已加入队列。完成后您会收到通知。
@@ -4070,7 +4094,7 @@ zh:
       tracks: 轨迹
       video: 视频
       area_number: 区域 %{id}
-      place_name_locked: 🔒 您已为此地点命名，自动命名不会更改它。将其重命名为“建议地点”即可交还自动命名。
+      place_name_locked: 🔒 您已为此地点命名，自动命名不会更改它。将其重命名为“Suggested place”即可交还自动命名。
     map_controls:
       add_visit: 添加一条到访记录
       create_place: 创建地点
@@ -4101,12 +4125,12 @@ zh:
         other: 家庭位置已更新（%{count} 名成员）
       refresh_failed: 无法刷新家庭位置
     hexagons:
-      limit_warning: 仅显示此范围内前 100,000 个轨迹点 — 缩小日期范围可查看更多细节。
+      limit_warning: 仅显示此范围内前 100,000 个轨迹点 - 缩小日期范围可查看更多细节。
       load_failed: 无法加载六边形：%{error}
       points: <strong>%{count}</strong> 个轨迹点
     layer_preview:
       ended: "%{layer} 预览已结束。"
-      remaining: 预览 %{layer} — 剩余 %{seconds} 秒。
+      remaining: 预览 %{layer} - 剩余 %{seconds} 秒。
       started: 预览 %{layer} %{seconds} 秒。
     poster:
       categories:
@@ -4115,7 +4139,7 @@ zh:
         wallpaper: 壁纸
       export_failed: 海报导出失败：%{error}
       open_failed: 海报工作室无法打开：%{error}
-      order_summary: "%{layout} 海报 — %{price}"
+      order_summary: "%{layout} 海报 - %{price}"
       theme_load_failed: 无法加载主题：%{error}
       theme_preset_failed: 加载主题预设失败：%{error}
       layouts:
@@ -4141,13 +4165,13 @@ zh:
         wallpaper-ultrawide: 桌面超宽
         wallpaper-phone: 手机
         wallpaper-tablet: 平板电脑
-      frame_too_wide: 此视图比最大的海报区域还宽 — 保存的海报会比预览放大更多。
+      frame_too_wide: 此视图比最大的海报区域还宽 - 保存的海报会比预览放大更多。
       load: 加载
       loading: 正在加载…
       loading_tracks: 正在加载新范围的轨迹…
-      no_location_data: 此日期范围内没有位置数据 — 请在顶部的日期栏中选择包含轨迹的日期范围。
-      no_tracks_in_frame: 画面中没有轨迹 — 请移动或缩放地图，让路线进入画面后保存到图库。
-      queued: 已排队 — 正在服务器端渲染，完成后将出现在“最近的海报”中…
+      no_location_data: 此日期范围内没有位置数据 - 请在顶部的日期栏中选择包含轨迹的日期范围。
+      no_tracks_in_frame: 画面中没有轨迹 - 请移动或缩放地图，让路线进入画面后保存到图库。
+      queued: 已排队 - 正在服务器端渲染，完成后将出现在“最近的海报”中…
       rendering: 正在渲染 %{width} × %{height}px…
       saved: 已保存
       saved_at_dpi: 已按 %{dpi} dpi 保存（设备 GL 上限）
@@ -4155,12 +4179,12 @@ zh:
       order_errors:
         connection: 无法访问订单服务 - 请检查您的连接。
         generic: 订单上传失败 - 请重试。
-        not_pdf: 导出未生成有效的 PDF — 请重试。
-        payment_unavailable: 付款服务暂时不可用 — 请稍后重试。
+        not_pdf: 导出未生成有效的 PDF - 请重试。
+        payment_unavailable: 付款服务暂时不可用 - 请稍后重试。
         too_large: 导出的 PDF 太大（最大 50 MB）。降低 DPI 上限或缩小。
         unknown_sku: 此格式目前不可订购。
-        unreadable: 无法读取导出的 PDF — 请重试。
-        wrong_size: 导出的 PDF 与所选格式不匹配 — 请重试。
+        unreadable: 无法读取导出的 PDF - 请重试。
+        wrong_size: 导出的 PDF 与所选格式不匹配 - 请重试。
     legacy_settings:
       edit_colors: 编辑颜色
       fog_radius: 战争迷雾半径
@@ -4191,7 +4215,7 @@ zh:
       last_seen: 最后在线：%{date} (%{relative})
       last_seen_short: 最后在线
       location_hidden: 位置已隐藏。
-      location_unknown: 位置未知 — 等待更新…
+      location_unknown: 位置未知 - 等待更新…
     speed_gradient:
       add_stop: 添加渐变色标
       color: 颜色

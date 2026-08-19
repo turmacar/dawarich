@@ -3,7 +3,7 @@
 module Users
   # Applies user settings updates from the API: plan-gated sanitization,
   # allowlist validation, and reclassification when the transportation mode
-  # allowlist changes (the former threshold settings are gone — the detection
+  # allowlist changes (the former threshold settings are gone - the detection
   # pipeline tunes itself).
   class SettingsUpdater
     Result = Struct.new(:success?, :error, :recalculation_triggered?, keyword_init: true)
@@ -71,7 +71,7 @@ module Users
     end
 
     # The `maps` hash may still carry legacy Map v1 keys (name, url,
-    # preferred_version) on existing accounts — merge instead of replacing
+    # preferred_version) on existing accounts - merge instead of replacing
     # so an API update from the map panel can't clobber other keys.
     def merge_maps_settings(value)
       incoming = value.to_h

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-# Feature values at each mode's profile centers — deterministic emissions.
+# Feature values at each mode's profile centers - deterministic emissions.
 DECODER_SPEC_CENTERS = {
   stationary: { speed_p50: 0.4, speed_p95: 1.5, heading_change_rate: 20.0,
                 motion_variance: nil, stop_fraction: 0.9 },

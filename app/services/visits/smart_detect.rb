@@ -4,8 +4,8 @@ module Visits
   # Entry seam for visit detection: plan-window clamping and the cheap
   # existence guard live here; the pipeline itself is
   # Visits::Detection::Runner. Serialization against concurrent runs happens
-  # inside Visits::Detection::Persister's write transaction — compute and
-  # geocoder I/O deliberately run unlocked. There is no fallback detector —
+  # inside Visits::Detection::Persister's write transaction - compute and
+  # geocoder I/O deliberately run unlocked. There is no fallback detector -
   # a failing run raises to Visits::Suggest, which owns user-facing error
   # handling.
   class SmartDetect
@@ -27,7 +27,7 @@ module Visits
       visits
     end
 
-    # Batches the Runner refused (over the candidate-point cap) — callers
+    # Batches the Runner refused (over the candidate-point cap) - callers
     # doing whole-history work must not report those as cleanly re-detected.
     def skipped_ranges
       @skipped_ranges || []

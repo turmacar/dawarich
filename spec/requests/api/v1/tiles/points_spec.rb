@@ -218,7 +218,7 @@ RSpec.describe 'Api::V1::Tiles::Points', type: :request do
       it 'stays no-store when no range is requested at all' do
         # no-store forbids the browser from storing the response at all, which
         # kills conditional revalidation at the root. (Rack::ETag still stamps
-        # an inert weak digest on 200 bodies — irrelevant with nothing stored.)
+        # an inert weak digest on 200 bodies - irrelevant with nothing stored.)
         get path, params: { api_key: user.api_key }
         expect(response.headers['Cache-Control']).to include('no-store')
         expect(response.headers['Cache-Control']).not_to include('max-age')

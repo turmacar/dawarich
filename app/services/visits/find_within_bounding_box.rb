@@ -32,7 +32,7 @@ module Visits
                        sw_lng, sw_lat, ne_lng, ne_lat
                      )
 
-      # Filter by started_at only — mirrors Visits::FindInTime; adding an
+      # Filter by started_at only - mirrors Visits::FindInTime; adding an
       # ended_at predicate silently drops boundary-crossing visits.
       relation = relation.where(started_at: start_at..end_at) if start_at && end_at
 

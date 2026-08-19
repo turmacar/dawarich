@@ -200,7 +200,7 @@ RSpec.describe InsightsHelper, type: :helper do
     end
 
     it 'returns the total day count for durations spanning years' do
-      # 400 days = 576_000 minutes — clearly across a year boundary
+      # 400 days = 576_000 minutes - clearly across a year boundary
       expect(helper.format_location_time(400 * 1440)).to eq('400 days')
     end
   end

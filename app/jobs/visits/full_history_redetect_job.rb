@@ -74,7 +74,7 @@ class Visits::FullHistoryRedetectJob < ApplicationJob
       "point_range=#{min_ts}..#{max_ts}"
     )
 
-    # Old machine output is replaced per window by the Persister — a month
+    # Old machine output is replaced per window by the Persister - a month
     # that fails or gets skipped keeps its existing rows instead of being
     # wiped and never regenerated. Rows outside the point range are purged
     # by HistoryRedetect itself.

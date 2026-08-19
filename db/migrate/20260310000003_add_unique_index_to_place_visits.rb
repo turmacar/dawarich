@@ -5,7 +5,7 @@ class AddUniqueIndexToPlaceVisits < ActiveRecord::Migration[8.0]
 
   def up
     # Remove duplicate (visit_id, place_id) rows, keeping the oldest.
-    # Uses ROW_NUMBER() window function instead of NOT IN subquery —
+    # Uses ROW_NUMBER() window function instead of NOT IN subquery -
     # NOT IN materializes all keeper IDs and does O(N*M) comparison,
     # which takes 12+ hours on tables with millions of rows.
     # ROW_NUMBER() does a single scan + sort, completing in minutes.
@@ -34,7 +34,7 @@ class AddUniqueIndexToPlaceVisits < ActiveRecord::Migration[8.0]
     # Only drop the visit_id single-column index; the composite covers it
     # (visit_id is the leading column). Keep place_id single-column index
     # because Place has `has_many :place_visits, dependent: :destroy` which
-    # generates DELETE FROM place_visits WHERE place_id = ? — the composite
+    # generates DELETE FROM place_visits WHERE place_id = ? - the composite
     # index cannot serve that query since place_id is not the leading column.
     remove_index :place_visits, column: :visit_id,
                  name: :index_place_visits_on_visit_id,

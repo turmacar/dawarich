@@ -40,7 +40,7 @@ module TransportationModes
 
     # Legacy corrections may still be index-anchored (async backfill hasn't
     # reached their track). The assembler can only clip around time ranges,
-    # so resolve them now — otherwise auto segments would overlap the
+    # so resolve them now - otherwise auto segments would overlap the
     # correction. Rows that cannot anchor (points gone) stay skipped.
     def anchored_preserved
       unanchored_ids = @preserved.select { |s| s.start_at.nil? && s.start_index.present? }.map(&:id)

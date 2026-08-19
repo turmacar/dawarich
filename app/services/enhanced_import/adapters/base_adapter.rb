@@ -34,7 +34,7 @@ module EnhancedImport
       # Scrubbed in place: scrub_to_utf8 returns a second full copy of the file,
       # so a large export was held twice over before Oj even started building
       # the object graph. scrub! rewrites the buffer we already have, and does
-      # nothing at all when the bytes are already valid UTF-8 — the usual case.
+      # nothing at all when the bytes are already valid UTF-8 - the usual case.
       def load_json_data
         stream_file do |io|
           raw = io.read

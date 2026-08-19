@@ -164,7 +164,7 @@ export class SettingsController {
     if (tilesUrlInput) tilesUrlInput.value = this.settings.vectorTilesUrl || ""
 
     // Sync map style dropdown. Setting .value doesn't fire "change", so
-    // notify the map-theme-editor controller separately — it shows/hides
+    // notify the map-theme-editor controller separately - it shows/hides
     // the custom color block based on the synced style.
     const mapStyleSelect = controller.element.querySelector(
       'select[name="mapStyle"]',
@@ -306,7 +306,7 @@ export class SettingsController {
     // Sync transportation mode settings
     this.syncTransportationSettings()
 
-    // All form inputs are seeded now — let the dirty tracker snapshot them
+    // All form inputs are seeded now - let the dirty tracker snapshot them
     document.dispatchEvent(new CustomEvent("map-settings:synced"))
   }
 
@@ -411,7 +411,7 @@ export class SettingsController {
 
   /**
    * Save the enabled transportation modes allowlist to backend.
-   * (Threshold settings are gone — detection tunes itself.)
+   * (Threshold settings are gone - detection tunes itself.)
    */
   async saveEnabledTransportationModes() {
     const controller = this.controller
@@ -713,7 +713,7 @@ export class SettingsController {
   }
 
   // Reload layers after a style change. setStyle replaces the whole style
-  // document — including the projection — so globe mode must be restored
+  // document - including the projection - so globe mode must be restored
   // or every style/theme change silently drops back to mercator.
   restoreStyleLayers() {
     this.restoreGlobeProjection()
@@ -731,7 +731,7 @@ export class SettingsController {
     }
 
     // MapLibre reports every failed request through `error`, tiles included.
-    // Only a failure of the style document may discard the user's basemap —
+    // Only a failure of the style document may discard the user's basemap -
     // one unreachable tile from an otherwise valid style must not.
     const onError = async (event) => {
       if (settled || !styleDocumentFailed(event, styleUrl)) return

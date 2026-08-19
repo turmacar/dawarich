@@ -36,7 +36,7 @@ module Visits
 
       # The Persister replaces every machine visit its window overlaps, so the
       # window must be wide enough to regenerate them from their full point
-      # range — otherwise a narrow realtime window would truncate a stay that
+      # range - otherwise a narrow realtime window would truncate a stay that
       # started before it.
       def widen_window_to_machine_visits
         overlapping = user.visits.machine_detected
@@ -75,7 +75,7 @@ module Visits
         StayAssembler.new(policy).call(reconciled, points_by_id)
       end
 
-      # Geocoder / place I/O — deliberately outside the persist transaction.
+      # Geocoder / place I/O - deliberately outside the persist transaction.
       def attribute_and_score(stays, points_by_id)
         attributor = PlaceAttributor.new(user, policy)
 
@@ -128,7 +128,7 @@ module Visits
       end
 
       # A point-free silence can still hold a user-owned visit (imported or
-      # manually created rows own no points) — bridging over it would overlap
+      # manually created rows own no points) - bridging over it would overlap
       # an anchor.
       def anchor_between?(from_ts, to_ts)
         user.visits.where.not(id: user.visits.machine_detected.select(:id))

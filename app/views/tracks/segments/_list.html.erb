@@ -10,7 +10,7 @@
       <div class="track-segments">
         <%= render partial: 'tracks/segments/legs', locals: { track: track, display: display } %>
         <%# Rows live in their own element so CSS can order them above the
-            summary — the toggle stays put at the bottom of the card instead of
+            summary - the toggle stays put at the bottom of the card instead of
             jumping upward as the condensed list is swapped out beneath it. %>
         <details class="segment-rawlist">
           <summary data-testid="segment-rawlist-toggle-<%= track.id %>"><%= t('.all_segments', count: segments.size) %></summary>

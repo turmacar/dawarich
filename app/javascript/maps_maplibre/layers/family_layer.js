@@ -259,7 +259,7 @@ export class FamilyLayer extends BaseLayer {
         },
       }
     } else {
-      // No existing polyline — store the point so the next update creates a line
+      // No existing polyline - store the point so the next update creates a line
       // A LineString needs at least 2 coordinates, so track pending starts
       if (!this._pendingHistoryStarts) this._pendingHistoryStarts = {}
 
@@ -279,7 +279,7 @@ export class FamilyLayer extends BaseLayer {
         delete this._pendingHistoryStarts[memberId]
       } else {
         this._pendingHistoryStarts[memberId] = coords
-        return // Don't update source yet — need 2 points for a LineString
+        return // Don't update source yet - need 2 points for a LineString
       }
     }
 

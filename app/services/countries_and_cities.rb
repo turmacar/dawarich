@@ -29,7 +29,7 @@ class CountriesAndCities
     (point[:velocity].to_f * MS_TO_KMH) > FLYOVER_VELOCITY_THRESHOLD_KMH
   end
 
-  # Resolve the country from the denormalized columns only — never from the
+  # Resolve the country from the denormalized columns only - never from the
   # geodata blob, which is empty whenever STORE_GEODATA is disabled (cloud
   # production). country_id is the spatial source backfilled for every point;
   # the country_name column is the fallback.

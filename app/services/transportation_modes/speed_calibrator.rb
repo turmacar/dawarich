@@ -6,7 +6,7 @@ module TransportationModes
   # knots, or mph where the pipeline expects m/s. This immunizes detection
   # against per-source unit bugs, present and future (e.g. OsmAnd-style
   # trackers posting through the OwnTracks endpoint). A ratio matching no
-  # band leaves velocities untouched — noisy m/s traces routinely drift
+  # band leaves velocities untouched - noisy m/s traces routinely drift
   # outside the m/s band, and nulling them would throw away the trace's
   # best speed signal (per-sample accuracy masks still apply downstream).
   class SpeedCalibrator
@@ -44,7 +44,7 @@ module TransportationModes
         next nil if row[:dt].nil? || row[:dt] <= 0 || row[:dist_m].nil?
         # Across a tracking gap the straight-line distance understates the
         # distance travelled, so the derived speed is too low and the ratio
-        # too high — the same bound the preprocessor applies.
+        # too high - the same bound the preprocessor applies.
         next nil if row[:dt] > Emissions::TUNING[:gap_reset_s]
 
         derived = row[:dist_m] / row[:dt]

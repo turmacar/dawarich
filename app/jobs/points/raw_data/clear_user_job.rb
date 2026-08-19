@@ -3,7 +3,7 @@
 module Points
   module RawData
     # Clears raw_data (sets to {}) for points whose archives have been verified.
-    # Only touches points linked to verified archives — never clears unverified data.
+    # Only touches points linked to verified archives - never clears unverified data.
     # Uses advisory lock to prevent duplicate runs for the same user.
     class ClearUserJob < ApplicationJob
       queue_as :archival
@@ -21,7 +21,7 @@ module Points
           true
         end
 
-        Rails.logger.info("Skipping clear for user #{user_id} — already locked") unless lock_acquired
+        Rails.logger.info("Skipping clear for user #{user_id} - already locked") unless lock_acquired
       rescue StandardError => e
         ExceptionReporter.call(e, "Points raw data clearing failed for user #{user_id}")
         raise

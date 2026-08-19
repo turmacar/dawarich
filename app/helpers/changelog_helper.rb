@@ -18,13 +18,13 @@ module ChangelogHelper
   end
 
   # Which navbar version indicator to render:
-  #   :widget — chibichange "What's New" pill
-  #   :prompt — native badge + opt-in card
-  #   :badge  — native GitHub-release badge only
+  #   :widget - chibichange "What's New" pill
+  #   :prompt - native badge + opt-in card
+  #   :badge  - native GitHub-release badge only
   #
   # An explicit decline always wins, so a user can opt out from Settings on any
   # instance. On cloud (not self-hosted) there is no third-party phone-home
-  # concern — it is our own infrastructure — so signed-in users who have not
+  # concern - it is our own infrastructure - so signed-in users who have not
   # declined see the widget with no prompt. Self-hosted instances prompt once
   # and respect the per-user consent choice.
   def changelog_indicator_state(user = current_user)

@@ -46,7 +46,7 @@ export class RouteSegmenter {
       return null
     }
 
-    // Same longitude — can't interpolate latitude based on longitude
+    // Same longitude - can't interpolate latitude based on longitude
     if (Math.abs(nLon1 - nLon2) < 0.0000001) {
       return nLat1
     }

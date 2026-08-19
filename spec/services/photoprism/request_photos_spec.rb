@@ -15,7 +15,7 @@ RSpec.describe Photoprism::RequestPhotos do
 
   let(:start_date) { '2024-01-01' }
   let(:end_date) { '2024-12-31' }
-  let(:expected_before_date) { '2025-01-01T00:00:00Z' }
+  let(:expected_before_date) { '2025-01-01' }
   let(:expected_after_date) { '2024-01-01T00:00:00Z' }
   let(:service) { described_class.new(user, start_date: start_date, end_date: end_date) }
 
@@ -192,7 +192,8 @@ RSpec.describe Photoprism::RequestPhotos do
         stub_request(
           :any,
           "#{user.settings['photoprism_url']}/api/v1/photos?" \
-            "after=#{expected_after_date}&before=#{expected_before_date}&count=1000&public=true&q=&quality=3&offset=1000"
+            "after=#{expected_after_date}&before=#{expected_before_date}" \
+            '&count=1000&public=true&q=&quality=3&offset=1000'
         ).to_return(status: 200, body: [].to_json, headers: { 'Content-Type' => 'application/json' })
       end
 

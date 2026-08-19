@@ -13,7 +13,7 @@ class Points::VectorTileQuery
   BUFFER = 256
   # Candidate rows must cover the ST_AsMVTGeom buffer, or markers clip at tile seams
   MARGIN = (BUFFER.to_f / EXTENT)
-  # The z0 world tile's geography bbox does not contain its own planar extent —
+  # The z0 world tile's geography bbox does not contain its own planar extent -
   # measured against a 1.5-degree global grid it drops 27k points that the plain
   # intersection keeps, so the prefilter must not run there. z1 measured clean,
   # but each of its tiles still spans a full 180 degrees, where wrap direction
@@ -57,13 +57,13 @@ class Points::VectorTileQuery
 
   # Display-pixels per decimation cell on 512px tiles. Tiers from the 1M-point
   # benchmark (lib/perf/vector_tile_benchmark.rb): 1px put 243k features/13.5 MB
-  # in a dense z11 tile, 4px keeps it ~15k/<1 MB — and a 4px cell is smaller
+  # in a dense z11 tile, 4px keeps it ~15k/<1 MB - and a 4px cell is smaller
   # than the 12px circle markers, so nothing visible is lost below z14.
   def grid_px
     z < 14 ? 4 : 1
   end
 
-  # Strictly above the maximum distinct grid cells in a margin-expanded tile —
+  # Strictly above the maximum distinct grid cells in a margin-expanded tile -
   # a pure bug-guard; a reachable LIMIT would drop an arbitrary subset of cells.
   def tile_feature_limit
     cells_per_axis = ((TILE_PIXELS * (1 + (2 * MARGIN))) / grid_px).ceil + 1
@@ -75,7 +75,7 @@ class Points::VectorTileQuery
   attr_reader :scope, :z, :x, :y
 
   # z/x/y are validated Integers and every other interpolated value is program-
-  # computed — the only user-influenced SQL is the tile_scope relation.
+  # computed - the only user-influenced SQL is the tile_scope relation.
   def tile_sql
     <<~SQL.squish
       #{with_clauses}
@@ -96,7 +96,7 @@ class Points::VectorTileQuery
     Point.sanitize_sql_array(["ST_AsMVT(features.*, ?, #{EXTENT}, 'geom')", LAYER_NAME])
   end
 
-  # One-pass hash aggregation — a DISTINCT ON + window-count variant paid for a
+  # One-pass hash aggregation - a DISTINCT ON + window-count variant paid for a
   # full sort (1.3s on a dense z11 tile). MIN() keeps the representative
   # deterministic; count=1 cells are exact, and merged cells never show popups,
   # so mixed MINs are invisible.
@@ -185,7 +185,7 @@ class Points::VectorTileQuery
     "ST_Translate(#{geom}, #{-shift}, 0)"
   end
 
-  # ST_TileEnvelope clamps its margin at the world bound — edge tiles get NO
+  # ST_TileEnvelope clamps its margin at the world bound - edge tiles get NO
   # buffer past the antimeridian. The wrapped branch searches a hand-built seam
   # band instead, kept inside the mercator domain so its 4326 transform never
   # yields |lon| > 180 (a geography cast of that would wrap unpredictably).

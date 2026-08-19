@@ -9,11 +9,11 @@ module Auth
   # Cloud uses the explicit `JWT_SECRET_KEY` so this matches the secret
   # already shared with the Manager service. Self-hosted instances fall
   # back to `Rails.application.secret_key_base`, which every Rails app
-  # already has — so self-hosters don't need a separate JWT_SECRET_KEY
+  # already has - so self-hosters don't need a separate JWT_SECRET_KEY
   # for these flows to work.
   #
   # Do NOT use this for cross-service tokens (subscription webhooks,
-  # `User#generate_subscription_token`) — those must keep using
+  # `User#generate_subscription_token`) - those must keep using
   # `ENV.fetch('JWT_SECRET_KEY')` directly because the Manager validates
   # them with the shared key.
   module InternalTokenSecret

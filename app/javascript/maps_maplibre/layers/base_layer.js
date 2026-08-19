@@ -36,7 +36,7 @@ export class BaseLayer {
     layers.forEach((layerConfig) => {
       if (!this.map.getLayer(layerConfig.id)) {
         // A stale beforeId makes MapLibre refuse the add with only an
-        // ErrorEvent — the layer would silently vanish. Re-validate it.
+        // ErrorEvent - the layer would silently vanish. Re-validate it.
         const before =
           beforeId && this.map.getLayer(beforeId) ? beforeId : undefined
         this.map.addLayer(layerConfig, before)

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # Affiliate attribution runs server-side because the default Cloud variant
-# (reverse_trial) redirects to Manager for checkout immediately after signup —
+# (reverse_trial) redirects to Manager for checkout immediately after signup -
 # a browser-side po('customers','signup') call would never fire for those users.
 RSpec.describe 'Users::Registrations Partnero attribution', type: :request do
   before do

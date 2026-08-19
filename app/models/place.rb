@@ -13,7 +13,7 @@ class Place < ApplicationRecord
   has_many :visits, dependent: :nullify
   # Reader surfaces (drawers, serializers, stats) must never count tombstoned
   # or declined visits; eager-loadable so list endpoints avoid N+1 counts.
-  # dependent: nil — lifecycle belongs to the canonical :visits association.
+  # dependent: nil - lifecycle belongs to the canonical :visits association.
   has_many :active_visits, -> { active }, class_name: 'Visit', inverse_of: :place, dependent: nil
   has_many :place_visits, dependent: :destroy
   has_many :suggested_visits, -> { distinct }, through: :place_visits, source: :visit
@@ -39,7 +39,7 @@ class Place < ApplicationRecord
   }
 
   # Legacy places predate the lonlat column and carry coordinates only in the
-  # decimal columns; to_f keeps their JSON serialization numeric — BigDecimal
+  # decimal columns; to_f keeps their JSON serialization numeric - BigDecimal
   # would encode as a string.
   def lon
     lonlat&.x || longitude.to_f

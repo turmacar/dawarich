@@ -7,7 +7,7 @@ import { translate } from "i18n"
  * Coordinates the Timeline tab's calendar, visit list, and filters, and
  * dispatches events the MapLibre layer listens for.
  *
- * See docs/specs for contract details — event names and DOM attributes must match
+ * See docs/specs for contract details - event names and DOM attributes must match
  * what the views (Task 5), CSS (Task 6), and MapLibre layer/manager (Task 8) emit/expect.
  */
 export default class extends Controller {
@@ -86,7 +86,7 @@ export default class extends Controller {
     // (e.g., VisitsController#update replaces the row with fresh state, and
     // without this the newly-rendered row wouldn't honor the active filters).
     // Also fire `visit:updated` whenever a visit row is replaced or removed
-    // or the day frame is replaced — VisitsController emits these streams on
+    // or the day frame is replaced - VisitsController emits these streams on
     // edit / destroy / bulk actions, and the map's visits layer needs to
     // refetch so its dots reflect the new state.
     this.boundStreamRender = (event) => {
@@ -163,7 +163,7 @@ export default class extends Controller {
     }
 
     // If the clicked track is on the already-selected day, the journey
-    // entry is already rendered — expand it immediately. Otherwise navigate
+    // entry is already rendered - expand it immediately. Otherwise navigate
     // to the day; the frame-load handler consumes the pending target once the
     // new day's entries render.
     if (date && date !== this.selectedDate) {
@@ -189,11 +189,11 @@ export default class extends Controller {
       this.filterChanged()
     }
 
-    // Date selection — "today" means the user's local today, not UTC today.
+    // Date selection - "today" means the user's local today, not UTC today.
     // Using toISOString() would shift the date near midnight in non-UTC zones.
     // Fall back to the range's end date when there's no explicit `date=` param
     // (arriving via the top date-range form / Search / Last 7 days) so the
-    // panel lands on the most recent day of the range instead of going blank —
+    // panel lands on the most recent day of the range instead of going blank -
     // keeping the range and the panel in sync (C1).
     let date = params.get("date")
     if (!date) {
@@ -206,7 +206,7 @@ export default class extends Controller {
       requestAnimationFrame(() => this.selectDayByDate(isoDate, false))
     }
 
-    // Specific visit selection — deferred until the visit list frame loads
+    // Specific visit selection - deferred until the visit list frame loads
     // (see handleVisitFrameLoad). Supports deep links (`?visit_id=N`) and
     // same-page navigation dispatched via the `timeline:open-visit` event.
     const visitId = params.get("visit_id")
@@ -235,7 +235,7 @@ export default class extends Controller {
           )
         }
       } catch {
-        // Malformed bounds JSON — silently skip fit
+        // Malformed bounds JSON - silently skip fit
       }
     }
 
@@ -255,7 +255,7 @@ export default class extends Controller {
   }
 
   // Expands the journey entry for `this.pendingTrackId` if it's present in
-  // the currently rendered day. Idempotent — re-clicking the same track
+  // the currently rendered day. Idempotent - re-clicking the same track
   // collapses via `toggleTrackInfo`, but programmatic expansion only opens
   // a closed entry, never collapses an open one.
   _tryExpandPendingTrack() {
@@ -315,7 +315,7 @@ export default class extends Controller {
   // ---------- Calendar ----------
   // User-facing actions trigger a full Turbo navigation so the whole map
   // page (points / routes / fog-of-war / any enabled layer) rebinds to the
-  // new date range — consistent with the existing top-of-page date form.
+  // new date range - consistent with the existing top-of-page date form.
   selectDay(event) {
     const cell = event.currentTarget
     const date = cell.dataset.day
@@ -324,12 +324,12 @@ export default class extends Controller {
   }
 
   navigateToDay(date) {
-    // Fully SPA — no Turbo.visit. The map instance stays alive, layers
+    // Fully SPA - no Turbo.visit. The map instance stays alive, layers
     // refetch in place, URL updates via pushState, panel state is preserved.
     // Three things happen in order:
     //   1. Panel UI (calendar selection + visit list frame src + scope badge)
     //   2. URL + top-of-page date form so browser state is consistent
-    //   3. `timeline-feed:date-navigated` event — the maplibre controller
+    //   3. `timeline-feed:date-navigated` event - the maplibre controller
     //      refetches all enabled layers for the new range and fits bounds.
     this.applySelectedDayUI(date)
 
@@ -404,7 +404,7 @@ export default class extends Controller {
     }
   }
 
-  // Pure UI update — no navigation. Called on connect() when URL params
+  // Pure UI update - no navigation. Called on connect() when URL params
   // already reflect the date (hydrating after a Turbo page load) and from the
   // `timeline:open-visit` event path.
   selectDayByDate(date, alignInputs = true) {
@@ -412,7 +412,7 @@ export default class extends Controller {
     this.applySelectedDayUI(date)
     if (alignInputs) this.alignRangeInputsToDay(date)
 
-    // Tell the map — bounds are not known yet (visit list frame is async).
+    // Tell the map - bounds are not known yet (visit list frame is async).
     // The map's visits_manager can re-center when it receives data, or listen
     // for additional events from the turbo-frame-rendered content.
     document.dispatchEvent(
@@ -455,7 +455,7 @@ export default class extends Controller {
       return
     }
 
-    // Space on a keyboard-focusable row would scroll the page — prevent that.
+    // Space on a keyboard-focusable row would scroll the page - prevent that.
     if (event.key === " " || event.code === "Space") event.preventDefault?.()
 
     const row = event.currentTarget
@@ -575,11 +575,11 @@ export default class extends Controller {
     this.applyVisibility()
   }
 
-  // Single source of truth — walks the rendered visit rows and toggles the
+  // Single source of truth - walks the rendered visit rows and toggles the
   // hidden class based on filter checkboxes, search query, and active tag chips.
   // Keeping them unified prevents the three from drifting out of sync.
   //
-  // Tag semantics are OR (union) — selecting "#home" + "#gym" shows visits
+  // Tag semantics are OR (union) - selecting "#home" + "#gym" shows visits
   // tagged with either. AND would require visits carrying BOTH tags, which
   // doesn't match how users read "show me home AND gym visits".
   applyVisibility() {
@@ -602,7 +602,7 @@ export default class extends Controller {
       if (!hidden) visibleCount += 1
     }
 
-    // Show the "no matches — clear filters" helper only when the day has at
+    // Show the "no matches - clear filters" helper only when the day has at
     // least one visit but active search/filter/tags hide them all. Prevents
     // the confusing state where the day header says "N visits" but the list
     // appears empty.
@@ -688,7 +688,7 @@ export default class extends Controller {
     if (!Number.isFinite(year) || !Number.isFinite(monthIdx)) return
 
     // Force English locale to match the server-rendered title
-    // (`strftime('%B %Y')`) — otherwise users on a non-English browser see
+    // (`strftime('%B %Y')`) - otherwise users on a non-English browser see
     // a brief "Январь 2025" → "January 2025" flicker as the turbo_stream
     // response replaces the skeleton.
     title.textContent = new Date(year, monthIdx, 1).toLocaleDateString("en", {
@@ -696,7 +696,7 @@ export default class extends Controller {
       year: "numeric",
     })
 
-    // 6×7 grid, Monday-aligned — mirrors what MonthSummary builds server-side.
+    // 6×7 grid, Monday-aligned - mirrors what MonthSummary builds server-side.
     const monthStart = new Date(year, monthIdx, 1)
     // Day-of-week with Monday as 0
     const offset = (monthStart.getDay() + 6) % 7
@@ -732,7 +732,7 @@ export default class extends Controller {
     const direction = event.currentTarget.dataset.direction
     if (!this.selectedDate) return
     // Work in UTC throughout to avoid local-timezone drift. `new Date("YYYY-MM-DDT00:00:00")`
-    // is parsed as local, then toISOString() converts to UTC — which can shift
+    // is parsed as local, then toISOString() converts to UTC - which can shift
     // the date by ±1 in non-UTC timezones. Using Date.UTC + setUTCDate is stable.
     const [y, m, day] = this.selectedDate.split("-").map(Number)
     const d = new Date(Date.UTC(y, m - 1, day))
@@ -920,7 +920,7 @@ export default class extends Controller {
       return
     }
     const noun = n === 1 ? "visit" : "visits"
-    const message = `Delete ${n} ${noun}? Your location points stay — only the visit grouping is removed.`
+    const message = `Delete ${n} ${noun}? Your location points stay - only the visit grouping is removed.`
     if (!window.confirm(message)) {
       event.preventDefault()
       return

@@ -47,7 +47,7 @@ RSpec.describe 'Shared achievements' do
       expect(response.body).to include('property="og:title"')
       expect(response.body).to include('Germany Explorer')
       expect(response.body).to include('property="og:description"')
-      expect(response.body).to include('<title>Germany Explorer — Dawarich</title>')
+      expect(response.body).to include('<title>Germany Explorer - Dawarich</title>')
     end
 
     it 'redirects when sharing is disabled' do

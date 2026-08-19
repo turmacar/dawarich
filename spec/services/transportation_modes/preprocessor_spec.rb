@@ -32,7 +32,7 @@ RSpec.describe TransportationModes::Preprocessor do
     expect(out[1][:speed_valid]).to be true
   end
 
-  it 'masks negative stored velocity entirely — the point is an anomaly, not a data gap' do
+  it 'masks negative stored velocity entirely - the point is an anomaly, not a data gap' do
     # Devices report speed = -1 when the fix is unreliable (iOS CLLocation /
     # Traccar Client JSON); deriving a speed from a suspect fix would launder
     # the anomaly, so the sample is invalidated outright.

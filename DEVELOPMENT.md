@@ -29,7 +29,7 @@ You can connect with a web browser to http://127.0.0.1:3000/ and login with the 
 
 ### Prerequisites
 
-- **Ruby** — version specified in `.ruby-version` (currently 3.4.9). Use `rbenv`, `asdf`, or `mise`.
+- **Ruby** - version specified in `.ruby-version` (currently 3.4.9). Use `rbenv`, `asdf`, or `mise`.
 - **PostgreSQL ≥ 14** with the **PostGIS** extension, listening on `localhost:5432`.
 - **Redis**, listening on `localhost:6379`.
 
@@ -40,7 +40,7 @@ cp .env.example .env
 # Edit .env and fill in the required values (see comments in .env.example).
 ```
 
-`config/database.yml` reads discrete `DATABASE_HOST`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME`, and `DATABASE_PORT` variables — **not** a single `DATABASE_URL`.
+`config/database.yml` reads discrete `DATABASE_HOST`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME`, and `DATABASE_PORT` variables - **not** a single `DATABASE_URL`.
 
 ### First run
 
@@ -64,4 +64,4 @@ RAILS_ENV=test bundle exec rspec
 
 Dotenv automatically loads `.env.test` so no extra setup is needed.
 
-> ⚠️ **Never run `rails db:test:prepare` or `rails db:schema:load` against an existing local database that has the `tiger_geocoder` extension** (common on long-lived local Postgres installs). The schema load fails midway and leaves `dawarich_test` empty. If your test DB breaks, rebuild it by cloning a known-good database with `pg_dump`/`pg_restore` — fresh databases (new containers, CI) load `db/schema.rb` without issue.
+> ⚠️ **Never run `rails db:test:prepare` or `rails db:schema:load` against an existing local database that has the `tiger_geocoder` extension** (common on long-lived local Postgres installs). The schema load fails midway and leaves `dawarich_test` empty. If your test DB breaks, rebuild it by cloning a known-good database with `pg_dump`/`pg_restore` - fresh databases (new containers, CI) load `db/schema.rb` without issue.

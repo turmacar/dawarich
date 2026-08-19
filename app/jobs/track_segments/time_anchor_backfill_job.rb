@@ -18,11 +18,11 @@ module TrackSegments
       anchor_rows(ids)
 
       # Rows whose index range matched no points, or matched an incomplete
-      # slice (points deleted since the indexes were computed — anchoring a
+      # slice (points deleted since the indexes were computed - anchoring a
       # truncated slice would place the segment at the wrong times), can
       # never anchor. Auto-classified leftovers are deleted (reclassification
       # regenerates them); manual corrections are user data and stay behind,
-      # index-anchored — the id cursor advances past them, so no reselection.
+      # index-anchored - the id cursor advances past them, so no reselection.
       TrackSegment.where(id: ids, start_at: nil, corrected_at: nil).delete_all
 
       self.class.perform_later(ids.last)
@@ -55,7 +55,7 @@ module TrackSegments
     # Collisions the batch dedup can't resolve (e.g. an unanchored row whose
     # computed start_at matches a segment anchored in an earlier batch) must
     # not halt the backfill for everything behind the cursor: anchor row by
-    # row and leave the offenders unanchored — auto rows are duplicate
+    # row and leave the offenders unanchored - auto rows are duplicate
     # representations and get deleted by the caller; corrected rows stay.
     def anchor_rows_individually(ids)
       ids.each do |id|

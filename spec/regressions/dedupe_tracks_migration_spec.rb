@@ -78,7 +78,7 @@ RSpec.describe DedupeTracksForUniqueIndex do
     expect(Track.where(id: other_track.id)).to exist
   end
 
-  it 'is idempotent — re-running after a successful run is a no-op' do
+  it 'is idempotent - re-running after a successful run is a no-op' do
     make_track(distance: 1000)
     make_track(distance: 100)
 

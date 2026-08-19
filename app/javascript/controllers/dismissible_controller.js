@@ -15,7 +15,7 @@ export default class extends Controller {
       try {
         localStorage.setItem(this.storageKey, "1")
       } catch (_e) {
-        // localStorage unavailable (private mode) — dismissal just won't persist
+        // localStorage unavailable (private mode) - dismissal just won't persist
       }
     }
     this.element.remove()

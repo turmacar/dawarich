@@ -62,7 +62,7 @@ class Api::V1::SettingsController < ApiController
 
   # Map customization is preview-only on the Lite plan: the panel lets Lite
   # users play with these live, but nothing persists (self-hosted and Pro
-  # users are unaffected — plan_restricted? is false for them).
+  # users are unaffected - plan_restricted? is false for them).
   MAP_CUSTOMIZATION_KEYS = %i[maps_maplibre_custom_theme maps_maplibre_tiles_url
                               route_color track_color].freeze
   TILE_URL_PLACEHOLDERS = %w[{z} {x} {y}].freeze

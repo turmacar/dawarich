@@ -23,7 +23,7 @@ RSpec.describe 'Point coordinates match between the map and the points list', ty
     end
   end
 
-  # The map requests points with slim=true, which this query serves directly —
+  # The map requests points with slim=true, which this query serves directly -
   # not through a serializer. Its rows become the feature properties.
   describe 'the slim points payload the map consumes' do
     subject(:row) { Points::SlimCollectionQuery.new(user.points.where(id: point.id)).call.first }

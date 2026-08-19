@@ -41,7 +41,7 @@ module Achievements
     end
 
     def factory
-      @factory ||= RGeo::Geos.factory(srid: 4326)
+      @factory ||= RGeo::Geographic.spherical_factory(srid: 4326)
     end
 
     def multi_polygon(geom)

@@ -23,8 +23,8 @@ RSpec.describe Points::AnomalyFilter do
     # A reported accuracy radius is a confidence estimate, not evidence that the
     # position is wrong. Google Timeline routinely reports 1-4km while the point
     # still sits on the road, and deleting those points replaces real route
-    # geometry with a straight line across the gap. Only absurd radii — larger
-    # than any plausible positioning error — are treated as anomalies.
+    # geometry with a straight line across the gap. Only absurd radii - larger
+    # than any plausible positioning error - are treated as anomalies.
     context 'Pass 1: absurd accuracy filter' do
       # Use nearby coordinates so Pass 2 speed filter does not interfere
       let(:base_lat) { 52.52 }
@@ -195,7 +195,7 @@ RSpec.describe Points::AnomalyFilter do
       # The spike is declared first so it takes the LOWER id of the tied pair:
       # under (timestamp, id) it precedes the good point, the opposite tie
       # order from the cross-device context above. Both orders must resolve
-      # the same way — only the spike is convicted.
+      # the same way - only the spike is convicted.
       let!(:spike) do
         create(:point, user: user, tracker_id: 'phone', accuracy: 10,
                        timestamp: base_time + 120,
@@ -318,8 +318,8 @@ RSpec.describe Points::AnomalyFilter do
     end
 
     # The real shape of a stale cached position: it jumps hundreds of km away
-    # and comes straight back. Only the arrival is impossibly fast — the return
-    # leg looks merely plane-like — so a test requiring both sides to be extreme
+    # and comes straight back. Only the arrival is impossibly fast - the return
+    # leg looks merely plane-like - so a test requiring both sides to be extreme
     # lets it through, and the round trip lands in the track as a phantom flight.
     context 'Pass 2: an out-and-back excursion with only one impossible leg' do
       let(:base_time) { 40.minutes.ago.to_i }
@@ -362,7 +362,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # Google splices a stale fix from another device into a phone's timelinePath.
     # Each leg on its own looks like air travel, so nothing exceeds the raw speed
-    # floor — but the round trip demands hundreds of km of travel that never
+    # floor - but the round trip demands hundreds of km of travel that never
     # happened, which is what the detour test is for.
     context 'Pass 2: a detour no ground travel could cover' do
       let(:base_time) { 40.minutes.ago.to_i }
@@ -399,7 +399,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # A stale fix can land in the middle of a stay somewhere else, hours from any
     # other reading. Over a long enough gap the round trip is physically possible,
-    # so no speed test can condemn it — but spending zero time at the far end and
+    # so no speed test can condemn it - but spending zero time at the far end and
     # returning to the same stay is not travel.
     context 'Pass 2: a fix that contradicts a stay' do
       let(:evening) { Time.zone.parse('2022-12-03 20:16').to_i }
@@ -642,7 +642,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # iOS visit monitoring (Overland `action: visit`) reports a stay after it
     # ended: the payload carries the visit centroid plus arrival and departure
-    # dates, but the point is stamped with its delivery time — minutes after
+    # dates, but the point is stamped with its delivery time - minutes after
     # departure, while the device is already moving away. The coordinate is
     # right, its place in the timeline is not, so the track leaps to the
     # centroid and back. No accuracy or speed gate can catch that.
@@ -745,7 +745,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # After a tracking gap the first fix often comes from cell towers with
     # every CoreLocation sentinel set: speed -1, vertical accuracy -1 and a
-    # kilometre-scale radius. It lands wherever the tower is — far below the
+    # kilometre-scale radius. It lands wherever the tower is - far below the
     # absurd-accuracy gate, yet nowhere near the route.
     context 'Pass 5: cold-start sentinel fixes' do
       let(:base_time) { 1.hour.ago.to_i }
@@ -870,7 +870,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # A second device on reduced-accuracy permission is coarse all the way
     # through even when the account's other device tracks precisely. Each
-    # device is its own stream — the same rule the speed pass applies.
+    # device is its own stream - the same rule the speed pass applies.
     context 'Pass 5: a coarse-only device next to a precise one' do
       let(:base_time) { 1.hour.ago.to_i }
 
@@ -1132,7 +1132,7 @@ RSpec.describe Points::AnomalyFilter do
     end
 
     # At ingest each batch is filtered alone, and a wake-up tower fix often
-    # arrives in a batch of one — its precise context only exists a few
+    # arrives in a batch of one - its precise context only exists a few
     # minutes later, in the next batch, whose window starts after it.
     context 'Pass 5: a cold start that arrived in an earlier batch' do
       let(:base_time) { 1.hour.ago.to_i }

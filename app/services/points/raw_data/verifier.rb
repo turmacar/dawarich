@@ -60,7 +60,7 @@ module Points
           context = failure_context(archive, check_name)
 
           # A previously verified archive failing a re-check may be corrupted in
-          # storage — unset verified_at so clearing is blocked until investigated.
+          # storage - unset verified_at so clearing is blocked until investigated.
           # Transient download errors are not integrity failures and keep the stamp.
           archive.update!(verified_at: nil) if archive.verified_at.present? && check_name != 'download_failed'
           @stats[:failed] += 1
@@ -110,7 +110,7 @@ error: I18n.t('services.points.raw_data.verifier.file_not_attached') }
         begin
           raw_content = archive.file.blob.download
         rescue StandardError => e
-          # Only I/O errors get the download_failed label — it exempts the
+          # Only I/O errors get the download_failed label - it exempts the
           # archive from the verified_at unset, so decrypt/integrity errors
           # must never be classified here.
           return { success: false,

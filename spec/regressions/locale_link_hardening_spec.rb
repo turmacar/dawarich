@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-# `locale_path` builds the only remaining language link — the one in the
-# suggestion banner — out of the current request, so it has to survive a
+# `locale_path` builds the only remaining language link - the one in the
+# suggestion banner - out of the current request, so it has to survive a
 # hostile query string.
 RSpec.describe 'Locale link hardening', type: :request do
   # A suggestion only appears when the browser asks for a language the reader

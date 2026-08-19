@@ -68,7 +68,7 @@ class Jobs::Create
   # Cloud users share the operator's geocoding budget, so a click that
   # force-reruns reverse geocoding on a paid provider could fan out to
   # millions of paid lookups. Self-hosted users own their provider key and
-  # bill — they keep the override.
+  # bill - they keep the override.
   def guard_paid_provider_force_rerun!
     return unless paid_provider?
     return if DawarichSettings.self_hosted?

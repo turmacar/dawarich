@@ -69,7 +69,7 @@ class DataMigrations::BackfillPointCountryIdJob < ApplicationJob
   end
 
   # country_name wins when it is set and the legacy country column is the
-  # fallback, which is exactly COALESCE — one pass instead of two, so a row is
+  # fallback, which is exactly COALESCE - one pass instead of two, so a row is
   # never rewritten twice. A name that matches no country stays NULL rather
   # than falling through to the legacy value, matching how the columns were
   # written: country_name superseded country.

@@ -20,7 +20,7 @@ Code scanning** tab, grouped by category.
 | `trivy.yml` | `config` | Trivy (config) | Dockerfile / IaC misconfigurations | Report-only |
 
 **Report-only** jobs always pass; their findings still upload to the Security tab.
-This is intentional for the first pass — gather signal before gating merges.
+This is intentional for the first pass - gather signal before gating merges.
 To gate on them later, remove the `continue-on-error: true` step (Brakeman /
 Semgrep / Trivy config) or set the Trivy `image` scan `--exit-code 1`.
 
@@ -36,7 +36,7 @@ Dependency and base-image freshness is handled by Dependabot
 ## Full git-history secret scan (run locally)
 
 The CI `gitleaks` job scans only the PR/push **diff**. Because this repository is
-public, a secret committed years ago remains exposed even if later removed — so
+public, a secret committed years ago remains exposed even if later removed - so
 scan the **entire history** locally with:
 
 ```bash

@@ -9,8 +9,8 @@
         <% current_user.user_devices.order(last_seen_at: :desc).each do |device| %>
           <tr id="<%= dom_id(device) %>">
             <td><%= device.platform %></td>
-            <td><%= device.device_name.presence || '—' %></td>
-            <td><%= device.app_version.presence || '—' %></td>
+            <td><%= device.device_name.presence || '-' %></td>
+            <td><%= device.app_version.presence || '-' %></td>
             <td>
               <% if device.last_seen_at %>
                 <%= time_ago_in_words(device.last_seen_at) %> ago

@@ -3,7 +3,7 @@ import { BaseLayer } from "./base_layer"
 import { heatmapPaint } from "./heatmap_layer"
 
 // FNV-1a over the api key: a non-secret cache partitioner keying URL-based
-// caches per user — auth itself travels only in the Authorization header.
+// caches per user - auth itself travels only in the Authorization header.
 function cachePartitioner(value) {
   let hash = 0x811c9dc5
   for (let i = 0; i < value.length; i++) {
@@ -34,7 +34,7 @@ export class PointsMvtLayer extends BaseLayer {
 
   // A failed tile fetch (timeout, throttle, expired session) reaches the page
   // only as a map `error` event. Unwatched, the layer just renders nothing and
-  // the classic layer is hidden — an empty map with no explanation.
+  // the classic layer is hidden - an empty map with no explanation.
   add(data, beforeId = null) {
     super.add(data, beforeId)
     this._tileErrorReported = false
@@ -146,7 +146,7 @@ export class PointsMvtLayer extends BaseLayer {
         paint: {
           ...heatmapPaint(),
           // A linear weight over cell counts clamps at count 5 and flattens
-          // the map — scale logarithmically: 0.2 + 0.8·ln(count)/ln(5000)
+          // the map - scale logarithmically: 0.2 + 0.8·ln(count)/ln(5000)
           // (a single point = the classic 0.2, ~5000 points saturate at 1).
           "heatmap-weight": [
             "min",

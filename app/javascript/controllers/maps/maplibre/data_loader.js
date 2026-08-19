@@ -150,7 +150,7 @@ export class DataLoader {
 
     // Register every source that will be fetched so the badge stays visible
     // until each one finishes. Tracks and photos load in parallel after the
-    // core data resolves, but the badge must still wait for them — otherwise
+    // core data resolves, but the badge must still wait for them - otherwise
     // the badge disappears while track lines are still painting on the map.
     if (counter) {
       if (needsPoints) counter.expect("points")
@@ -360,7 +360,7 @@ export class DataLoader {
     // Start background loading of heavy data (tracks, photos). We collect
     // their promises so the caller can await "everything is truly done"
     // (`data.backgroundReady`) before deciding whether to dismiss the
-    // loading badge — otherwise the badge can disappear while tracks are
+    // loading badge - otherwise the badge can disappear while tracks are
     // still rendering on the map.
     const backgroundPromises = []
 
@@ -390,7 +390,7 @@ export class DataLoader {
         })
         .catch((error) => {
           console.warn("[Tracks] Background fetch failed:", error.message)
-          // Always close the counter — otherwise a transient failure leaves
+          // Always close the counter - otherwise a transient failure leaves
           // the badge spinning forever.
           if (counter) counter.complete("tracks")
         })

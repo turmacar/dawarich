@@ -2,7 +2,7 @@
 
 module Points::NullIsland
   # Exact (0, 0) is the classic sentinel, but Google Timeline and some trackers
-  # emit coordinates a fraction of a degree off zero instead — the same broken
+  # emit coordinates a fraction of a degree off zero instead - the same broken
   # reading, and an equality check silently lets those through. The
   # neighbourhood is open ocean roughly 570km off West Africa, so nothing
   # legitimate lands inside it.

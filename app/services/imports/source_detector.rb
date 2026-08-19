@@ -265,7 +265,7 @@ class Imports::SourceDetector
 
     Oj.load(content, mode: :compat)
   rescue *PARSE_ERRORS
-    # Partial read may produce incomplete JSON — try to detect from truncated
+    # Partial read may produce incomplete JSON - try to detect from truncated
     # content by closing any open structures.
     attempt_partial_json_parse(content)
   end

@@ -4,7 +4,7 @@ module RuboCop
   module Cop
     module Dawarich
       class PointsLatLonAccess < Base
-        MSG_QUERY = 'Avoid querying `:latitude`/`:longitude` on the `points` table — those columns ' \
+        MSG_QUERY = 'Avoid querying `:latitude`/`:longitude` on the `points` table - those columns ' \
                     'are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use ' \
                     '`ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying ' \
                     '`Place` or `Area`.'

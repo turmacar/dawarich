@@ -28,7 +28,7 @@ export default class extends Controller {
     if (this.autoValue && this.showableValue) {
       document.addEventListener("turbo:load", this.handleTurboLoad)
       // The map page is reached via a full (non-Turbo) navigation after
-      // signup, where turbo:load never fires — so open from connect() too.
+      // signup, where turbo:load never fires - so open from connect() too.
       // Defer one task so a Turbo-swapped <dialog> is ready for showModal();
       // checkAndShowModal is idempotent (localStorage guard) and only marks
       // "shown" once the dialog actually opens, so turbo:load can still retry.
@@ -59,7 +59,7 @@ export default class extends Controller {
     if (!hasShownModal && this.hasModalTarget) {
       this.modalTarget.showModal()
       // If showModal didn't take (called too early during a Turbo render),
-      // don't mark it shown — let turbo:load retry instead of silently
+      // don't mark it shown - let turbo:load retry instead of silently
       // burning the one-time guard.
       if (!this.modalTarget.open) return
 

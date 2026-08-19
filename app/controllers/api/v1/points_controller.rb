@@ -3,6 +3,8 @@
 class Api::V1::PointsController < ApiController
   include SafeTimestampParser
 
+  BULK_DESTROY_MAX = 5_000
+
   before_action :authenticate_active_api_user!, only: %i[
     create update destroy bulk_destroy reapply_anomaly_filter create_transition
   ]
@@ -55,7 +57,9 @@ class Api::V1::PointsController < ApiController
     )
     return if performed?
 
-    per_page = (params[:per_page].presence&.to_i || 100).clamp(1, 1000)
+    per_page = params[:per_page].presence&.to_i || 100
+    per_page = 100 unless per_page.positive?
+    per_page = [per_page, 1000].min
     points = points
              .order(timestamp: order)
              .page(params[:page])

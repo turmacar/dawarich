@@ -412,7 +412,7 @@ RSpec.describe '/settings/users', type: :request do
               delete settings_user_url(user)
               expect(user.reload.deleted?).to be true
 
-              # Second deletion attempt — default scope excludes the soft-deleted user,
+              # Second deletion attempt - default scope excludes the soft-deleted user,
               # so User.find raises RecordNotFound, which Rails rescues as 404
               delete settings_user_url(user)
               expect(response).to have_http_status(:not_found)

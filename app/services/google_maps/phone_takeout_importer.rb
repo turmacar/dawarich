@@ -298,7 +298,7 @@ class GoogleMaps::PhoneTakeoutImporter
       lat, lon, alt = coords
       timestamp = DateTime.parse(position['timestamp']).utc.to_i
 
-      # `position` — not the `segment` wrapper — is what carries altitudeMeters,
+      # `position` - not the `segment` wrapper - is what carries altitudeMeters,
       # accuracyMeters and speedMetersPerSecond in this format. Passing the
       # wrapper made point_hash read those keys one level too high and drop them.
       point_hash(lat, lon, timestamp, position, altitude: alt)

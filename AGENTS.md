@@ -7,11 +7,11 @@ Dawarich is a Rails 8 monolith. Controllers, models, jobs, services, policies, a
 The stack pairs Rails 8 with PostgreSQL + PostGIS, Redis-backed Sidekiq, Devise/Pundit, Tailwind + DaisyUI, and MapLibre/Chartkick. Imports, exports, sharing, and trip analytics lean on PostGIS geometries plus workers, so queue anything non-trivial instead of blocking requests.
 
 ## Build, Test, and Development Commands
-- `docker compose -f docker/docker-compose.yml up` — launches the full stack for smoke tests.
-- `bundle exec rails db:prepare` — create/migrate the PostGIS database.
-- `bundle exec bin/dev` and `bundle exec sidekiq` — start the web/Vite/Tailwind stack and workers locally.
-- `make test` — runs Playwright (`npx playwright test e2e --workers=1`) then `bundle exec rspec`.
-- `bundle exec rubocop` / `npx prettier --check app/javascript` — enforce formatting before commits.
+- `docker compose -f docker/docker-compose.yml up` - launches the full stack for smoke tests.
+- `bundle exec rails db:prepare` - create/migrate the PostGIS database.
+- `bundle exec bin/dev` and `bundle exec sidekiq` - start the web/Vite/Tailwind stack and workers locally.
+- `make test` - runs Playwright (`npx playwright test e2e --workers=1`) then `bundle exec rspec`.
+- `bundle exec rubocop` / `npx prettier --check app/javascript` - enforce formatting before commits.
 
 ## Coding Style & Naming Conventions
 Use two-space indentation, snake_case filenames, and CamelCase classes. Keep Stimulus controllers under `app/javascript/controllers/*_controller.ts` so names match DOM `data-controller` hooks. Prefer service objects in `app/services/` for multi-step imports/exports, and let migrations named like `202405061210_add_indexes_to_events` manage schema changes. Follow Tailwind ordering conventions and avoid bespoke CSS unless necessary.

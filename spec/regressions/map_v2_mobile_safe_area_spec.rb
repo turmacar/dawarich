@@ -15,7 +15,7 @@ RSpec.describe 'Map V2 mobile viewport / safe-area handling', type: :request do
 
       expect(viewport).to be_present
       expect(viewport).to include('viewport-fit=cover'),
-                          "viewport meta is '#{viewport}' — without viewport-fit=cover, " \
+                          "viewport meta is '#{viewport}' - without viewport-fit=cover, " \
                           'iOS Safari treats env(safe-area-inset-*) as zero'
     end
 
@@ -24,11 +24,11 @@ RSpec.describe 'Map V2 mobile viewport / safe-area handling', type: :request do
 
       expect(body_class).to be_present
       expect(body_class).to match(/!h-(?:dvh|\[100dvh\])/),
-                            "body class is '#{body_class}' — the dvh height must carry the important " \
+                            "body class is '#{body_class}' - the dvh height must carry the important " \
                             'modifier, otherwise h-screen (100vh) wins by source order and the body ' \
                             'overflows mobile browser chrome, hiding bottom navbar items'
       expect(body_class).to include('h-screen'),
-                            "body class is '#{body_class}' — keep h-screen as the fallback for browsers " \
+                            "body class is '#{body_class}' - keep h-screen as the fallback for browsers " \
                             'without dvh support (Safari <15.4, Chrome <108)'
     end
 

@@ -4,7 +4,7 @@
 # Manual CLI benchmark: console output and terse format strings are the point.
 
 # Vector-tile benchmark against a Cloud-shaped account (default 1M points,
-# multi-year, dense home city + trips). NOT run by CI — execute manually:
+# multi-year, dense home city + trips). NOT run by CI - execute manually:
 #
 #   DATABASE_NAME=dawarich_mvt_perf RAILS_ENV=test bundle exec rails runner \
 #     "require Rails.root.join('lib/perf/vector_tile_benchmark'); Perf::VectorTileBenchmark.new.run"

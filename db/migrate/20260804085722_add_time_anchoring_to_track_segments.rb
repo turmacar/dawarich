@@ -22,7 +22,7 @@ class AddTimeAnchoringToTrackSegments < ActiveRecord::Migration[8.0]
     end
 
     # A failed CREATE INDEX CONCURRENTLY leaves an INVALID index behind that
-    # if_not_exists would silently keep — and an invalid index cannot serve
+    # if_not_exists would silently keep - and an invalid index cannot serve
     # as the ON CONFLICT arbiter for BulkInserter. Drop it so a rerun
     # rebuilds it cleanly.
     reversible do |dir|

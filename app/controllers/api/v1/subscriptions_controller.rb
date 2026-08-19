@@ -64,7 +64,7 @@ class Api::V1::SubscriptionsController < ApiController
     rescue StandardError
       # Transaction rolled back due to an unexpected error (e.g. validation
       # failure on user.update!). The dedup key written by claim_event! is
-      # NOT rolled back automatically — release it so Manager's 7-day retry
+      # NOT rolled back automatically - release it so Manager's 7-day retry
       # window can recover instead of silently dropping replays as "Stale".
       Rails.cache.delete("manager_callback:processed:#{decoded[:event_id]}") unless applied
       raise
@@ -110,7 +110,7 @@ class Api::V1::SubscriptionsController < ApiController
         Rails.logger.warn("[Subscriptions#callback] ignoring unknown plan: #{decoded[:plan].inspect}")
         ExceptionReporter.call(
           ArgumentError.new("Unknown plan in subscription callback: #{decoded[:plan].inspect}"),
-          '[Subscriptions#callback] unknown plan dropped — Manager may be ahead of Dawarich'
+          '[Subscriptions#callback] unknown plan dropped - Manager may be ahead of Dawarich'
         )
       end
     end

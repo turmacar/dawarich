@@ -26,7 +26,7 @@ RSpec.describe DemoData::Importer do
       )
     end
 
-    it 'is idempotent — second call returns :exists and does not duplicate data' do
+    it 'is idempotent - second call returns :exists and does not duplicate data' do
       described_class.new(user).call
       result = described_class.new(user).call
       expect(result[:status]).to eq(:exists)

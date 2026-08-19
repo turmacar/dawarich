@@ -9,7 +9,7 @@ class DataMigrations::AddPointDimensionColumnsJob < ApplicationJob
   queue_as :data_migrations
 
   # Long enough to outlast a batched write holding RowExclusive on points, and
-  # each attempt does stall points behind an ACCESS EXCLUSIVE request — at one
+  # each attempt does stall points behind an ACCESS EXCLUSIVE request - at one
   # try per five minutes that is a fraction of a percent of the time.
   LOCK_TIMEOUT = '5s'
   MAX_ATTEMPTS = 288
@@ -43,7 +43,7 @@ class DataMigrations::AddPointDimensionColumnsJob < ApplicationJob
   end
 
   # Reached only from 20260816150200, which enqueues this job instead of the
-  # backfill when the columns are missing — so this is the sole starter of the
+  # backfill when the columns are missing - so this is the sole starter of the
   # chain on that path and cannot race a second one. The gate is the migration's
   # own, applied here too so a deferred upgrade behaves like a direct one.
   def perform

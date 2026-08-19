@@ -559,8 +559,8 @@ RSpec.describe 'Users::Registrations', type: :request do
       allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
     end
 
-    context 'cloud (non-self-hosted) — email-confirmation flow' do
-      it 'does NOT delete immediately — sends a confirmation email instead' do
+    context 'cloud (non-self-hosted) - email-confirmation flow' do
+      it 'does NOT delete immediately - sends a confirmation email instead' do
         expect do
           delete user_registration_path
         end.not_to(change(User, :count))
@@ -617,7 +617,7 @@ RSpec.describe 'Users::Registrations', type: :request do
       end
     end
 
-    context 'self-hosted — password-confirmation flow' do
+    context 'self-hosted - password-confirmation flow' do
       before { allow(DawarichSettings).to receive(:self_hosted?).and_return(true) }
 
       it 'soft-deletes immediately when password is correct (no email)' do
@@ -799,7 +799,7 @@ RSpec.describe 'Users::Registrations', type: :request do
         create(:family_membership, user: user, family: user_family, role: :owner)
       end
 
-      it 'allows the deletion-request flow (cloud — email confirmation will perform the delete)' do
+      it 'allows the deletion-request flow (cloud - email confirmation will perform the delete)' do
         expect do
           delete user_registration_path
         end.to have_enqueued_job(Users::MailerSendingJob).with(

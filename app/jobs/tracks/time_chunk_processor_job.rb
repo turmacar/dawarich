@@ -20,7 +20,7 @@ class Tracks::TimeChunkProcessorJob < ApplicationJob
     # to run concurrently (that's the whole point of ParallelGenerator's
     # fan-out). Race-safety is provided by the (user_id, start_at, end_at)
     # unique index plus the rescue paths in TrackBuilder, Merger, and
-    # BoundaryDetector — racing inserts collapse onto the winning track.
+    # BoundaryDetector - racing inserts collapse onto the winning track.
     tracks_created = process_chunk
     update_session_progress(tracks_created)
   rescue StandardError => e

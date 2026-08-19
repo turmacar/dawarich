@@ -17,8 +17,8 @@ module Visits
 
     PLACE_MATCH_SCORES = { area: 1.0, place: 0.85, poi: 0.6, address: 0.35 }.freeze
 
-    # An uncorroborated stay isn't suspicious — segments may simply not cover
-    # it — so absence scores neutral, not zero.
+    # An uncorroborated stay isn't suspicious - segments may simply not cover
+    # it - so absence scores neutral, not zero.
     CORROBORATION_NEUTRAL = 0.5
 
     def initialize(duration_seconds:, point_count:, accuracies:, radius_meters:,
@@ -72,7 +72,7 @@ module Visits
     end
 
     # @radius_meters is the max point-to-center distance (from ClusterHelper#calculate_visit_radius),
-    # not RMS / radius-of-gyration — so tightness is slightly harsher than a gyration-based measure.
+    # not RMS / radius-of-gyration - so tightness is slightly harsher than a gyration-based measure.
     def tightness_score
       return 0.0 if @stay_radius_meters <= 0
 

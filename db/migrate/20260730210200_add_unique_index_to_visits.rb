@@ -12,8 +12,8 @@ class AddUniqueIndexToVisits < ActiveRecord::Migration[8.0]
 
     build_index
   rescue ActiveRecord::RecordNotUnique
-    # A visit written between the dedupe migration and this build — by a worker
-    # still running the previous release — fails the build. The dedupe is
+    # A visit written between the dedupe migration and this build - by a worker
+    # still running the previous release - fails the build. The dedupe is
     # already recorded in schema_migrations and will never run again, so
     # without this every later boot would fail on the same rows forever.
     drop_invalid_index(:visits, INDEX_NAME)
@@ -41,7 +41,7 @@ class AddUniqueIndexToVisits < ActiveRecord::Migration[8.0]
   #
   # The losers are materialised ONCE. Re-deriving them per statement re-reads
   # live table state, so a duplicate written between the point reassignment and
-  # the deletes — the very race this rescue exists for — would be deleted
+  # the deletes - the very race this rescue exists for - would be deleted
   # without its points ever being moved, orphaning them or failing the FK.
   def collapse_stragglers
     execute("DROP TABLE IF EXISTS #{STRAGGLER_TABLE}")

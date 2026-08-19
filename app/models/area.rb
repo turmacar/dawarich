@@ -17,7 +17,7 @@ class Area < ApplicationRecord
   alias_attribute :lon, :longitude
   alias_attribute :lat, :latitude
 
-  # A new or reshaped area labels its historical visits right away — the
+  # A new or reshaped area labels its historical visits right away - the
   # detection pipeline only attributes areas at detection time. One combined
   # registration: same-method after_create_commit/after_update_commit pairs
   # silently override each other.

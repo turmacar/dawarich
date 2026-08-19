@@ -57,7 +57,7 @@ module SoftDeletable
   end
 
   # Overrides ActiveRecord#destroy to perform soft-delete instead of hard-delete.
-  # Intentionally does NOT call super — this prevents dependent: :destroy callbacks
+  # Intentionally does NOT call super - this prevents dependent: :destroy callbacks
   # from firing. Associated records are cleaned up by Users::Destroy service during
   # the background hard-deletion phase (Users::DestroyJob).
   def destroy

@@ -11,7 +11,7 @@ class Tracks::BoundaryDetector
 
   # Distance ceiling for the same-tracker_id connection path. Two tracks from
   # one physical device that overlap in time should normally be merged, but a
-  # gap larger than this implies a GPS jump or genuine teleport (plane hop) —
+  # gap larger than this implies a GPS jump or genuine teleport (plane hop) -
   # don't auto-stitch them into one continuous track.
   SAME_TRACKER_MAX_GAP_METERS = 5_000
 
@@ -275,7 +275,7 @@ class Tracks::BoundaryDetector
 
       # If the merged span collided with the unique index and reuse_existing_track
       # returned a pre-existing track (not the freshly inserted one), absorbing
-      # older+newer into it would corrupt that track's metadata — its path,
+      # older+newer into it would corrupt that track's metadata - its path,
       # distance, segments were computed from a different point set. Bail and
       # preserve the boundary tracks for the next pass.
       unless merged_track.previously_new_record? || boundary_ids.include?(merged_track.id)

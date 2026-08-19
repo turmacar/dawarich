@@ -2,8 +2,8 @@ import { getVisitMarkerColor } from "../utils/marker_theme"
 import { BaseLayer } from "./base_layer"
 
 /**
- * Visits layer. Every visit draws in one colour — the same colour the
- * timeline's rail dot uses — because showing a visit is asserting it, and
+ * Visits layer. Every visit draws in one colour - the same colour the
+ * timeline's rail dot uses - because showing a visit is asserting it, and
  * confirmed / suggested / declined is not a visual state. Status still
  * drives filtering (setStatusFilter), just not appearance.
  *

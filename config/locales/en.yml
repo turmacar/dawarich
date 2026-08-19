@@ -101,7 +101,7 @@ en:
         your_trial_period_ends_at: Your trial period ends at
         plan_usage: Plan usage
         subscription: Subscription
-        your_signup_isn_t_complete_yet_finish_setting_up_your: Your signup isn't complete yet — finish setting up your subscription to start your trial.
+        your_signup_isn_t_complete_yet_finish_setting_up_your: Your signup isn't complete yet - finish setting up your subscription to start your trial.
         change_plan_update_your_payment_method_or_cancel_your_subscription: Change plan, update your payment method, or cancel your subscription on Manager.
         manage_your_subscription_change_plan_or_update_billing_on_manager: Manage your subscription, change plan, or update billing on Manager.
         api_access: API access
@@ -114,7 +114,7 @@ en:
         cancel_my_account: Cancel my account
         delete_your_account: Delete your account
         this_is_permanent_and_removes_all_your_data_this_cannot: This is permanent and removes all your data. This cannot be undone.
-        this_is_permanent_and_removes_all_your_data_this_cannot_2: This is permanent and removes all your data. This cannot be undone. We'll email you a link to confirm — your account is deleted only after you click it.
+        this_is_permanent_and_removes_all_your_data_this_cannot_2: This is permanent and removes all your data. This cannot be undone. We'll email you a link to confirm - your account is deleted only after you click it.
         type_your_email: Type your email (
         to_confirm: ") to confirm"
         enter_your_current_password_to_confirm: Enter your current password to confirm
@@ -214,7 +214,7 @@ en:
       last_7_days: Last 7 days
       last_30_days: Last 30 days
       since_sharing_started: Since sharing started
-      a_separate_setting_from_live_location_when_on_family_can: A separate setting from live location. When on, family can view your recent track — not just your current position — on the new map (v2). Only points recorded after you enable this are ever shared.
+      a_separate_setting_from_live_location_when_on_family_can: A separate setting from live location. When on, family can view your recent track - not just your current position - on the new map (v2). Only points recorded after you enable this are ever shared.
       expires_in_time: Expires in %{time}
     edit:
       delete_family: Delete Family
@@ -238,8 +238,8 @@ en:
       title: Edit Family
     lapsed:
       family_plan_no_longer_active: Family plan no longer active
-      your_family_plan_is_no_longer_active_so_family_features: Your Family plan is no longer active, so family features are paused for everyone. Your family and its members are kept — renewing restores full access.
-      your_family_s_plan_is_no_longer_active_so_family: Your family's plan is no longer active, so family features are paused. They come back when the family owner renews — you don't need a subscription of your own.
+      your_family_plan_is_no_longer_active_so_family_features: Your Family plan is no longer active, so family features are paused for everyone. Your family and its members are kept - renewing restores full access.
+      your_family_s_plan_is_no_longer_active_so_family: Your family's plan is no longer active, so family features are paused. They come back when the family owner renews - you don't need a subscription of your own.
       members: Members
       remove: Remove
       your_location_sharing: Your location sharing
@@ -486,11 +486,11 @@ en:
       extract_additional_data_from_this_import: Extract additional data from this import
       dawarich_originally_imported_your_file_as_raw_gps_points_the: 'Dawarich originally imported your file as raw GPS points. The file also contains:'
       visits: Visits
-      places_where_the_source_app_recorded_you_spending_time_with: "— places where the source app recorded you spending time, with start and end times."
+      places_where_the_source_app_recorded_you_spending_time_with: "- places where the source app recorded you spending time, with start and end times."
       tracks: Tracks
-      journeys_identified_between_those_visits_with_their_classified_transport: "— journeys identified between those visits, with their classified transportation mode (driving, walking, cycling, transit, …)."
+      journeys_identified_between_those_visits_with_their_classified_transport: "- journeys identified between those visits, with their classified transportation mode (driving, walking, cycling, transit, …)."
       places: Places
-      the_named_places_home_work_frequent_restaurants_the_source_app: "— the named places (home, work, frequent restaurants) the source app associated with your visits."
+      the_named_places_home_work_frequent_restaurants_the_source_app: "- the named places (home, work, frequent restaurants) the source app associated with your visits."
       extract: Extract
       extract_to_add_html: Click <strong>Extract</strong> to add this data to your Dawarich account. Existing points are not modified. Visits and places already detected from your points by Dawarich are kept side-by-side with the imported ones.
       trust_the_source_app_s_classification: Trust the source app's classification
@@ -569,7 +569,7 @@ en:
     new:
       back_to_imports: Back to imports
       google_timeline_file_too_large: Google Timeline file too large?
-      your_data_never_leaves_your_browser: "— your data never leaves your browser."
+      your_data_never_leaves_your_browser: "- your data never leaves your browser."
       new_import: New import
       split_it_with_our_free_private_tool: Split it with our free private tool
       new_import_2: New Import
@@ -787,17 +787,17 @@ en:
       try_dawarich_cloud: Try Dawarich Cloud
       shared_with_dawarich: Shared with Dawarich
       map_your_own_journeys: Map your own journeys.
-      dawarich_turns_your_own_location_history_into_maps_worth_sharing: Dawarich turns your own location history into maps worth sharing — open-source, self-hostable, and yours to keep.
+      dawarich_turns_your_own_location_history_into_maps_worth_sharing: Dawarich turns your own location history into maps worth sharing - open-source, self-hostable, and yours to keep.
       see_how_it_works: See how it works
       open_source: Open-source
       self_hostable: Self-hostable
-      managed_cloud_no_setup: Managed Cloud — no setup
+      managed_cloud_no_setup: Managed Cloud - no setup
       shared_on_dawarich: Shared on Dawarich
       dawarich_logo: Dawarich logo
   map:
     onboarding_modal:
       welcome_to_dawarich: Welcome to Dawarich!
-      your_map_starts_with_your_next_step_literally: Your map starts with your next step — literally.
+      your_map_starts_with_your_next_step_literally: Your map starts with your next step - literally.
       start_tracking_now: Start tracking now
       minutes: 2 minutes
       get_the_app_scan_a_qr_code_and_watch_your: Get the app, scan a QR code, and watch your first points appear on the map today.
@@ -829,7 +829,7 @@ en:
       or: OR
       grab_your_api_key_from: Grab your API key from
       and_follow_the: and follow the
-      have_old_location_history_like_a_google_takeout_tracking_works: Have old location history, like a Google Takeout? Tracking works right away — you can
+      have_old_location_history_like_a_google_takeout_tracking_works: Have old location history, like a Google Takeout? Tracking works right away - you can
       import_your_history_anytime: import your history anytime
       got_it_let_s_start: Got it, let's start!
       close: close
@@ -873,12 +873,12 @@ en:
         show_individual_location_points: Show individual location points
         edit_points: Edit points
         allow_dragging_points_to_correct_their_position: Allow dragging points to correct their position.
-        editing_points_is_a_pro_feature_this_stays_on_for: Editing points is a Pro feature — this stays on for the current session only, and moves aren't saved on the Lite plan.
+        editing_points_is_a_pro_feature_this_stays_on_for: Editing points is a Pro feature - this stays on for the current session only, and moves aren't saved on the Lite plan.
         allow_dragging_points_to_correct_their_position_remembered_across_sessio: Allow dragging points to correct their position. Remembered across sessions.
         tiled_rendering: "Tiled rendering"
         beta: "Beta"
         tiled_rendering_description: "Draws points from vector tiles as you pan, so a long date range loads only what is in view."
-        tiled_rendering_caveats: "Dense areas merge into markers with a point count — zoom in to open individual points. Editing is unavailable and the live trail can lag a few minutes."
+        tiled_rendering_caveats: "Dense areas merge into markers with a point count - zoom in to open individual points. Editing is unavailable and the live trail can lag a few minutes."
         routes: Routes
         show_connected_route_lines: Show connected route lines
         color_by_speed: Color by speed
@@ -919,7 +919,7 @@ en:
         show_family_member_locations: Show family member locations
         click_to_center_on_member: Click to center on member
         appearance: Appearance
-        custom_map_colors_layer_colors_and_vector_tiles_are_pro: Custom map colors, layer colors, and vector tiles are Pro features — you can preview them here, but they won't be saved on the Lite plan.
+        custom_map_colors_layer_colors_and_vector_tiles_are_pro: Custom map colors, layer colors, and vector tiles are Pro features - you can preview them here, but they won't be saved on the Lite plan.
         map_style: Map Style
         light: Light
         dark: Dark
@@ -941,8 +941,8 @@ en:
         serve_the_base_map_from_your_own_source_accepts_protomaps: Serve the base map from your own source. Accepts Protomaps-schema vector tiles or raster XYZ tiles (both must include {z}, {x}, and {y}), or a full MapLibre style URL. Leave empty for the built-in tiles.
         base_map_layers: Base Map Layers
         toggle_base_map_elements_changes_apply_immediately: Toggle base map elements. Changes apply immediately.
-        pro_feature_you_can_preview_changes_here_but_they_won: Pro feature — you can preview changes here, but they won't be saved on the Lite plan.
-        the_custom_style_draws_no_labels_or_points_of_interest: The Custom style draws no labels or points of interest — those toggles are disabled while it's active.
+        pro_feature_you_can_preview_changes_here_but_they_won: Pro feature - you can preview changes here, but they won't be saved on the Lite plan.
+        the_custom_style_draws_no_labels_or_points_of_interest: The Custom style draws no labels or points of interest - those toggles are disabled while it's active.
         points_of_interest: Points of Interest
         choose_which_poi_categories_appear_on_the_map: Choose which POI categories appear on the map.
         meters_between_routes: Meters Between Routes
@@ -963,7 +963,7 @@ en:
         fog_of_war_threshold: Fog of War Threshold
         minimum_points_to_clear_fog: Minimum points to clear fog
         gps_noise_filtering: GPS Noise Filtering
-        hide_readings_that_cannot_be_a_real_position_impossible_jumps: Hide readings that cannot be a real position — impossible jumps, broken coordinates. Disable to see every raw point.
+        hide_readings_that_cannot_be_a_real_position_impossible_jumps: Hide readings that cannot be a real position - impossible jumps, broken coordinates. Disable to see every raw point.
         re_evaluate_past_data: Re-evaluate past data
         clears_existing_anomaly_flags_and_re_runs_the_filter_on: Clears existing anomaly flags and re-runs the filter on all your points with the current settings. Tracks, stats, and digests will be rebuilt afterwards. Runs in the background.
         recalculate_tracks_stats: Recalculate tracks & stats
@@ -1289,7 +1289,7 @@ en:
       last_month: Last month
       close_studio: Close studio
       recenter: Recenter
-      drag_to_pan_scroll_to_zoom_the_frame_is_what: Drag to pan, scroll to zoom — the frame is what gets exported.
+      drag_to_pan_scroll_to_zoom_the_frame_is_what: Drag to pan, scroll to zoom - the frame is what gets exported.
       layout: Layout
       theme: Theme
       customize_colors: Customize colors
@@ -1305,7 +1305,7 @@ en:
       track_opacity: Track opacity
       track_width: Track width
       recent_posters: Recent posters
-      server_rendered_posters_from_save_to_gallery_they_stay_here: Server-rendered posters from "Save to gallery" — they stay here across sessions.
+      server_rendered_posters_from_save_to_gallery_they_stay_here: Server-rendered posters from "Save to gallery" - they stay here across sessions.
       export_a_file: Export a file
       format: Format
       png: PNG
@@ -1355,7 +1355,7 @@ en:
     background_jobs:
       index:
         spamming_many_new_jobs_at_once_is_a_bad_idea: Spamming many new jobs at once is a bad idea. Let them work or clear the queue beforehand.
-        gps_noise_detection_changed_in_this_release_so_your_existing: GPS noise detection changed in this release, so your existing points are queued for a one-time re-check. Your tracks, stats and digests are rebuilt from the result, which can take a while on a large history — some points may appear or disappear on the map when it finishes. No points are deleted, and the pass runs on the lowest-priority queue so everything else stays ahead of it.
+        gps_noise_detection_changed_in_this_release_so_your_existing: GPS noise detection changed in this release, so your existing points are queued for a one-time re-check. Your tracks, stats and digests are rebuilt from the result, which can take a while on a large history - some points may appear or disappear on the map when it finishes. No points are deleted, and the pass runs on the lowest-priority queue so everything else stays ahead of it.
         start_reverse_geocoding: Start Reverse Geocoding
         this_job_will_re_run_reverse_geocoding_process_for_all: This job will re-run reverse geocoding process for all the points in your database. Might take a few days or even weeks based on the amount of points you have!
         continue_reverse_geocoding: Continue Reverse Geocoding
@@ -1374,7 +1374,7 @@ en:
       changelog_consent:
         what_s_new_notices: What's New notices
         a_what_s_new_notice_is_shown_when_a_new: A "What's New" notice is shown when a new Dawarich version ships, including security fixes. It loads a small widget from
-        which_like_any_web_request_sees_your_ip_address_browser: ", which — like any web request — sees your IP address, browser, and the page URL, plus your Dawarich version. It never receives your account, email, or location."
+        which_like_any_web_request_sees_your_ip_address_browser: ", which - like any web request - sees your IP address, browser, and the page URL, plus your Dawarich version. It never receives your account, email, or location."
         get_a_what_s_new_notice_when_a_new_dawarich: Get a "What's New" notice when a new Dawarich version ships, including security fixes. The notice loads a small widget from
         turn_off_notices: Turn off notices
         turn_on_notices: Turn on notices
@@ -1649,7 +1649,7 @@ en:
       changelog_prompt:
         stay_up_to_date: Stay up to date?
         get_a_what_s_new_notice_when_a_new_dawarich: Get a "What's New" notice when a new Dawarich version ships, including security fixes. The notice loads a small widget from
-        like_any_web_request_that_host_sees_your_ip_address: ". Like any web request, that host sees your IP address, browser, and the page URL, plus your Dawarich version — never your account, email, or location. You can change this anytime."
+        like_any_web_request_that_host_sees_your_ip_address: ". Like any web request, that host sees your IP address, browser, and the page URL, plus your Dawarich version - never your account, email, or location. You can change this anytime."
         no_thanks: No thanks
         yes_notify_me: Yes, notify me
       help_links:
@@ -1775,15 +1775,15 @@ en:
       not_found:
         this_shared_link_is_no_longer_available: This shared link is no longer available
         the_owner_may_have_revoked_the_link_or_it_may: The owner may have revoked the link or it may have expired.
-        not_found_dawarich: Not found — Dawarich
+        not_found_dawarich: Not found - Dawarich
       phrase_prompt:
         enter_the_magic_phrase: Enter the magic phrase
         this_shared_link_is_protected_ask_the_owner_for_the: This shared link is protected. Ask the owner for the phrase.
         magic_phrase: magic phrase
         unlock: Unlock
-        enter_phrase_dawarich: Enter phrase — Dawarich
+        enter_phrase_dawarich: Enter phrase - Dawarich
       show:
-        name_shared_on_dawarich: "%{name} — Shared on Dawarich"
+        name_shared_on_dawarich: "%{name} - Shared on Dawarich"
         shared_from_dawarich: Shared from Dawarich
     map:
       date_navigation_v2:
@@ -1992,7 +1992,7 @@ en:
         stop_duration: stop · %{duration}
         transfer: transfer
         moving: moving
-        mode_unclear: Mode unclear — detection confidence too low to claim one
+        mode_unclear: Mode unclear - detection confidence too low to claim one
         short_segments:
           one: 1 short segment
           other: "%{count} short segments"
@@ -2008,7 +2008,7 @@ en:
     resume:
       show:
         finish_setting_up_your_account: Finish setting up your account
-        your_account_is_almost_ready_to_start_tracking_your_location: Your account is almost ready. To start tracking your location data, please complete your subscription checkout. You won't be charged during the 7-day free trial — cancel anytime before it ends and you won't be billed.
+        your_account_is_almost_ready_to_start_tracking_your_location: Your account is almost ready. To start tracking your location data, please complete your subscription checkout. You won't be charged during the 7-day free trial - cancel anytime before it ends and you won't be billed.
         resume_checkout: Resume checkout
         or_delete_my_account: Or delete my account
         are_you_sure_this_cannot_be_undone: Are you sure? This cannot be undone.
@@ -2029,7 +2029,7 @@ en:
     recalculate_button:
       recalculating_hellip: Recalculating…
       recalculate: Recalculate
-      recalculation_failed_try_again: Recalculation failed — try again.
+      recalculation_failed_try_again: Recalculation failed - try again.
       recalculate_this_trip_s_path_distance_and_countries_from_your: Recalculate this trip's path, distance, and countries from your latest points?
     trip:
       no_points_found: No points found
@@ -2140,7 +2140,7 @@ en:
         total_distance: Total distance
         track_your_own_adventures_with: Track your own adventures with
         dawarich: Dawarich
-        your_personal_memories_mapper: "— your personal memories mapper."
+        your_personal_memories_mapper: "- your personal memories mapper."
         month: Month
         distance: Distance
         first_time_count:
@@ -2257,15 +2257,15 @@ en:
       once_confirmed_all_your_location_history_tracks_areas_visits_trips: Once confirmed, all your location history, tracks, areas, visits, trips, and family memberships will be permanently removed.
       permanently_delete_my_account: Permanently delete my account
       didn_t_request_this: Didn't request this?
-      ignore_this_email_the_link_expires_in_1_hour_and: Ignore this email — the link expires in 1 hour and your account remains untouched. If you keep getting these emails, change your password immediately.
+      ignore_this_email_the_link_expires_in_1_hour_and: Ignore this email - the link expires in 1 hour and your account remains untouched. If you keep getting these emails, change your password immediately.
       if_you_have_an_active_apple_or_google_subscription_remember: If you have an active Apple or Google subscription, remember to cancel it in your platform settings to avoid further charges.
       link: 'Link:'
       confirm_account_deletion_hi: Confirm account deletion Hi
       we_received_a_request_to_delete_your_dawarich_account_this: ", We received a request to delete your Dawarich account. This is your last chance to stop the deletion. Once confirmed, all your location history, tracks, areas, visits, trips, and family memberships will be permanently removed. Permanently delete my account:"
-      didn_t_request_this_ignore_this_email_the_link_expires: Didn't request this? Ignore this email — the link expires in 1 hour and your account remains untouched. If you keep getting these emails, change your password immediately. If you have an active Apple or Google subscription, remember to cancel it in your platform settings to avoid further charges.
+      didn_t_request_this_ignore_this_email_the_link_expires: Didn't request this? Ignore this email - the link expires in 1 hour and your account remains untouched. If you keep getting these emails, change your password immediately. If you have an active Apple or Google subscription, remember to cancel it in your platform settings to avoid further charges.
       we_received_a_request_to_delete_your_dawarich_account_this_2: We received a request to delete your Dawarich account. This is your last chance to stop the deletion. Once confirmed, all your location history, tracks, areas, visits, trips, and family memberships will be permanently removed.
       permanently_delete_my_account_2: 'Permanently delete my account:'
-      didn_t_request_this_ignore_this_email_the_link_expires_2: Didn't request this? Ignore this email — the link expires in 1 hour and your account remains untouched. If you keep getting these emails, change your password immediately.
+      didn_t_request_this_ignore_this_email_the_link_expires_2: Didn't request this? Ignore this email - the link expires in 1 hour and your account remains untouched. If you keep getting these emails, change your password immediately.
     archival_approaching:
       your_data_history_is_filling_up: Your data history is filling up
       hi: Hi
@@ -2273,22 +2273,22 @@ en:
       heads_up: 'Heads up:'
       your_oldest_location_data_will_be_archived_in_about: Your oldest location data will be archived in about
       weeks: 2 weeks
-      on_the_lite_plan_your_most_recent_12_months_of: On the Lite plan, your most recent 12 months of data remain fully searchable and interactive. Older data is archived — it can always be exported, but it won't appear on your map, in search, stats, or timeline replay.
+      on_the_lite_plan_your_most_recent_12_months_of: On the Lite plan, your most recent 12 months of data remain fully searchable and interactive. Older data is archived - it can always be exported, but it won't appear on your map, in search, stats, or timeline replay.
       upgrade_to_pro_to_keep_your_full_history: 'Upgrade to Pro to keep your full history:'
-      unlimited_searchable_history_every_month_every_year: Unlimited searchable history — every month, every year
+      unlimited_searchable_history_every_month_every_year: Unlimited searchable history - every month, every year
       heatmap_fog_of_war_and_globe_view: Heatmap, Fog of War, and Globe view
       full_write_api_access: Full Write API access
       immich_and_photoprism_integrations: Immich and PhotoPrism integrations
       upgrade_to_pro: Upgrade to Pro
-      your_data_is_always_yours_pro_simply_makes_all_of: Your data is always yours — Pro simply makes all of it searchable and interactive in-app.
+      your_data_is_always_yours_pro_simply_makes_all_of: Your data is always yours - Pro simply makes all of it searchable and interactive in-app.
       questions_drop_me_a_message_at_hi_dawarich_app_or: Questions? Drop me a message at hi@dawarich.app or just reply to this email.
       best_regards: Best regards,
       evgenii_from_dawarich: Evgenii from Dawarich
       your_data_history_is_filling_up_hi: Your data history is filling up Hi
-      this_is_evgenii_from_dawarich_heads_up_your_oldest_location: ", this is Evgenii from Dawarich. Heads up: Your oldest location data will be archived in about 2 weeks. On the Lite plan, your most recent 12 months of data remain fully searchable and interactive. Older data is archived — it can always be exported, but it won't appear on your map, in search, stats, or timeline replay. Upgrade to Pro to keep your full history: - Unlimited searchable history — every month, every year - Heatmap, Fog of War, and Globe view - Full Write API access - Immich and PhotoPrism integrations Upgrade now:"
-      your_data_is_always_yours_pro_simply_makes_all_of_2: Your data is always yours — Pro simply makes all of it searchable and interactive in-app. Questions? Drop me a message at hi@dawarich.app or just reply to this email. Best regards, Evgenii from Dawarich
+      this_is_evgenii_from_dawarich_heads_up_your_oldest_location: ", this is Evgenii from Dawarich. Heads up: Your oldest location data will be archived in about 2 weeks. On the Lite plan, your most recent 12 months of data remain fully searchable and interactive. Older data is archived - it can always be exported, but it won't appear on your map, in search, stats, or timeline replay. Upgrade to Pro to keep your full history: - Unlimited searchable history - every month, every year - Heatmap, Fog of War, and Globe view - Full Write API access - Immich and PhotoPrism integrations Upgrade now:"
+      your_data_is_always_yours_pro_simply_makes_all_of_2: Your data is always yours - Pro simply makes all of it searchable and interactive in-app. Questions? Drop me a message at hi@dawarich.app or just reply to this email. Best regards, Evgenii from Dawarich
       heads_up_your_oldest_location_data_will_be_archived_in: 'Heads up: Your oldest location data will be archived in about 2 weeks.'
-      unlimited_searchable_history_every_month_every_year_2: "- Unlimited searchable history — every month, every year"
+      unlimited_searchable_history_every_month_every_year_2: "- Unlimited searchable history - every month, every year"
       heatmap_fog_of_war_and_globe_view_2: "- Heatmap, Fog of War, and Globe view"
       full_write_api_access_2: "- Full Write API access"
       immich_and_photoprism_integrations_2: "- Immich and PhotoPrism integrations"
@@ -2322,13 +2322,13 @@ en:
     oauth_account_link:
       confirm_account_link: Confirm account link
       hi: Hi
-      account_link_request_html: Someone — hopefully you — is trying to link <strong>%{provider}</strong> sign-in to your Dawarich account. Clicking the button below will allow that sign-in method to access this account going forward.
-      account_link_request_text: Someone — hopefully you — is trying to link %{provider} sign-in to your Dawarich account. Clicking the link below will allow that sign-in method to access this account going forward.
+      account_link_request_html: Someone - hopefully you - is trying to link <strong>%{provider}</strong> sign-in to your Dawarich account. Clicking the button below will allow that sign-in method to access this account going forward.
+      account_link_request_text: Someone - hopefully you - is trying to link %{provider} sign-in to your Dawarich account. Clicking the link below will allow that sign-in method to access this account going forward.
       link: Link
       didn_t_request_this: Didn't request this?
-      ignore_this_email_the_link_expires_in_15_minutes_and: Ignore this email — the link expires in 15 minutes and no change will be made to your account. If you keep getting these emails, change your password.
+      ignore_this_email_the_link_expires_in_15_minutes_and: Ignore this email - the link expires in 15 minutes and no change will be made to your account. If you keep getting these emails, change your password.
       link_2: 'Link:'
-      didn_t_request_this_ignore_this_email_the_link_expires: Didn't request this? Ignore this email — the link expires in 15 minutes and no change will be made to your account. If you keep getting these emails, change your password.
+      didn_t_request_this_ignore_this_email_the_link_expires: Didn't request this? Ignore this email - the link expires in 15 minutes and no change will be made to your account. If you keep getting these emails, change your password.
     otp_account_locked:
       account_temporarily_locked: Account temporarily locked
       hi: Hi
@@ -2487,7 +2487,7 @@ en:
       finish_signup: Finish signup
       resume: Resume
       subscribe: Subscribe
-      pro_preview: Available on Pro — click to preview
+      pro_preview: Available on Pro - click to preview
       pro_only: Available on Pro
       pro_badge: " Pro"
     timeline:
@@ -2642,12 +2642,12 @@ en:
         auth:
           apple:
             apple_has_not_verified_this_email_sign_in_with_password: Apple has not verified this email. Sign in with password and link from settings.
-            this_email_already_has_a_dawarich_account_we_sent_a: This email already has a Dawarich account. We sent a confirmation link to that address — click it to link your Apple ID.
+            this_email_already_has_a_dawarich_account_we_sent_a: This email already has a Dawarich account. We sent a confirmation link to that address - click it to link your Apple ID.
             we_couldn_t_find_your_existing_account_and_apple_didn: We couldn't find your existing account, and Apple didn't share your email with us this time. Apple only shares it once. Please go to appleid.apple.com → Sign in with Apple, find Dawarich, choose "Stop using Sign in with Apple", then try signing in again.
             token_verification_failed: 'Apple token verification failed: %{message}'
           google:
             google_has_not_verified_this_email_sign_in_with_password: Google has not verified this email. Sign in with password and link from settings.
-            this_email_already_has_a_dawarich_account_we_sent_a: This email already has a Dawarich account. We sent a confirmation link to that address — click it to link your Google sign-in.
+            this_email_already_has_a_dawarich_account_we_sent_a: This email already has a Dawarich account. We sent a confirmation link to that address - click it to link your Google sign-in.
             token_verification_failed: 'Google token verification failed: %{message}'
           otp_challenges:
             invalid_challenge: 'Invalid or expired challenge: %{message}'
@@ -2964,12 +2964,12 @@ en:
     tracks:
       recalculations:
         re_classification_already_running: Re-classification already running
-        re_classification_started_your_tracks_will_update_over_the_next: Re-classification started — your tracks will update over the next few minutes
+        re_classification_started_your_tracks_will_update_over_the_next: Re-classification started - your tracks will update over the next few minutes
       segments:
         segment_updated: Segment updated
         mode_not_enabled: That mode isn't enabled in your settings
         update_failed: Could not update segment
-        reprocess_failed: Re-detection failed — your correction was kept
+        reprocess_failed: Re-detection failed - your correction was kept
       share_links:
         not_found: Not found
     trial:
@@ -2979,8 +2979,8 @@ en:
         this_welcome_link_has_already_been_used: This welcome link has already been used.
         link_invalid_or_expired_please_sign_in: Link invalid or expired. Please sign in.
         account_no_longer_exists_please_sign_up_again: Account no longer exists. Please sign up again.
-        trial_active_until: Welcome to Dawarich — your 7-day free trial is active until %{date}.
-        trial_activating: Welcome to Dawarich — your trial is being activated now.
+        trial_active_until: Welcome to Dawarich - your 7-day free trial is active until %{date}.
+        trial_activating: Welcome to Dawarich - your trial is being activated now.
     trips:
       notes:
         invalid_date: Invalid date
@@ -2990,8 +2990,8 @@ en:
       trip_was_successfully_created_data_is_being_calculated_in_the: Trip was successfully created. Data is being calculated in the background.
       trip_was_successfully_updated: Trip was successfully updated.
       trip_was_successfully_destroyed: Trip was successfully destroyed.
-      already_recalculating_this_page_will_update_when_it_s_done: Already recalculating — this page will update when it's done.
-      recalculating_the_page_will_update_automatically_when_it_s_ready: Recalculating — the page will update automatically when it's ready.
+      already_recalculating_this_page_will_update_when_it_s_done: Already recalculating - this page will update when it's done.
+      recalculating_the_page_will_update_automatically_when_it_s_ready: Recalculating - the page will update automatically when it's ready.
       unsupported_export_format_choose_gpx_or_geojson: Unsupported export format. Choose GPX or GeoJSON.
       trip_export_initiated_check_the_exports_page_when_it_s: Trip export initiated. Check the Exports page when it's ready.
       export_failed_to_initiate_please_try_again: Export failed to initiate. Please try again.
@@ -3002,7 +3002,7 @@ en:
         email_not_verified: Your Apple ID email is not verified. Verify it with Apple, then try again.
         missing_email: Apple didn't share your email this time and we couldn't find your existing account. Visit appleid.apple.com → Sign in with Apple → Dawarich → Stop using Sign in with Apple, then try again.
         did_not_complete: Sign in with Apple did not complete. Please try again.
-        state_mismatch: Sign in with Apple state mismatch — please try again.
+        state_mismatch: Sign in with Apple state mismatch - please try again.
       destroy_confirmations:
         this_deletion_link_has_already_been_used: This deletion link has already been used.
         deletion_link_invalid_or_expired: Deletion link invalid or expired.
@@ -3023,7 +3023,7 @@ en:
         authentication_failed: 'Authentication failed: %{detail}'
         oidc_account_requires_administrator: Your account must be created by an administrator before you can sign in with OIDC. Please contact your administrator.
         account_creation_failed: Unable to create your account. Please try again or contact support.
-        email_not_verified: Your %{provider} email is not verified. Verify it with the provider, then try again — or sign in with your existing password.
+        email_not_verified: Your %{provider} email is not verified. Verify it with the provider, then try again - or sign in with your existing password.
       otp_challenge:
         session_expired_please_sign_in_again: Session expired. Please sign in again.
         signed_in_successfully: Signed in successfully.
@@ -3071,7 +3071,7 @@ en:
       visits_merged: Visits merged.
       visit_removed: Visit removed. Your location points are still here.
       too_many_visits: You can update up to %{count} visits at once. Narrow your selection and try again.
-      missing_visits: Some of those visits aren't here anymore — probably edited in another tab. Refresh and try again.
+      missing_visits: Some of those visits aren't here anymore - probably edited in another tab. Refresh and try again.
       plan_window_visits: Some of those visits are outside your Lite plan's 12-month window. Upgrade to Pro to manage older data.
       bulk_removed:
         one: "%{count} visit removed. Your location points are still here."
@@ -3094,7 +3094,7 @@ en:
       explore_features:
         subject: Explore Dawarich features!
       archival_approaching:
-        subject: Keep your full history — upgrade to Pro
+        subject: Keep your full history - upgrade to Pro
       oauth_account_link:
         subject: Confirm linking %{provider} to your Dawarich account
       account_destroy_confirmation:
@@ -3105,7 +3105,7 @@ en:
         year_end:
           subject: Your %{year} Year in Review - Dawarich
         monthly:
-          subject: Your %{month} %{year} in review — Dawarich
+          subject: Your %{month} %{year} in review - Dawarich
   models:
     family:
       location_request:
@@ -3687,8 +3687,8 @@ en:
     map:
       tiled_rendering:
         inactive_note:
-          one: "Inactive while %{layers} is on — it needs the full point set."
-          other: "Inactive while %{layers} are on — those need the full point set."
+          one: "Inactive while %{layers} is on - it needs the full point set."
+          other: "Inactive while %{layers} are on - those need the full point set."
         editing_unavailable: "Not available with tiled rendering, vector tiles have no draggable points"
         failed: "Could not load map tiles. Try a shorter date range, or turn off tiled rendering in map settings."
         blockers:
@@ -3744,7 +3744,7 @@ en:
 
         This removes the demo points, visits, places, tags, tracks, and the Prague trip.
 
-        Your real data — anything you've imported, edited, confirmed, or created yourself — will NOT be touched.
+        Your real data - anything you've imported, edited, confirmed, or created yourself - will NOT be touched.
       creating: Creating your demo data…
       creating_help: Seeding a month of Berlin tracking plus a Prague weekend trip. Takes about a second.
     visits:
@@ -3879,7 +3879,7 @@ en:
         This is long-running and rebuilds derived data.
 
         • Tracks, stats, and digests will be regenerated from scratch using your current points and settings.
-        • Existing tracks/stats are replaced — anything you tweaked manually on a track will be overwritten.
+        • Existing tracks/stats are replaced - anything you tweaked manually on a track will be overwritten.
         • Depending on your history this can take several minutes; you'll get a notification when it's done.
 
         Continue?
@@ -3891,8 +3891,8 @@ en:
         Do you want to continue?
       custom_style_load_failed: Custom map style could not be loaded; reverting to the default style.
       invalid_tile_url: Tile URL must include {z}, {x}, and {y} placeholders, or be a MapLibre style URL
-      layer_unavailable_custom_style: Not available with the Custom map style — it draws no labels or points of interest
-      layer_unavailable_foreign_basemap: Not available with a custom raster or style basemap — these layers come from the built-in vector tiles
+      layer_unavailable_custom_style: Not available with the Custom map style - it draws no labels or points of interest
+      layer_unavailable_foreign_basemap: Not available with a custom raster or style basemap - these layers come from the built-in vector tiles
       make_changes_to_apply: Make changes to enable the Apply button
       re_evaluation_queued: Re-evaluation queued. The map will update once the job finishes.
       recalculation_queued: Recalculation queued. You'll get a notification when it finishes.
@@ -4059,12 +4059,12 @@ en:
         other: Family locations updated (%{count} members)
       refresh_failed: Failed to refresh family locations
     hexagons:
-      limit_warning: Showing the first 100,000 points in this range — narrow the date range for denser detail.
+      limit_warning: Showing the first 100,000 points in this range - narrow the date range for denser detail.
       load_failed: 'Couldn''t load hexagons: %{error}'
       points: "<strong>%{count}</strong> points"
     layer_preview:
       ended: "%{layer} preview ended."
-      remaining: Previewing %{layer} — %{seconds}s remaining.
+      remaining: Previewing %{layer} - %{seconds}s remaining.
       started: Previewing %{layer} for %{seconds} seconds.
     poster:
       categories:
@@ -4073,7 +4073,7 @@ en:
         wallpaper: Wallpaper
       export_failed: 'Poster export failed: %{error}'
       open_failed: 'Poster studio failed to open: %{error}'
-      order_summary: "%{layout} poster — %{price}"
+      order_summary: "%{layout} poster - %{price}"
       theme_load_failed: 'Failed to load theme: %{error}'
       theme_preset_failed: 'Failed to load theme preset: %{error}'
       layouts:
@@ -4099,26 +4099,26 @@ en:
         wallpaper-ultrawide: Desktop Ultrawide
         wallpaper-phone: Phone
         wallpaper-tablet: Tablet
-      frame_too_wide: This view is wider than the largest poster area — the saved poster will be more zoomed in than the preview.
+      frame_too_wide: This view is wider than the largest poster area - the saved poster will be more zoomed in than the preview.
       load: Load
       loading: Loading…
       loading_tracks: Loading tracks for the new range…
-      no_location_data: No location data in this date range — pick a range with tracks in the date bar above.
-      no_tracks_in_frame: No tracks inside the frame — move or zoom the map over your route to save to the gallery.
-      queued: Queued — rendering server-side into Recent posters…
+      no_location_data: No location data in this date range - pick a range with tracks in the date bar above.
+      no_tracks_in_frame: No tracks inside the frame - move or zoom the map over your route to save to the gallery.
+      queued: Queued - rendering server-side into Recent posters…
       rendering: Rendering %{width} × %{height}px…
       saved: Saved
       saved_at_dpi: Saved at %{dpi} dpi (device GL limit)
       untitled: Untitled poster
       order_errors:
-        connection: Could not reach the order service — check your connection.
-        generic: Order upload failed — try again.
-        not_pdf: The export didn't produce a valid PDF — try again.
-        payment_unavailable: Payment is temporarily unavailable — try again in a minute.
+        connection: Could not reach the order service - check your connection.
+        generic: Order upload failed - try again.
+        not_pdf: The export didn't produce a valid PDF - try again.
+        payment_unavailable: Payment is temporarily unavailable - try again in a minute.
         too_large: The exported PDF is too large (50 MB max). Lower the DPI cap or zoom out.
         unknown_sku: This format is not orderable right now.
-        unreadable: The exported PDF couldn't be read — try again.
-        wrong_size: The exported PDF doesn't match the selected format — try again.
+        unreadable: The exported PDF couldn't be read - try again.
+        wrong_size: The exported PDF doesn't match the selected format - try again.
     legacy_settings:
       edit_colors: Edit Colors
       fog_radius: Fog of War radius
@@ -4149,7 +4149,7 @@ en:
       last_seen: 'Last seen: %{date} (%{relative})'
       last_seen_short: Last seen
       location_hidden: Location hidden.
-      location_unknown: Location unknown — waiting for an update…
+      location_unknown: Location unknown - waiting for an update…
     speed_gradient:
       add_stop: Add Color Stop
       color: Color

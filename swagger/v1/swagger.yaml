@@ -3472,7 +3472,7 @@ paths:
                       type: string
                       nullable: true
                       description: Raw payload from live tracking devices. Empty for
-                        points imported from files — the uploaded file keeps the original
+                        points imported from files - the uploaded file keeps the original
                         data.
                     import_id:
                       type: string

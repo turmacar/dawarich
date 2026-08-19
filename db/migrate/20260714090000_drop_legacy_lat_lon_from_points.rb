@@ -7,7 +7,7 @@ class DropLegacyLatLonFromPoints < ActiveRecord::Migration[8.0]
   # Every attempt queues an ACCESS EXCLUSIVE request that holds up each points
   # reader and writer behind it, so keep the wait short: the lock is either free
   # almost immediately or held by a long transaction that a longer wait will not
-  # outlast. Boot only needs a couple of tries — the job is the real fallback.
+  # outlast. Boot only needs a couple of tries - the job is the real fallback.
   DROP_LOCK_TIMEOUT = '1s'
   DROP_MAX_ATTEMPTS = 3
   DROP_BACKOFF_SECONDS = 3
@@ -84,7 +84,7 @@ class DropLegacyLatLonFromPoints < ActiveRecord::Migration[8.0]
   end
 
   # Redis may not be reachable yet when migrations run, and no enqueue failure
-  # may abort the migration — that is the crash loop this change removes. The
+  # may abort the migration - that is the crash loop this change removes. The
   # rescue is deliberately broad: a malformed REDIS_URL, an exhausted pool and a
   # refused connection all reach here, and none of them are worth a restart loop.
   # The columns are unused, so leaving them in place is safe.

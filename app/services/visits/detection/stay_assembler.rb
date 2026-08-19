@@ -4,7 +4,7 @@ module Visits
   module Detection
     # The single merge layer of the pipeline. Chain-merges same-place
     # fragments within the merge gap (brief re-entries whose excursion the
-    # reconciler already vetoed away), then — and only then — applies the
+    # reconciler already vetoed away), then - and only then - applies the
     # minimum dwell / minimum points filters, then finalizes each stay's
     # center and radius from its actual points.
     class StayAssembler
@@ -63,7 +63,7 @@ module Visits
         previous[:corroborated] = previous[:corroborated] || current[:corroborated] || false
       end
 
-      # Bridged silence counts toward dwell — the whole point of bridging is
+      # Bridged silence counts toward dwell - the whole point of bridging is
       # that the user was there for it.
       def keep?(fragment)
         (fragment[:end_ts] - fragment[:start_ts]) >= policy.min_dwell_s &&
@@ -73,7 +73,7 @@ module Visits
       # Boundary snapping is a statement about time, not about evidence: a
       # fragment's fixes are same-place by construction (DwellSweep clusters;
       # GapBridger and chain_merge only join same-place fragments), and a
-      # dark venue's evidence often sits at its snapped-off edges — GPS
+      # dark venue's evidence often sits at its snapped-off edges - GPS
       # reacquired on the way out still counts toward the point floor.
       def finalize(fragment, points_by_id)
         points = fragment[:point_ids].filter_map { |id| points_by_id[id] }

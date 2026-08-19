@@ -8,7 +8,7 @@ RSpec.describe Tracks::SegmentsHelper, type: :helper do
 
     before do
       # No signed-in helper user, so the method reads the passed user's own
-      # settings — the branch that matters here is how options get built.
+      # settings - the branch that matters here is how options get built.
       allow(helper).to receive(:current_user).and_return(nil)
     end
 

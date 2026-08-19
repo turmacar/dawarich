@@ -7,7 +7,7 @@ class AddPartialUniqueIndexOnUsersProviderUid < ActiveRecord::Migration[8.0]
 
   def up
     # The existing `index_users_on_provider_and_uid` index is unique across ALL rows
-    # (including NULL provider/uid rows, which PostgreSQL treats as distinct NULLs —
+    # (including NULL provider/uid rows, which PostgreSQL treats as distinct NULLs -
     # so uniqueness is effectively not enforced for rows without OAuth).
     # Replace it with a partial unique index that only covers rows where both
     # provider and uid are present, making the semantic intent explicit and

@@ -41,7 +41,7 @@ class DataMigrations::DropLegacyLatLonJob < ApplicationJob
     return unless legacy_columns?(connection)
 
     # SET LOCAL binds both timeouts to this transaction's backend so they survive
-    # PgBouncer transaction pooling — a bare SET + ALTER can otherwise land on
+    # PgBouncer transaction pooling - a bare SET + ALTER can otherwise land on
     # different servers, leaving the drop with no timeout at all and an unbounded
     # ACCESS EXCLUSIVE request queued ahead of every points read and write.
     # statement_timeout is pinned off so only lock_timeout bounds the wait; the

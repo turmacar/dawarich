@@ -5,9 +5,9 @@ import maplibregl from "maplibre-gl"
 // the device GL limit first).
 //
 // Pass `cssSize` (the preview's on-screen size) to keep WYSIWYG cartography:
-// the hidden map then uses the preview's CSS size — so fitBounds resolves to
+// the hidden map then uses the preview's CSS size - so fitBounds resolves to
 // the SAME zoom the preview showed (same tile detail, same relative stroke
-// weights) — and reaches the export resolution via pixelRatio instead of a
+// weights) - and reaches the export resolution via pixelRatio instead of a
 // bigger viewport, which would bump the zoom and change the look.
 export async function captureBounds({
   style,

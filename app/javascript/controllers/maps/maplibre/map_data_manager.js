@@ -63,7 +63,7 @@ export class MapDataManager {
       })
 
       // Visits load is windowed to the current map viewport. On first
-      // load `getBounds()` may not have settled yet — fall back to an
+      // load `getBounds()` may not have settled yet - fall back to an
       // unbounded fetch in that case so we don't drop visits silently.
       const map = this.controller?.map
       let viewportBounds
@@ -92,7 +92,7 @@ export class MapDataManager {
           this._updateTracksLayer(tracksGeoJSON)
           // Tracks usually have the largest bbox of any layer (they include
           // every leg between visits), so when they arrive late we re-fit to
-          // them — but if an earlier fit already covers them we skip the
+          // them - but if an earlier fit already covers them we skip the
           // pointless blink, and otherwise ease rather than snap so the late
           // correction reads as intentional. skipIfCovered only applies
           // after a real fit: the initial world view trivially "covers"
@@ -124,7 +124,7 @@ export class MapDataManager {
         this._showDataWindowBanner()
       }
 
-      // 6. Fit bounds if requested — use the first available data source.
+      // 6. Fit bounds if requested - use the first available data source.
       // Skipped when the tracks background fetch already fitted (it can
       // land first on fast responses) so we never fit twice.
       if (fitBounds && !this._hasFittedBounds) {
@@ -135,7 +135,7 @@ export class MapDataManager {
         ])
       }
 
-      // 7. Reload hexagons if currently visible — they own their own fetch
+      // 7. Reload hexagons if currently visible - they own their own fetch
       // pipeline (raw points + h3 aggregation), so they need a date-range
       // reload separate from the main data flow.
       const hexagonLayer = this.layerManager.getLayer("hexagons")
@@ -147,7 +147,7 @@ export class MapDataManager {
           })
       }
 
-      // 8. Reload fog hexagons if fog is visible in hexagon mode — same
+      // 8. Reload fog hexagons if fog is visible in hexagon mode - same
       // reasoning: they own their own fetch pipeline.
       const fogLayer = this.layerManager.getLayer("fog")
       if (fogLayer?.visible && fogLayer.mode === "hexagons") {
@@ -170,7 +170,7 @@ export class MapDataManager {
 
       // Wait for background fetches (tracks, photos) to finish before
       // running the safety net. If we don't, the badge gets force-hidden
-      // while tracks are still loading — see issue: "loader disappears
+      // while tracks are still loading - see issue: "loader disappears
       // before tracks are rendered."
       if (data?.backgroundReady) {
         try {
@@ -260,7 +260,7 @@ export class MapDataManager {
    * @private
    */
   _updateLayerBySource(source, geoJSON) {
-    // Handle routes-base separately — it updates the routes layer's base source
+    // Handle routes-base separately - it updates the routes layer's base source
     if (source === "routes-base") {
       const routesLayer = this.layerManager?.getLayer("routes")
       if (routesLayer?.updateBaseData) {
@@ -417,7 +417,7 @@ export class MapDataManager {
 
     // Wait for style to be loaded before adding layers.
     // Use "idle" (fires after every render) instead of "load" (fires only once).
-    // Also use isStyleLoaded() instead of loaded() — layers only need the style,
+    // Also use isStyleLoaded() instead of loaded() - layers only need the style,
     // not all tiles, and loaded() can return false during re-renders triggered
     // by setPaintProperty, causing a hang if we wait for "load".
     if (this.map.isStyleLoaded()) {

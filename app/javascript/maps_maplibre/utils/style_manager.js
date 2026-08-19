@@ -82,7 +82,7 @@ async function buildRasterStyle(url) {
 
 /**
  * Map from category keys to the style layer IDs they control.
- * Shared with map_v2_preview_controller.js — keep in sync.
+ * Shared with map_v2_preview_controller.js - keep in sync.
  */
 export const TILE_LAYER_CATEGORIES = {
   roads: [
@@ -158,7 +158,7 @@ export const TILE_LAYER_CATEGORIES = {
 }
 
 /**
- * POI kind groups — controls which POI kinds appear on the map.
+ * POI kind groups - controls which POI kinds appear on the map.
  * Keys are group identifiers stored in user settings.
  * Values contain the label, description, and array of Protomaps `kind` strings.
  */
@@ -367,14 +367,14 @@ export async function getMapStyle(styleName = "light", options = {}) {
     // setStyle/new Map, which fetch it; app layers are re-added on style.load.
     if (basemapType === "style") return customUrl
 
-    // Raster XYZ tiles need their own source and layer — the vendored vector
+    // Raster XYZ tiles need their own source and layer - the vendored vector
     // layers cannot draw against a raster source.
     if (basemapType === "raster") return await buildRasterStyle(customUrl)
 
     const tilesUrl = customUrl || TILE_SOURCE_URL
 
     // Custom themes are built client-side from the user's stored color
-    // tokens (poster-minimal basemap) — no vendored JSON to fetch. Base-map
+    // tokens (poster-minimal basemap) - no vendored JSON to fetch. Base-map
     // categories map onto the minimal layer set; label/POI options have no
     // counterpart there and are ignored.
     if (styleName === "custom") {
@@ -418,7 +418,7 @@ export async function getMapStyle(styleName = "light", options = {}) {
       }
     }
 
-    // Apply POI group filter — rewrite the pois layer to show only enabled groups
+    // Apply POI group filter - rewrite the pois layer to show only enabled groups
     const disabledPoi = options.disabledPoiGroups
     if (disabledPoi?.length > 0) {
       const kinds = enabledPoiKinds(disabledPoi)

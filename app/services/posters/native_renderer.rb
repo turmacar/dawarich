@@ -5,7 +5,7 @@ require 'timeout'
 
 module Posters
   # Renders a poster in-process via the vendored maplibre-native Node
-  # renderer (vendor/poster_renderer) — the same style and typography
+  # renderer (vendor/poster_renderer) - the same style and typography
   # modules the browser studio runs, fed by the existing vector tiles.
   # Seconds instead of the sidecar's minutes.
   class NativeRenderer

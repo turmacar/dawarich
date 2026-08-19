@@ -20,7 +20,7 @@
   <%= render 'map/maplibre/webgl_error' %>
 
   <!-- Map container takes full width and height. Pre-apply panel classes
-       when the URL requests the Timeline panel — otherwise the JS-driven
+       when the URL requests the Timeline panel - otherwise the JS-driven
        toggle animates the panel in from off-screen on every Turbo nav. -->
   <% timeline_panel_open = params[:panel] == 'timeline' %>
   <div data-maps--maplibre-target="container"

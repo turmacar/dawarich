@@ -207,7 +207,7 @@ module ApplicationHelper
   # Generates a user-specific upgrade URL that authenticates the user
   # with the external subscription service via JWT token.
   # Accepts optional UTM parameters for tracking.
-  # Returns an empty string on self-hosted instances — there is no
+  # Returns an empty string on self-hosted instances - there is no
   # upgrade flow there, and the JWT secret is not configured.
   def upgrade_url(utm_source: 'app', utm_medium: nil, utm_campaign: 'lite_upgrade', utm_content: nil)
     return '' if DawarichSettings.self_hosted?

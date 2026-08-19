@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Photoprism date filters are sent as plain dates' do
+RSpec.describe 'Photoprism date filters are sent as ISO 8601 datetimes' do
   let(:user) do
     create(
       :user,
@@ -28,10 +28,10 @@ RSpec.describe 'Photoprism date filters are sent as plain dates' do
     value
   end
 
-  it 'reduces a minute-precision start_date to the plain after date Photoprism accepts' do
+  it 'reduces a minute-precision start_date to ISO 8601 beginning-of-day format' do
     stub_empty
     Photoprism::RequestPhotos.new(user, start_date: '2026-06-21T00:00+02:00').call
-    expect(captured('after')).to eq('2026-06-21')
+    expect(captured('after')).to eq('2026-06-20T22:00:00Z')
   end
 
   it 'sends before as a plain date one day past end_date' do
@@ -40,16 +40,16 @@ RSpec.describe 'Photoprism date filters are sent as plain dates' do
     expect(captured('before')).to eq('2026-06-24')
   end
 
-  it 'defaults the after date and does not raise when start_date is nil' do
+  it 'defaults the after datetime and does not raise when start_date is nil' do
     stub_empty
     expect { Photoprism::RequestPhotos.new(user, start_date: nil).call }.not_to raise_error
-    expect(captured('after')).to eq('1970-01-01')
+    expect(captured('after')).to match(/\A\d{4}-01-01T/)
   end
 
-  it 'defaults the after date and does not raise when start_date is blank' do
+  it 'defaults the after datetime and does not raise when start_date is blank' do
     stub_empty
     expect { Photoprism::RequestPhotos.new(user, start_date: '').call }.not_to raise_error
-    expect(captured('after')).to eq('1970-01-01')
+    expect(captured('after')).to match(/\A\d{4}-01-01T/)
   end
 
   it 'excludes photos taken after a precise end_date' do

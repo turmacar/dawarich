@@ -6,7 +6,7 @@
 # SLICE at a time, handing each slice to the existing parallel generator with
 # untracked_only so re-runs and overlaps never rewrite already-tracked points
 # (that flag, plus the tracks unique index, is what makes overlapping slices
-# safe — untracked_only skips the per-user lock), and with
+# safe - untracked_only skips the per-user lock), and with
 # job_queue: :low_priority so the chunk fan-out never competes with
 # Tracks::RealtimeGenerationJob on :tracks. The pause between slices bounds
 # the write rate to roughly one slice a minute instead of enqueueing thousands

@@ -56,7 +56,7 @@ function toLocalInput(date) {
 
 // Full-screen WYSIWYG poster editor: a live MapLibre map inside a
 // poster-shaped frame, restyled by the same buildPosterStyle the export
-// renders, with typography drawn by the same overlay pass — so what the
+// renders, with typography drawn by the same overlay pass - so what the
 // preview shows is what the download produces.
 export default class extends Controller {
   static targets = [
@@ -125,7 +125,7 @@ export default class extends Controller {
 
   connect() {
     // The map page wraps content in a z-index:20 stacking context that would
-    // trap the overlay under the navbar — portal to <body>. Moving the node
+    // trap the overlay under the navbar - portal to <body>. Moving the node
     // re-runs connect (Stimulus disconnect/reconnect), hence the guard.
     if (this.element.parentElement !== document.body) {
       document.body.appendChild(this.element)
@@ -495,7 +495,7 @@ export default class extends Controller {
     this.dateEndTarget.value = toLocalInput(new Date(endAt))
   }
 
-  // SPA date change delegated to the provider — the studio never closes.
+  // SPA date change delegated to the provider - the studio never closes.
   async applyDates() {
     if (!this.provider?.supportsDateNavigation) return
     const start = this.dateStartTarget.value
@@ -831,7 +831,7 @@ export default class extends Controller {
     return this.framedDistance() > max
   }
 
-  // The server refuses renders without track data in the frame — mirror
+  // The server refuses renders without track data in the frame - mirror
   // both guards here so Save to gallery can't queue a doomed poster.
   syncSaveAvailability() {
     if (!this.hasSaveButtonTarget || !this.previewMap) return
@@ -862,8 +862,8 @@ export default class extends Controller {
     const dpi = Number.parseInt(this.dpiTarget.value, 10)
     const geometry = resolveLayoutGeometry(layout, dpi)
     const lines = [
-      `${translate(`poster.layouts.${layout.id}`)} — ${layout.dimensionsLabel}`,
-      `Theme: ${this.themeName || "—"}`,
+      `${translate(`poster.layouts.${layout.id}`)} - ${layout.dimensionsLabel}`,
+      `Theme: ${this.themeName || "-"}`,
       `Export: ${geometry.width} × ${geometry.height}px${
         layout.kind === "paper" ? ` @ ${geometry.effectiveDpi} dpi` : ""
       }`,

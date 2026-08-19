@@ -1,6 +1,6 @@
 <%
   # The verb carries the mode; no glyph is repeated alongside it. Unknown gets
-  # no icon at all — the row reads as a connector between visits, and a
+  # no icon at all - the row reads as a connector between visits, and a
   # stand-in marker there looks like a broken render rather than information.
   mode = entry[:dominant_mode].presence
   mode = 'unknown' unless Track::TRANSPORTATION_MODES.key?(mode&.to_sym)
@@ -15,7 +15,7 @@
     leg_time = l(Time.zone.parse(entry[:started_at]), format: :hour_minute)
     moving = entry[:moving_duration].to_i
     # When dwell dominates the track span (short ride, long stand), the span
-    # duration misleads — show the time actually spent moving instead.
+    # duration misleads - show the time actually spent moving instead.
     duration = if moving.positive? && moving < entry[:duration].to_i * 0.8
                  t('.duration_moving', duration: format_duration_short(moving))
                else
@@ -36,7 +36,7 @@
      data-started-at="<%= entry[:started_at] %>"
      data-ended-at="<%= entry[:ended_at] %>"
      data-track-id="<%= track_id %>">
-  <%# A "leg" between visits — uses the visit-row grid (time + rail + content
+  <%# A "leg" between visits - uses the visit-row grid (time + rail + content
       + chevron) so columns line up vertically with adjacent visit rows. %>
   <div class="journey-leg<%= ' cursor-pointer' if track_id %>"
        <% if track_id %>

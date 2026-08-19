@@ -284,7 +284,7 @@ export class PhotosLayer extends BaseLayer {
           this.markerCache.get(id).setLngLat(offset)
           this._updateLeg(id, origin, offset)
         } else {
-          // No longer offset — reset to original position, remove leg
+          // No longer offset - reset to original position, remove leg
           this.markerCache.get(id).setLngLat(origin)
           this._removeLeg(id)
         }

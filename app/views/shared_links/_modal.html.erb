@@ -1,13 +1,13 @@
 <%# Generic share-link modal chrome.
     Used by Trip + Timeline (+ future Live).
     Locals:
-      resource           — the object being shared (Trip / nil for timeline)
-      share              — the active SharedLink, or nil
-      title              — string shown as modal heading when share is nil
-      subtitle           — string shown under the "Public" badge in the active state; optional
-      close_path         — where the X / Cancel / backdrop sends the user
-      paths              — Hash with keys: create, revoke, regenerate, regenerate_phrase, destroy
-      create_form_partial — partial path for the create form (rendered when share is nil)
+      resource           - the object being shared (Trip / nil for timeline)
+      share              - the active SharedLink, or nil
+      title              - string shown as modal heading when share is nil
+      subtitle           - string shown under the "Public" badge in the active state; optional
+      close_path         - where the X / Cancel / backdrop sends the user
+      paths              - Hash with keys: create, revoke, regenerate, regenerate_phrase, destroy
+      create_form_partial - partial path for the create form (rendered when share is nil)
 %>
 <turbo-frame id="share-link-modal">
   <div class="modal modal-open" data-controller="share-link-modal" style="z-index: 10000;">

@@ -552,7 +552,7 @@ RSpec.describe Timeline::DayAssembler do
         described_class.new(user, start_at: day.iso8601, end_at: (day + 1.day).iso8601).call
       end
 
-      it 'counts visible visits only — declined rows are tombstones and never reach the feed' do
+      it 'counts visible visits only - declined rows are tombstones and never reach the feed' do
         summary = subject.first[:summary]
         expect(summary[:suggested_count]).to eq(1)
         expect(summary[:confirmed_count]).to eq(2)
@@ -736,7 +736,7 @@ RSpec.describe Timeline::DayAssembler do
       end
     end
 
-    context 'with timezone boundary — event near midnight UTC' do
+    context 'with timezone boundary - event near midnight UTC' do
       # A visit that starts at 23:30 UTC is still Jan 15 in UTC,
       # but already Jan 16 in UTC+1 (Europe/Berlin).
       # DayAssembler must group by the USER's configured timezone
@@ -789,7 +789,7 @@ RSpec.describe Timeline::DayAssembler do
       end
     end
 
-    context 'with timezone boundary — track spanning midnight' do
+    context 'with timezone boundary - track spanning midnight' do
       let(:before_midnight) { Time.utc(2025, 1, 15, 23, 0, 0) }
 
       let!(:midnight_track) do

@@ -39,7 +39,7 @@ RSpec.describe Visits::PlaceFinder do
   end
 
   it 'reuses a manual place near the cluster instead of minting a new photon place' do
-    # ~70 m north of the center — outside the 50 m photon similarity radius.
+    # ~70 m north of the center - outside the 50 m photon similarity radius.
     manual = place_at(center_lat + 0.00063, center_lon, name: 'My Favorite Address', source: :manual)
 
     result = nil

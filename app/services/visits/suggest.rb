@@ -59,7 +59,7 @@ class Visits::Suggest
   # The debouncer can schedule a run every five minutes; without this an outage
   # would bury the notification list under hundreds of identical rows. The claim
   # is a Redis SET NX so two concurrent runs can't both pass the check, and it
-  # fails open — a Redis problem must never swallow the error notification.
+  # fails open - a Redis problem must never swallow the error notification.
   def notify_failure(error)
     return unless claim_error_window?
 

@@ -33,7 +33,7 @@ RSpec.describe ApplicationHelper, type: :helper do
         allow(helper).to receive(:controller).and_return(
           double(class: double(name: 'ApplicationController'))
         )
-        # Lite users only exist on cloud — `pro_badge_tag` returns nil on
+        # Lite users only exist on cloud - `pro_badge_tag` returns nil on
         # self-hosted via `current_user&.lite?` upstream, so this stub
         # mirrors the cloud path the test is exercising.
         allow(DawarichSettings).to receive(:self_hosted?).and_return(false)

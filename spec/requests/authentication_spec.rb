@@ -203,7 +203,7 @@ RSpec.describe 'Authentication', type: :request do
         # Mark as deleted
         user.mark_as_deleted!
 
-        # Try to access a protected page — Devise's activatable hook signs out and redirects to sign in
+        # Try to access a protected page - Devise's activatable hook signs out and redirects to sign in
         get map_path
 
         expect(response).to redirect_to(new_user_session_path)

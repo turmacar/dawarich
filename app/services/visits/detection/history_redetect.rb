@@ -75,7 +75,7 @@ module Visits
       end
 
       # Confirmed rows survive re-detection untouched, but the UI gates on
-      # confidence — give pre-scoring rows a score computed from their own
+      # confidence - give pre-scoring rows a score computed from their own
       # points. detection_version stays NULL: these are user-owned rows, not
       # regenerated machine output.
       def backfill_legacy_confidence

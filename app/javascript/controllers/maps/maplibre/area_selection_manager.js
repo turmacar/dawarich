@@ -585,7 +585,7 @@ export class AreaSelectionManager {
 
   /**
    * Delete only anomaly points within the current selection. Backed by the
-   * same bulkDeletePoints API as deleteSelectedPoints — the filter just
+   * same bulkDeletePoints API as deleteSelectedPoints - the filter just
    * narrows the id list to those flagged anomaly=true server-side.
    */
   async deleteSelectedAnomalies() {
@@ -639,7 +639,7 @@ export class AreaSelectionManager {
       const body = error?.body
       if (error?.status === 403 && body?.upgrade_url) {
         Toast.error(
-          `${body.error || translate("selection.write_api_requires_pro")} — ${body.upgrade_url}`,
+          `${body.error || translate("selection.write_api_requires_pro")} - ${body.upgrade_url}`,
         )
       } else if (error?.status === 422 && body?.limit) {
         Toast.error(
@@ -711,7 +711,7 @@ export class AreaSelectionManager {
       const body = error?.body
       if (error?.status === 403 && body?.upgrade_url) {
         Toast.error(
-          `${body.error || translate("selection.write_api_requires_pro")} — ${body.upgrade_url}`,
+          `${body.error || translate("selection.write_api_requires_pro")} - ${body.upgrade_url}`,
         )
       } else if (error?.status === 422 && body?.limit) {
         Toast.error(

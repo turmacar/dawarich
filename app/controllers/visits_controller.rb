@@ -137,12 +137,12 @@ class VisitsController < ApplicationController
       @visit.name = selected_area.name if selected_area.name.present?
     elsif confirming_suggested_visit?(params_to_update)
       # Only auto-pick from the visit's first suggested place when the
-      # user did NOT explicitly select one — otherwise we'd overwrite the
+      # user did NOT explicitly select one - otherwise we'd overwrite the
       # name the picker just set.
       auto_name_on_confirm
     end
 
-    # Editing a suggested visit is an assertion that it happened — confirm
+    # Editing a suggested visit is an assertion that it happened - confirm
     # it silently unless the request set a status itself (e.g. decline).
     params_to_update[:status] = 'confirmed' if @visit.suggested? && params_to_update[:status].blank?
 
@@ -227,7 +227,7 @@ class VisitsController < ApplicationController
     scope.where(started_at: range)
   end
 
-  # Builds the timeline-entry hash for a single visit — lets the update
+  # Builds the timeline-entry hash for a single visit - lets the update
   # turbo_stream re-render `_visit_entry.html.erb` with fresh status / name /
   # place / suggested_places data. Reuses Timeline::DayAssembler to keep the
   # payload shape consistent with the day-level fetch.
@@ -239,7 +239,7 @@ class VisitsController < ApplicationController
   # Turbo streams for #bulk_update: swaps the day's visit-list contents with
   # a freshly-assembled day (so every row's state is current) and shows the
   # "N visits confirmed." flash. `turbo_stream.update` targets the frame's
-  # children — we keep the frame element (its id + Stimulus target) intact.
+  # children - we keep the frame element (its id + Stimulus target) intact.
   def build_bulk_update_streams(status, count)
     tz = current_user.safe_settings.timezone.presence || 'UTC'
     date_str = params[:date].presence || Time.use_zone(tz) { Date.current.to_s }
@@ -382,7 +382,7 @@ class VisitsController < ApplicationController
 
   # When all deleted visits fall on the same user-local date, we can rebuild
   # that day's frame from fresh data. For cross-day deletions (e.g. via API),
-  # we leave the frame alone — the controller can't know which day the user
+  # we leave the frame alone - the controller can't know which day the user
   # is currently viewing.
   def build_day_frame_stream(date, time_zone)
     return nil unless date

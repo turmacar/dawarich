@@ -3,7 +3,7 @@
 class Api::V1::Tiles::PointsController < ApiController
   include SafeTimestampParser
 
-  # ETag material — bump when the tile SQL or its emitted properties change,
+  # ETag material - bump when the tile SQL or its emitted properties change,
   # so a deploy invalidates cached tiles.
   TILE_SCHEMA_VERSION = 1
 
@@ -39,12 +39,12 @@ class Api::V1::Tiles::PointsController < ApiController
     ).call
 
     if result.truncated?
-      # Unreachable by construction (limit exceeds the grid's cell count) — firing means a query bug.
+      # Unreachable by construction (limit exceeds the grid's cell count) - firing means a query bug.
       Rails.logger.warn("VectorTileQuery truncated tile #{params[:z]}/#{params[:x]}/#{params[:y]}")
       response.set_header('X-Dawarich-Tile-Truncated', '1')
     end
 
-    # An empty tile is a zero-length bytea — blank only after decoding
+    # An empty tile is a zero-length bytea - blank only after decoding
     tile = decode_bytea(result.tile)
 
     return head :no_content if tile.blank?
@@ -60,7 +60,7 @@ class Api::V1::Tiles::PointsController < ApiController
 
   private
 
-  # Rails recomposes Cache-Control from response.cache_control at finalization —
+  # Rails recomposes Cache-Control from response.cache_control at finalization -
   # without the clear, expires_in wins and one transient error poisons the tile
   # for the full max-age. no-cache also keeps Rack::ETag from stamping an ETag.
   def force_uncacheable_response
@@ -87,7 +87,7 @@ class Api::V1::Tiles::PointsController < ApiController
   end
 
   # A reversed range parses fine but can never match a row, so without this it
-  # would be cached — an empty tile served under max-age for a live account.
+  # would be cached - an empty tile served under max-age for a live account.
   def cacheable_range?
     cacheable_start_at.present? && cacheable_end_at.present? &&
       cacheable_start_at <= cacheable_end_at
@@ -101,7 +101,7 @@ class Api::V1::Tiles::PointsController < ApiController
     @cacheable_end_at ||= parse_cacheable_timestamp(params[:end_at])
   end
 
-  # Stricter than safe_timestamp, which substitutes "now" for garbage — fine
+  # Stricter than safe_timestamp, which substitutes "now" for garbage - fine
   # for querying, poison for an ETag (content would drift under a constant key).
   def parse_cacheable_timestamp(value)
     return nil if value.blank?
@@ -117,7 +117,7 @@ class Api::V1::Tiles::PointsController < ApiController
     nil
   end
 
-  # Same bounds and zone semantics as SafeTimestampParser — keeps the ETag
+  # Same bounds and zone semantics as SafeTimestampParser - keeps the ETag
   # window identical to the query window and caps TileEpoch's year-key fan-out.
   def clamp_timestamp(value)
     value.clamp(Time.zone.parse('1970-01-01').to_i, Time.zone.parse('2100-01-01').to_i)
@@ -131,7 +131,7 @@ class Api::V1::Tiles::PointsController < ApiController
   end
 
   def filtered_points
-    # Parity with the classic points layer — anomalies render in their own layer.
+    # Parity with the classic points layer - anomalies render in their own layer.
     scope = scoped_points.without_raw_data.not_anomaly
 
     start_at = safe_timestamp(params[:start_at]) if params[:start_at].present?

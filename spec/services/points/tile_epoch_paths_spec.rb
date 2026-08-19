@@ -98,7 +98,7 @@ RSpec.describe 'Points::TileEpoch write-path integration' do
     sentinel_at = Time.utc(2023, 12, 31, 22, 0, 0).to_i
 
     # A coarse cold-start fix, condemned by a precise neighbour from the same
-    # device — both sit in 2023, inside the lookback but outside the window.
+    # device - both sit in 2023, inside the lookback but outside the window.
     sentinel = create(:point, user:, timestamp: sentinel_at, tracker_id: 'phone',
                               accuracy: 1414, velocity: '-1', vertical_accuracy: -1,
                               latitude: 51.3336, longitude: 12.3777,

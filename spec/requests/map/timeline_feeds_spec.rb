@@ -111,7 +111,7 @@ RSpec.describe 'Map::TimelineFeeds', type: :request do
                  duration: 3600)
         end
 
-        it 'renders identically to a confirmed visit — edit control, no review card' do
+        it 'renders identically to a confirmed visit - edit control, no review card' do
           get map_timeline_feeds_path(start_at: day.iso8601, end_at: (day + 1.day).iso8601)
 
           expect(response).to have_http_status(:success)

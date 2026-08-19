@@ -34,7 +34,7 @@ module Tracks::SegmentsHelper
   # Lucide name for a mode, for surfaces that draw icons rather than emoji.
   # Emoji arrive as OS-supplied color bitmaps that ignore currentColor and
   # size inconsistently next to the rest of the icon set.
-  # Motorcycle shares the bike glyph — lucide ships no motorcycle, and the
+  # Motorcycle shares the bike glyph - lucide ships no motorcycle, and the
   # two never appear together without a verb to tell them apart.
   def mode_icon_name(mode)
     {

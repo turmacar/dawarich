@@ -222,7 +222,7 @@ export default class extends Controller {
       features,
     })
 
-    // Keep the cached full point set in sync — route rebuilds and the
+    // Keep the cached full point set in sync - route rebuilds and the
     // scratch layer read from it in simplified rendering mode.
     const cachedPoints = mapsController.mapDataManager?.lastLoadedData?.points
     if (cachedPoints) {

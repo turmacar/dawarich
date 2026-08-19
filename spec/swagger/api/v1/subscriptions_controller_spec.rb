@@ -20,7 +20,7 @@ RSpec.describe 'Subscriptions API', type: :request do
                   'instead of API key authentication.'
       consumes 'application/json'
       produces 'application/json'
-      security [] # Override global security — this endpoint is public
+      security [] # Override global security - this endpoint is public
       parameter name: 'X-Webhook-Secret', in: :header, type: :string, required: true,
                 description: 'Shared webhook secret used to authenticate the caller'
       parameter name: :callback_params, in: :body, schema: {

@@ -6,7 +6,7 @@ class CreatePointDimensionTables < ActiveRecord::Migration[8.0]
   # commits on its own, which is why every one of them is guarded by an
   # IF NOT EXISTS: a rerun after a lost lock race must skip straight to the
   # part that has not landed yet. The digest indexes are created separately
-  # for the same reason — folding them into create_table would make a crash
+  # for the same reason - folding them into create_table would make a crash
   # between the table and its index unrecoverable on rerun, leaving
   # ON CONFLICT (digest) with no unique constraint to match.
   disable_ddl_transaction!
@@ -80,7 +80,7 @@ class CreatePointDimensionTables < ActiveRecord::Migration[8.0]
       # Deliberately no enqueue here. Aborting would fail the boot and replay
       # the migration on the next start, which is the crash loop the
       # mirror-image drop in 20260714090000_drop_legacy_lat_lon_from_points.rb
-      # was rewritten to avoid — so boot continues either way. The handoff is
+      # was rewritten to avoid - so boot continues either way. The handoff is
       # left to 20260816150200, which is the single place that decides what to
       # enqueue: if this migration and that one could both start work, the slow
       # DROP INDEX CONCURRENTLY between them gives a handoff job time to land

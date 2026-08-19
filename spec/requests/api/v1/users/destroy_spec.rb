@@ -12,7 +12,7 @@ RSpec.describe 'Api::V1::Users::Destroy', type: :request do
       allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
     end
 
-    it 'does NOT delete the user immediately — sends a confirmation email instead' do
+    it 'does NOT delete the user immediately - sends a confirmation email instead' do
       user # materialize before request
 
       expect do

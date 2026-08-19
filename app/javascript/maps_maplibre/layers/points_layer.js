@@ -8,7 +8,7 @@ import { BaseLayer } from "./base_layer"
  * Supports dragging points to update their positions
  */
 /**
- * A stored coordinate is usable only when it is neither nullish nor blank —
+ * A stored coordinate is usable only when it is neither nullish nor blank -
  * legacy points with no lonlat serialize to an empty string.
  */
 function storedOr(value, fallback) {
@@ -54,7 +54,7 @@ export class PointsLayer extends BaseLayer {
         type: "circle",
         source: this.sourceId,
         layout: {
-          // Deterministic render order by timestamp — prevents a random point
+          // Deterministic render order by timestamp - prevents a random point
           // from sitting on top of a dense line (see #2388).
           "circle-sort-key": ["to-number", ["get", "timestamp"]],
         },
@@ -182,7 +182,7 @@ export class PointsLayer extends BaseLayer {
     this.map.off("mousemove", this._onMouseMove)
 
     if (!wasDrag) {
-      // Just a click — no position update, let the click handler show info
+      // Just a click - no position update, let the click handler show info
       this.draggedFeature = null
       return
     }
@@ -198,7 +198,7 @@ export class PointsLayer extends BaseLayer {
     try {
       await this.updatePointPosition(pointId, coords.lat, coords.lng)
 
-      // Keep the cached full point set in sync — route rebuilds and the
+      // Keep the cached full point set in sync - route rebuilds and the
       // scratch layer read from it in simplified rendering mode.
       const cachedPoints =
         this.layerManager?.controller?.mapDataManager?.lastLoadedData?.points

@@ -102,7 +102,7 @@ RSpec.describe Visits::Create do
       end
     end
 
-    context 'IDOR — cross-user place leak' do
+    context 'IDOR - cross-user place leak' do
       let(:user_a) { create(:user) }
       let(:user_b) { create(:user) }
 

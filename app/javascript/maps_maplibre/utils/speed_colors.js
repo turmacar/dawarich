@@ -170,7 +170,7 @@ export function applySpeedColors(routesGeoJSON, points, speedColorScale) {
       )
 
       if (startIdx < 0 || endIdx < 0 || endIdx <= startIdx) {
-        // Can't match points — keep original feature with default color
+        // Can't match points - keep original feature with default color
         features.push(feature)
         continue
       }
@@ -201,14 +201,14 @@ export function applySpeedColors(routesGeoJSON, points, speedColorScale) {
               },
             })
           }
-          // Start new segment — include p1 so the line connects seamlessly
+          // Start new segment - include p1 so the line connects seamlessly
           currentColor = color
           currentCoords = [
             [p1.longitude, p1.latitude],
             [p2.longitude, p2.latitude],
           ]
         } else {
-          // Same color — extend current segment with p2
+          // Same color - extend current segment with p2
           currentCoords.push([p2.longitude, p2.latitude])
         }
       }

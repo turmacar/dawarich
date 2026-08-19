@@ -38,7 +38,7 @@ RSpec.describe Visits::Detection::DwellSweep do
     expect(fragment[:center_lat]).to be_within(0.0002).of(lat0)
   end
 
-  it 'emits fragments BELOW min dwell and min points — filtering is not its job' do
+  it 'emits fragments BELOW min dwell and min points - filtering is not its job' do
     points = [pt(1, at: base_ts), pt(2, at: base_ts + 60)]
 
     fragments = sweep(points)

@@ -101,7 +101,7 @@ ca:
         your_trial_period_ends_at: El teu període de prova acaba el
         plan_usage: Ús del pla
         subscription: Subscripció
-        your_signup_isn_t_complete_yet_finish_setting_up_your: El teu registre encara no està complet — acaba de configurar la teva subscripció per iniciar el període de prova.
+        your_signup_isn_t_complete_yet_finish_setting_up_your: El teu registre encara no està complet - acaba de configurar la teva subscripció per iniciar el període de prova.
         change_plan_update_your_payment_method_or_cancel_your_subscription: Canvia de pla, actualitza el mètode de pagament o cancel·la la subscripció a Manager.
         manage_your_subscription_change_plan_or_update_billing_on_manager: Gestiona la teva subscripció, canvia de pla o actualitza la facturació a Manager.
         api_access: Accés a l'API
@@ -114,7 +114,7 @@ ca:
         cancel_my_account: Cancel·la el meu compte
         delete_your_account: Suprimeix el teu compte
         this_is_permanent_and_removes_all_your_data_this_cannot: Això és permanent i elimina totes les teves dades. No es pot desfer.
-        this_is_permanent_and_removes_all_your_data_this_cannot_2: Això és permanent i elimina totes les teves dades. No es pot desfer. T'enviarem un enllaç per correu electrònic per confirmar-ho — el teu compte només se suprimirà quan hi facis clic.
+        this_is_permanent_and_removes_all_your_data_this_cannot_2: Això és permanent i elimina totes les teves dades. No es pot desfer. T'enviarem un enllaç per correu electrònic per confirmar-ho - el teu compte només se suprimirà quan hi facis clic.
         type_your_email: Escriu el teu correu electrònic (
         to_confirm: ") per confirmar"
         enter_your_current_password_to_confirm: Introdueix la teva contrasenya actual per confirmar
@@ -214,7 +214,7 @@ ca:
       last_7_days: Últims 7 dies
       last_30_days: Últims 30 dies
       since_sharing_started: Des que es va començar a compartir
-      a_separate_setting_from_live_location_when_on_family_can: Una configuració independent de la ubicació en directe. Quan està activada, la família pot veure el teu recorregut recent — no només la teva posició actual — al nou mapa (v2). Només es comparteixen els punts registrats després d'activar-ho.
+      a_separate_setting_from_live_location_when_on_family_can: Una configuració independent de la ubicació en directe. Quan està activada, la família pot veure el teu recorregut recent - no només la teva posició actual - al nou mapa (v2). Només es comparteixen els punts registrats després d'activar-ho.
       expires_in_time: Caduca en %{time}
     edit:
       delete_family: Suprimeix la família
@@ -238,8 +238,8 @@ ca:
       title: Edita la família
     lapsed:
       family_plan_no_longer_active: El pla Family ja no està actiu
-      your_family_plan_is_no_longer_active_so_family_features: El teu pla Family ja no està actiu, així que les funcions familiars estan en pausa per a tothom. La teva família i els seus membres es conserven — en renovar-lo es restaura l'accés complet.
-      your_family_s_plan_is_no_longer_active_so_family: El pla de la teva família ja no està actiu, així que les funcions familiars estan en pausa. Es reactivaran quan el propietari de la família el renovi — no necessites una subscripció pròpia.
+      your_family_plan_is_no_longer_active_so_family_features: El teu pla Family ja no està actiu, així que les funcions familiars estan en pausa per a tothom. La teva família i els seus membres es conserven - en renovar-lo es restaura l'accés complet.
+      your_family_s_plan_is_no_longer_active_so_family: El pla de la teva família ja no està actiu, així que les funcions familiars estan en pausa. Es reactivaran quan el propietari de la família el renovi - no necessites una subscripció pròpia.
       members: Membres
       remove: Elimina
       your_location_sharing: La teva compartició d'ubicació
@@ -486,11 +486,11 @@ ca:
       extract_additional_data_from_this_import: Extreu dades addicionals d'aquesta importació
       dawarich_originally_imported_your_file_as_raw_gps_points_the: 'Dawarich va importar originalment el teu arxiu com a punts GPS en brut. L''arxiu també conté:'
       visits: Visites
-      places_where_the_source_app_recorded_you_spending_time_with: "— llocs on l'aplicació d'origen va registrar que hi vas passar temps, amb hores d'inici i finalització."
+      places_where_the_source_app_recorded_you_spending_time_with: "- llocs on l'aplicació d'origen va registrar que hi vas passar temps, amb hores d'inici i finalització."
       tracks: Trajectes
-      journeys_identified_between_those_visits_with_their_classified_transport: "— desplaçaments identificats entre aquestes visites, amb el seu mitjà de transport classificat (conduint, caminant, en bicicleta, transport públic, …)."
+      journeys_identified_between_those_visits_with_their_classified_transport: "- desplaçaments identificats entre aquestes visites, amb el seu mitjà de transport classificat (conduint, caminant, en bicicleta, transport públic, …)."
       places: Llocs
-      the_named_places_home_work_frequent_restaurants_the_source_app: "— els llocs amb nom (casa, feina, restaurants freqüents) que l'aplicació d'origen va associar amb les teves visites."
+      the_named_places_home_work_frequent_restaurants_the_source_app: "- els llocs amb nom (casa, feina, restaurants freqüents) que l'aplicació d'origen va associar amb les teves visites."
       extract: Extreu
       extract_to_add_html: Fes clic a <strong>Extreu</strong> per afegir aquestes dades al teu compte de Dawarich. Els punts existents no es modifiquen. Les visites i llocs ja detectats a partir dels teus punts per Dawarich es mantenen en paral·lel amb els importats.
       trust_the_source_app_s_classification: Confia en la classificació de l'aplicació d'origen
@@ -569,7 +569,7 @@ ca:
     new:
       back_to_imports: Torna a les importacions
       google_timeline_file_too_large: L'arxiu de Google Timeline és massa gran?
-      your_data_never_leaves_your_browser: "— les teves dades mai surten del teu navegador."
+      your_data_never_leaves_your_browser: "- les teves dades mai surten del teu navegador."
       new_import: Nova importació
       split_it_with_our_free_private_tool: Divideix-lo amb la nostra eina gratuïta i privada
       new_import_2: Nova importació
@@ -787,17 +787,17 @@ ca:
       try_dawarich_cloud: Prova Dawarich Cloud
       shared_with_dawarich: Compartit amb Dawarich
       map_your_own_journeys: Mapeja els teus propis viatges.
-      dawarich_turns_your_own_location_history_into_maps_worth_sharing: Dawarich transforma el teu propi historial d'ubicacions en mapes que val la pena compartir — de codi obert, autoallotjable i teu per sempre.
+      dawarich_turns_your_own_location_history_into_maps_worth_sharing: Dawarich transforma el teu propi historial d'ubicacions en mapes que val la pena compartir - de codi obert, autoallotjable i teu per sempre.
       see_how_it_works: Descobreix com funciona
       open_source: Codi obert
       self_hostable: Autoallotjable
-      managed_cloud_no_setup: Núvol gestionat — sense configuració
+      managed_cloud_no_setup: Núvol gestionat - sense configuració
       shared_on_dawarich: Compartit a Dawarich
       dawarich_logo: Logotip de Dawarich
   map:
     onboarding_modal:
       welcome_to_dawarich: Benvingut/da a Dawarich!
-      your_map_starts_with_your_next_step_literally: El teu mapa comença amb el teu proper pas — literalment.
+      your_map_starts_with_your_next_step_literally: El teu mapa comença amb el teu proper pas - literalment.
       start_tracking_now: Comença a fer el seguiment ara
       minutes: 2 minuts
       get_the_app_scan_a_qr_code_and_watch_your: Descarrega l'app, escaneja un codi QR i veu com apareixen avui mateix els teus primers punts al mapa.
@@ -829,7 +829,7 @@ ca:
       or: O
       grab_your_api_key_from: Obtén la teva clau API des de
       and_follow_the: i segueix la
-      have_old_location_history_like_a_google_takeout_tracking_works: Tens un historial d'ubicacions antic, com un Google Takeout? El seguiment funciona des d'ara mateix — pots
+      have_old_location_history_like_a_google_takeout_tracking_works: Tens un historial d'ubicacions antic, com un Google Takeout? El seguiment funciona des d'ara mateix - pots
       import_your_history_anytime: importar el teu historial quan vulguis
       got_it_let_s_start: Entesos, comencem!
       close: tanca
@@ -873,7 +873,7 @@ ca:
         show_individual_location_points: Mostra els punts d'ubicació individuals
         edit_points: Edita els punts
         allow_dragging_points_to_correct_their_position: Permet arrossegar els punts per corregir-ne la posició.
-        editing_points_is_a_pro_feature_this_stays_on_for: Editar punts és una funció de Pro — es manté activat només per a la sessió actual, i els moviments no es desen al pla Lite.
+        editing_points_is_a_pro_feature_this_stays_on_for: Editar punts és una funció de Pro - es manté activat només per a la sessió actual, i els moviments no es desen al pla Lite.
         allow_dragging_points_to_correct_their_position_remembered_across_sessio: Permet arrossegar els punts per corregir-ne la posició. Es recorda entre sessions.
         routes: Rutes
         show_connected_route_lines: Mostra les línies de ruta connectades
@@ -915,7 +915,7 @@ ca:
         show_family_member_locations: Mostra les ubicacions dels membres de la família
         click_to_center_on_member: Fes clic per centrar en el membre
         appearance: Aparença
-        custom_map_colors_layer_colors_and_vector_tiles_are_pro: Els colors de mapa personalitzats, els colors de capa i els tessel·les vectorials són funcions de Pro — les pots previsualitzar aquí, però no es desaran al pla Lite.
+        custom_map_colors_layer_colors_and_vector_tiles_are_pro: Els colors de mapa personalitzats, els colors de capa i els tessel·les vectorials són funcions de Pro - les pots previsualitzar aquí, però no es desaran al pla Lite.
         map_style: Estil del mapa
         light: Clar
         dark: Fosc
@@ -937,8 +937,8 @@ ca:
         serve_the_base_map_from_your_own_source_accepts_protomaps: Serveix el mapa base des de la teva pròpia font. Accepta tessel·les vectorials amb l'esquema de Protomaps o tessel·les ràster XYZ (totes dues han d'incloure {z}, {x} i {y}), o una URL d'estil MapLibre completa. Deixa-ho buit per fer servir les tessel·les integrades.
         base_map_layers: Capes del mapa base
         toggle_base_map_elements_changes_apply_immediately: Activa o desactiva els elements del mapa base. Els canvis s'apliquen immediatament.
-        pro_feature_you_can_preview_changes_here_but_they_won: Funció de Pro — pots previsualitzar els canvis aquí, però no es desaran al pla Lite.
-        the_custom_style_draws_no_labels_or_points_of_interest: L'estil personalitzat no dibuixa etiquetes ni punts d'interès — aquests interruptors estan desactivats mentre és actiu.
+        pro_feature_you_can_preview_changes_here_but_they_won: Funció de Pro - pots previsualitzar els canvis aquí, però no es desaran al pla Lite.
+        the_custom_style_draws_no_labels_or_points_of_interest: L'estil personalitzat no dibuixa etiquetes ni punts d'interès - aquests interruptors estan desactivats mentre és actiu.
         points_of_interest: Punts d'interès
         choose_which_poi_categories_appear_on_the_map: Tria quines categories de punts d'interès apareixen al mapa.
         meters_between_routes: Metres entre rutes
@@ -959,7 +959,7 @@ ca:
         fog_of_war_threshold: Llindar de la boira de guerra
         minimum_points_to_clear_fog: Punts mínims per aclarir la boira
         gps_noise_filtering: Filtratge de soroll GPS
-        hide_readings_that_cannot_be_a_real_position_impossible_jumps: Amaga les lectures que no poden ser una posició real — salts impossibles, coordenades incorrectes. Desactiva-ho per veure tots els punts en brut.
+        hide_readings_that_cannot_be_a_real_position_impossible_jumps: Amaga les lectures que no poden ser una posició real - salts impossibles, coordenades incorrectes. Desactiva-ho per veure tots els punts en brut.
         re_evaluate_past_data: Torna a avaluar les dades passades
         clears_existing_anomaly_flags_and_re_runs_the_filter_on: Elimina les marques d'anomalia existents i torna a executar el filtre sobre tots els teus punts amb la configuració actual. Els trajectes, estadístiques i resums es reconstruiran després. S'executa en segon pla.
         recalculate_tracks_stats: Recalcula trajectes i estadístiques
@@ -1285,7 +1285,7 @@ ca:
       last_month: El mes passat
       close_studio: Tanca l'estudi
       recenter: Torna a centrar
-      drag_to_pan_scroll_to_zoom_the_frame_is_what: Arrossega per desplaçar-te, desplaça la roda per fer zoom — el marc és el que s'exportarà.
+      drag_to_pan_scroll_to_zoom_the_frame_is_what: Arrossega per desplaçar-te, desplaça la roda per fer zoom - el marc és el que s'exportarà.
       layout: Disposició
       theme: Tema
       customize_colors: Personalitza els colors
@@ -1301,7 +1301,7 @@ ca:
       track_opacity: Opacitat del trajecte
       track_width: Amplada del trajecte
       recent_posters: Pòsters recents
-      server_rendered_posters_from_save_to_gallery_they_stay_here: Pòsters generats pel servidor mitjançant "Desa a la galeria" — es mantenen aquí entre sessions.
+      server_rendered_posters_from_save_to_gallery_they_stay_here: Pòsters generats pel servidor mitjançant "Desa a la galeria" - es mantenen aquí entre sessions.
       export_a_file: Exporta un arxiu
       format: Format
       png: PNG
@@ -1351,7 +1351,7 @@ ca:
     background_jobs:
       index:
         spamming_many_new_jobs_at_once_is_a_bad_idea: Llançar moltes tasques noves alhora no és una bona idea. Deixa que acabin o buida la cua abans.
-        gps_noise_detection_changed_in_this_release_so_your_existing: La detecció de soroll GPS ha canviat en aquesta versió, així que els teus punts existents s'han posat a la cua per a una única revisió. Els teus trajectes, estadístiques i resums es reconstrueixen a partir del resultat, cosa que pot trigar una mica si tens un historial gran — alguns punts poden aparèixer o desaparèixer del mapa quan acabi. No se suprimeix cap punt, i el procés s'executa a la cua de prioritat més baixa perquè tota la resta hi tingui preferència.
+        gps_noise_detection_changed_in_this_release_so_your_existing: La detecció de soroll GPS ha canviat en aquesta versió, així que els teus punts existents s'han posat a la cua per a una única revisió. Els teus trajectes, estadístiques i resums es reconstrueixen a partir del resultat, cosa que pot trigar una mica si tens un historial gran - alguns punts poden aparèixer o desaparèixer del mapa quan acabi. No se suprimeix cap punt, i el procés s'executa a la cua de prioritat més baixa perquè tota la resta hi tingui preferència.
         start_reverse_geocoding: Inicia la geocodificació inversa
         this_job_will_re_run_reverse_geocoding_process_for_all: Aquesta tasca tornarà a executar el procés de geocodificació inversa per a tots els punts de la teva base de dades. Pot trigar uns quants dies o fins i tot setmanes segons la quantitat de punts que tinguis!
         continue_reverse_geocoding: Continua la geocodificació inversa
@@ -1370,7 +1370,7 @@ ca:
       changelog_consent:
         what_s_new_notices: Avisos de novetats
         a_what_s_new_notice_is_shown_when_a_new: Es mostra un avís de "Novetats" quan es publica una versió nova de Dawarich, incloses les correccions de seguretat. Carrega un petit widget des de
-        which_like_any_web_request_sees_your_ip_address_browser: ", que — com qualsevol petició web — veu la teva adreça IP, navegador i la URL de la pàgina, més la teva versió de Dawarich. Mai rep el teu compte, correu electrònic ni ubicació."
+        which_like_any_web_request_sees_your_ip_address_browser: ", que - com qualsevol petició web - veu la teva adreça IP, navegador i la URL de la pàgina, més la teva versió de Dawarich. Mai rep el teu compte, correu electrònic ni ubicació."
         get_a_what_s_new_notice_when_a_new_dawarich: Rep un avís de "Novetats" quan es publica una versió nova de Dawarich, incloses les correccions de seguretat. L'avís carrega un petit widget des de
         turn_off_notices: Desactiva els avisos
         turn_on_notices: Activa els avisos
@@ -1645,7 +1645,7 @@ ca:
       changelog_prompt:
         stay_up_to_date: Vols mantenir-te al dia?
         get_a_what_s_new_notice_when_a_new_dawarich: Rep un avís de "Novetats" quan es publica una versió nova de Dawarich, incloses les correccions de seguretat. L'avís carrega un petit widget des de
-        like_any_web_request_that_host_sees_your_ip_address: ". Com qualsevol petició web, aquest servidor veu la teva adreça IP, navegador i la URL de la pàgina, més la teva versió de Dawarich — mai el teu compte, correu electrònic ni ubicació. Ho pots canviar en qualsevol moment."
+        like_any_web_request_that_host_sees_your_ip_address: ". Com qualsevol petició web, aquest servidor veu la teva adreça IP, navegador i la URL de la pàgina, més la teva versió de Dawarich - mai el teu compte, correu electrònic ni ubicació. Ho pots canviar en qualsevol moment."
         no_thanks: No, gràcies
         yes_notify_me: Sí, avisa'm
       help_links:
@@ -1771,15 +1771,15 @@ ca:
       not_found:
         this_shared_link_is_no_longer_available: Aquest enllaç compartit ja no està disponible
         the_owner_may_have_revoked_the_link_or_it_may: El propietari pot haver revocat l'enllaç, o pot haver caducat.
-        not_found_dawarich: No trobat — Dawarich
+        not_found_dawarich: No trobat - Dawarich
       phrase_prompt:
         enter_the_magic_phrase: Introdueix la paraula màgica
         this_shared_link_is_protected_ask_the_owner_for_the: Aquest enllaç compartit està protegit. Demana la paraula al propietari.
         magic_phrase: paraula màgica
         unlock: Desbloqueja
-        enter_phrase_dawarich: Introdueix la paraula — Dawarich
+        enter_phrase_dawarich: Introdueix la paraula - Dawarich
       show:
-        name_shared_on_dawarich: "%{name} — Compartit a Dawarich"
+        name_shared_on_dawarich: "%{name} - Compartit a Dawarich"
         shared_from_dawarich: Compartit des de Dawarich
     map:
       date_navigation_v2:
@@ -1988,7 +1988,7 @@ ca:
         stop_duration: parada · %{duration}
         transfer: transbord
         moving: en moviment
-        mode_unclear: Mode no clar — la confiança de la detecció és massa baixa per determinar-ne un
+        mode_unclear: Mode no clar - la confiança de la detecció és massa baixa per determinar-ne un
         short_segments:
           one: 1 segment curt
           other: "%{count} segments curts"
@@ -2004,7 +2004,7 @@ ca:
     resume:
       show:
         finish_setting_up_your_account: Acaba de configurar el teu compte
-        your_account_is_almost_ready_to_start_tracking_your_location: El teu compte gairebé està a punt. Per començar a registrar les teves dades d'ubicació, completa el procés de subscripció. No se't cobrarà durant els 7 dies de prova gratuïta — cancel·la-ho en qualsevol moment abans que acabi i no se't facturarà.
+        your_account_is_almost_ready_to_start_tracking_your_location: El teu compte gairebé està a punt. Per començar a registrar les teves dades d'ubicació, completa el procés de subscripció. No se't cobrarà durant els 7 dies de prova gratuïta - cancel·la-ho en qualsevol moment abans que acabi i no se't facturarà.
         resume_checkout: Reprèn el pagament
         or_delete_my_account: O suprimeix el meu compte
         are_you_sure_this_cannot_be_undone: Estàs segur? Aquesta acció no es pot desfer.
@@ -2025,7 +2025,7 @@ ca:
     recalculate_button:
       recalculating_hellip: Recalculant…
       recalculate: Recalcula
-      recalculation_failed_try_again: El recàlcul ha fallat — torna-ho a provar.
+      recalculation_failed_try_again: El recàlcul ha fallat - torna-ho a provar.
       recalculate_this_trip_s_path_distance_and_countries_from_your: Recalcular el recorregut, la distància i els països d'aquest viatge a partir dels teus punts més recents?
     trip:
       no_points_found: No s'ha trobat cap punt
@@ -2136,7 +2136,7 @@ ca:
         total_distance: Distància total
         track_your_own_adventures_with: Fes seguiment de les teves pròpies aventures amb
         dawarich: Dawarich
-        your_personal_memories_mapper: "— el teu mapejador de records personal."
+        your_personal_memories_mapper: "- el teu mapejador de records personal."
         month: Mes
         distance: Distància
         first_time_count:
@@ -2253,15 +2253,15 @@ ca:
       once_confirmed_all_your_location_history_tracks_areas_visits_trips: Un cop confirmat, tot el teu historial d'ubicacions, trajectes, àrees, visites, viatges i pertinences a famílies s'eliminaran permanentment.
       permanently_delete_my_account: Suprimeix el meu compte permanentment
       didn_t_request_this: No ho has sol·licitat tu?
-      ignore_this_email_the_link_expires_in_1_hour_and: Ignora aquest correu electrònic — l'enllaç caduca d'aquí a 1 hora i el teu compte es manté intacte. Si continues rebent aquests correus, canvia la teva contrasenya immediatament.
+      ignore_this_email_the_link_expires_in_1_hour_and: Ignora aquest correu electrònic - l'enllaç caduca d'aquí a 1 hora i el teu compte es manté intacte. Si continues rebent aquests correus, canvia la teva contrasenya immediatament.
       if_you_have_an_active_apple_or_google_subscription_remember: Si tens una subscripció activa amb Apple o Google, recorda cancel·lar-la a la configuració de la plataforma per evitar càrrecs addicionals.
       link: 'Enllaç:'
       confirm_account_deletion_hi: Confirma la supressió del compte Hola
       we_received_a_request_to_delete_your_dawarich_account_this: ", Hem rebut una sol·licitud per suprimir el teu compte de Dawarich. Aquesta és la teva última oportunitat per aturar la supressió. Un cop confirmat, tot el teu historial d'ubicacions, trajectes, àrees, visites, viatges i pertinences a famílies s'eliminaran permanentment. Suprimeix el meu compte permanentment:"
-      didn_t_request_this_ignore_this_email_the_link_expires: No ho has sol·licitat tu? Ignora aquest correu electrònic — l'enllaç caduca d'aquí a 1 hora i el teu compte es manté intacte. Si continues rebent aquests correus, canvia la teva contrasenya immediatament. Si tens una subscripció activa amb Apple o Google, recorda cancel·lar-la a la configuració de la plataforma per evitar càrrecs addicionals.
+      didn_t_request_this_ignore_this_email_the_link_expires: No ho has sol·licitat tu? Ignora aquest correu electrònic - l'enllaç caduca d'aquí a 1 hora i el teu compte es manté intacte. Si continues rebent aquests correus, canvia la teva contrasenya immediatament. Si tens una subscripció activa amb Apple o Google, recorda cancel·lar-la a la configuració de la plataforma per evitar càrrecs addicionals.
       we_received_a_request_to_delete_your_dawarich_account_this_2: Hem rebut una sol·licitud per suprimir el teu compte de Dawarich. Aquesta és la teva última oportunitat per aturar la supressió. Un cop confirmat, tot el teu historial d'ubicacions, trajectes, àrees, visites, viatges i pertinences a famílies s'eliminaran permanentment.
       permanently_delete_my_account_2: 'Suprimeix el meu compte permanentment:'
-      didn_t_request_this_ignore_this_email_the_link_expires_2: No ho has sol·licitat tu? Ignora aquest correu electrònic — l'enllaç caduca d'aquí a 1 hora i el teu compte es manté intacte. Si continues rebent aquests correus, canvia la teva contrasenya immediatament.
+      didn_t_request_this_ignore_this_email_the_link_expires_2: No ho has sol·licitat tu? Ignora aquest correu electrònic - l'enllaç caduca d'aquí a 1 hora i el teu compte es manté intacte. Si continues rebent aquests correus, canvia la teva contrasenya immediatament.
     archival_approaching:
       your_data_history_is_filling_up: El teu historial de dades s'està omplint
       hi: Hola
@@ -2269,22 +2269,22 @@ ca:
       heads_up: 'Avís:'
       your_oldest_location_data_will_be_archived_in_about: Les teves dades d'ubicació més antigues s'arxivaran d'aquí a
       weeks: 2 setmanes
-      on_the_lite_plan_your_most_recent_12_months_of: Al pla Lite, els teus últims 12 mesos de dades es mantenen totalment cercables i interactius. Les dades més antigues s'arxiven — sempre es poden exportar, però no apareixeran al teu mapa, a la cerca, a les estadístiques ni a la reproducció de la línia de temps.
+      on_the_lite_plan_your_most_recent_12_months_of: Al pla Lite, els teus últims 12 mesos de dades es mantenen totalment cercables i interactius. Les dades més antigues s'arxiven - sempre es poden exportar, però no apareixeran al teu mapa, a la cerca, a les estadístiques ni a la reproducció de la línia de temps.
       upgrade_to_pro_to_keep_your_full_history: 'Millora a Pro per conservar tot el teu historial:'
-      unlimited_searchable_history_every_month_every_year: Historial cercable il·limitat — cada mes, cada any
+      unlimited_searchable_history_every_month_every_year: Historial cercable il·limitat - cada mes, cada any
       heatmap_fog_of_war_and_globe_view: Mapa de calor, boira de guerra i vista de globus
       full_write_api_access: Accés complet a l'API d'escriptura
       immich_and_photoprism_integrations: Integracions amb Immich i PhotoPrism
       upgrade_to_pro: Millora a Pro
-      your_data_is_always_yours_pro_simply_makes_all_of: Les teves dades sempre són teves — Pro simplement fa que totes siguin cercables i interactives dins de l'app.
+      your_data_is_always_yours_pro_simply_makes_all_of: Les teves dades sempre són teves - Pro simplement fa que totes siguin cercables i interactives dins de l'app.
       questions_drop_me_a_message_at_hi_dawarich_app_or: Tens preguntes? Escriu-me a hi@dawarich.app o respon directament a aquest correu electrònic.
       best_regards: Salutacions,
       evgenii_from_dawarich: Evgenii, de Dawarich
       your_data_history_is_filling_up_hi: El teu historial de dades s'està omplint Hola
-      this_is_evgenii_from_dawarich_heads_up_your_oldest_location: ", sóc l'Evgenii, de Dawarich. Avís: Les teves dades d'ubicació més antigues s'arxivaran d'aquí a 2 setmanes. Al pla Lite, els teus últims 12 mesos de dades es mantenen totalment cercables i interactius. Les dades més antigues s'arxiven — sempre es poden exportar, però no apareixeran al teu mapa, a la cerca, a les estadístiques ni a la reproducció de la línia de temps. Millora a Pro per conservar tot el teu historial: - Historial cercable il·limitat — cada mes, cada any - Mapa de calor, boira de guerra i vista de globus - Accés complet a l'API d'escriptura - Integracions amb Immich i PhotoPrism Millora ara:"
-      your_data_is_always_yours_pro_simply_makes_all_of_2: Les teves dades sempre són teves — Pro simplement fa que totes siguin cercables i interactives dins de l'app. Tens preguntes? Escriu-me a hi@dawarich.app o respon directament a aquest correu electrònic. Salutacions, Evgenii, de Dawarich
+      this_is_evgenii_from_dawarich_heads_up_your_oldest_location: ", sóc l'Evgenii, de Dawarich. Avís: Les teves dades d'ubicació més antigues s'arxivaran d'aquí a 2 setmanes. Al pla Lite, els teus últims 12 mesos de dades es mantenen totalment cercables i interactius. Les dades més antigues s'arxiven - sempre es poden exportar, però no apareixeran al teu mapa, a la cerca, a les estadístiques ni a la reproducció de la línia de temps. Millora a Pro per conservar tot el teu historial: - Historial cercable il·limitat - cada mes, cada any - Mapa de calor, boira de guerra i vista de globus - Accés complet a l'API d'escriptura - Integracions amb Immich i PhotoPrism Millora ara:"
+      your_data_is_always_yours_pro_simply_makes_all_of_2: Les teves dades sempre són teves - Pro simplement fa que totes siguin cercables i interactives dins de l'app. Tens preguntes? Escriu-me a hi@dawarich.app o respon directament a aquest correu electrònic. Salutacions, Evgenii, de Dawarich
       heads_up_your_oldest_location_data_will_be_archived_in: 'Avís: Les teves dades d''ubicació més antigues s''arxivaran d''aquí a 2 setmanes.'
-      unlimited_searchable_history_every_month_every_year_2: "- Historial cercable il·limitat — cada mes, cada any"
+      unlimited_searchable_history_every_month_every_year_2: "- Historial cercable il·limitat - cada mes, cada any"
       heatmap_fog_of_war_and_globe_view_2: "- Mapa de calor, boira de guerra i vista de globus"
       full_write_api_access_2: "- Accés complet a l'API d'escriptura"
       immich_and_photoprism_integrations_2: "- Integracions amb Immich i PhotoPrism"
@@ -2318,13 +2318,13 @@ ca:
     oauth_account_link:
       confirm_account_link: Confirma la vinculació del compte
       hi: Hola
-      account_link_request_html: "Algú — esperem que siguis tu — està intentant vincular l'inici de sessió amb <strong>%{provider}</strong> al teu compte de Dawarich. Si fas clic al botó de sota, permetràs que aquest mètode d'inici de sessió accedeixi a aquest compte a partir d'ara."
-      account_link_request_text: "Algú — esperem que siguis tu — està intentant vincular l'inici de sessió amb %{provider} al teu compte de Dawarich. Si fas clic a l'enllaç de sota, permetràs que aquest mètode d'inici de sessió accedeixi a aquest compte a partir d'ara."
+      account_link_request_html: "Algú - esperem que siguis tu - està intentant vincular l'inici de sessió amb <strong>%{provider}</strong> al teu compte de Dawarich. Si fas clic al botó de sota, permetràs que aquest mètode d'inici de sessió accedeixi a aquest compte a partir d'ara."
+      account_link_request_text: "Algú - esperem que siguis tu - està intentant vincular l'inici de sessió amb %{provider} al teu compte de Dawarich. Si fas clic a l'enllaç de sota, permetràs que aquest mètode d'inici de sessió accedeixi a aquest compte a partir d'ara."
       link: Enllaç
       didn_t_request_this: No ho has sol·licitat tu?
-      ignore_this_email_the_link_expires_in_15_minutes_and: Ignora aquest correu electrònic — l'enllaç caduca d'aquí a 15 minuts i no es farà cap canvi al teu compte. Si continues rebent aquests correus, canvia la teva contrasenya.
+      ignore_this_email_the_link_expires_in_15_minutes_and: Ignora aquest correu electrònic - l'enllaç caduca d'aquí a 15 minuts i no es farà cap canvi al teu compte. Si continues rebent aquests correus, canvia la teva contrasenya.
       link_2: 'Enllaç:'
-      didn_t_request_this_ignore_this_email_the_link_expires: No ho has sol·licitat tu? Ignora aquest correu electrònic — l'enllaç caduca d'aquí a 15 minuts i no es farà cap canvi al teu compte. Si continues rebent aquests correus, canvia la teva contrasenya.
+      didn_t_request_this_ignore_this_email_the_link_expires: No ho has sol·licitat tu? Ignora aquest correu electrònic - l'enllaç caduca d'aquí a 15 minuts i no es farà cap canvi al teu compte. Si continues rebent aquests correus, canvia la teva contrasenya.
     otp_account_locked:
       account_temporarily_locked: Compte bloquejat temporalment
       hi: Hola
@@ -2483,7 +2483,7 @@ ca:
       finish_signup: Acaba el registre
       resume: Reprèn
       subscribe: Subscriu-te
-      pro_preview: Disponible a Pro — fes clic per previsualitzar
+      pro_preview: Disponible a Pro - fes clic per previsualitzar
       pro_only: Disponible a Pro
       pro_badge: " Pro"
     timeline:
@@ -2638,12 +2638,12 @@ ca:
         auth:
           apple:
             apple_has_not_verified_this_email_sign_in_with_password: Apple no ha verificat aquest correu electrònic. Inicia sessió amb contrasenya i vincula-ho des de la configuració.
-            this_email_already_has_a_dawarich_account_we_sent_a: Aquest correu electrònic ja té un compte de Dawarich. Hem enviat un enllaç de confirmació a aquesta adreça — fes-hi clic per vincular el teu Apple ID.
+            this_email_already_has_a_dawarich_account_we_sent_a: Aquest correu electrònic ja té un compte de Dawarich. Hem enviat un enllaç de confirmació a aquesta adreça - fes-hi clic per vincular el teu Apple ID.
             we_couldn_t_find_your_existing_account_and_apple_didn: "No hem pogut trobar el teu compte existent, i Apple no ens ha compartit el teu correu electrònic aquesta vegada. Apple només el comparteix una vegada. Ves a appleid.apple.com → Iniciar sessió amb Apple, busca Dawarich, tria \"Deixa de fer servir Iniciar sessió amb Apple\" i torna-ho a provar."
             token_verification_failed: 'La verificació del token d''Apple ha fallat: %{message}'
           google:
             google_has_not_verified_this_email_sign_in_with_password: Google no ha verificat aquest correu electrònic. Inicia sessió amb contrasenya i vincula-ho des de la configuració.
-            this_email_already_has_a_dawarich_account_we_sent_a: Aquest correu electrònic ja té un compte de Dawarich. Hem enviat un enllaç de confirmació a aquesta adreça — fes-hi clic per vincular el teu inici de sessió de Google.
+            this_email_already_has_a_dawarich_account_we_sent_a: Aquest correu electrònic ja té un compte de Dawarich. Hem enviat un enllaç de confirmació a aquesta adreça - fes-hi clic per vincular el teu inici de sessió de Google.
             token_verification_failed: 'La verificació del token de Google ha fallat: %{message}'
           otp_challenges:
             invalid_challenge: 'Repte no vàlid o caducat: %{message}'
@@ -2960,12 +2960,12 @@ ca:
     tracks:
       recalculations:
         re_classification_already_running: La reclassificació ja s'està executant
-        re_classification_started_your_tracks_will_update_over_the_next: S'ha iniciat la reclassificació — els teus trajectes s'actualitzaran durant els propers minuts
+        re_classification_started_your_tracks_will_update_over_the_next: S'ha iniciat la reclassificació - els teus trajectes s'actualitzaran durant els propers minuts
       segments:
         segment_updated: Segment actualitzat
         mode_not_enabled: Aquest mode no està activat a la teva configuració
         update_failed: No s'ha pogut actualitzar el segment
-        reprocess_failed: La redetecció ha fallat — la teva correcció s'ha conservat
+        reprocess_failed: La redetecció ha fallat - la teva correcció s'ha conservat
       share_links:
         not_found: No trobat
     trial:
@@ -2975,8 +2975,8 @@ ca:
         this_welcome_link_has_already_been_used: Aquest enllaç de benvinguda ja s'ha utilitzat.
         link_invalid_or_expired_please_sign_in: Enllaç no vàlid o caducat. Inicia sessió.
         account_no_longer_exists_please_sign_up_again: El compte ja no existeix. Torna't a registrar.
-        trial_active_until: "Benvingut/da a Dawarich — la teva prova gratuïta de 7 dies està activa fins al %{date}."
-        trial_activating: Benvingut/da a Dawarich — la teva prova s'està activant ara mateix.
+        trial_active_until: "Benvingut/da a Dawarich - la teva prova gratuïta de 7 dies està activa fins al %{date}."
+        trial_activating: Benvingut/da a Dawarich - la teva prova s'està activant ara mateix.
     trips:
       notes:
         invalid_date: Data no vàlida
@@ -2986,8 +2986,8 @@ ca:
       trip_was_successfully_created_data_is_being_calculated_in_the: El viatge s'ha creat correctament. Les dades s'estan calculant en segon pla.
       trip_was_successfully_updated: El viatge s'ha actualitzat correctament.
       trip_was_successfully_destroyed: El viatge s'ha suprimit correctament.
-      already_recalculating_this_page_will_update_when_it_s_done: Ja s'està recalculant — aquesta pàgina s'actualitzarà quan finalitzi.
-      recalculating_the_page_will_update_automatically_when_it_s_ready: Recalculant — la pàgina s'actualitzarà automàticament quan estigui llesta.
+      already_recalculating_this_page_will_update_when_it_s_done: Ja s'està recalculant - aquesta pàgina s'actualitzarà quan finalitzi.
+      recalculating_the_page_will_update_automatically_when_it_s_ready: Recalculant - la pàgina s'actualitzarà automàticament quan estigui llesta.
       unsupported_export_format_choose_gpx_or_geojson: Format d'exportació no compatible. Tria GPX o GeoJSON.
       trip_export_initiated_check_the_exports_page_when_it_s: Exportació del viatge iniciada. Consulta la pàgina d'exportacions quan estigui llesta.
       export_failed_to_initiate_please_try_again: L'exportació no s'ha pogut iniciar. Torna-ho a provar.
@@ -2998,7 +2998,7 @@ ca:
         email_not_verified: El correu electrònic del teu Apple ID no està verificat. Verifica'l amb Apple i torna-ho a provar.
         missing_email: "Apple no ha compartit el teu correu electrònic aquesta vegada i no hem pogut trobar el teu compte existent. Ves a appleid.apple.com → Iniciar sessió amb Apple → Dawarich → Deixa de fer servir Iniciar sessió amb Apple, i torna-ho a provar."
         did_not_complete: L'inici de sessió amb Apple no s'ha completat. Torna-ho a provar.
-        state_mismatch: Discrepància d'estat en l'inici de sessió amb Apple — torna-ho a provar.
+        state_mismatch: Discrepància d'estat en l'inici de sessió amb Apple - torna-ho a provar.
       destroy_confirmations:
         this_deletion_link_has_already_been_used: Aquest enllaç de supressió ja s'ha utilitzat.
         deletion_link_invalid_or_expired: Enllaç de supressió no vàlid o caducat.
@@ -3019,7 +3019,7 @@ ca:
         authentication_failed: 'Autenticació fallida: %{detail}'
         oidc_account_requires_administrator: El teu compte l'ha de crear un administrador abans que puguis iniciar sessió amb OIDC. Contacta amb el teu administrador.
         account_creation_failed: No s'ha pogut crear el teu compte. Torna-ho a provar o contacta amb el suport tècnic.
-        email_not_verified: "El teu correu electrònic de %{provider} no està verificat. Verifica'l amb el proveïdor i torna-ho a provar — o inicia sessió amb la teva contrasenya existent."
+        email_not_verified: "El teu correu electrònic de %{provider} no està verificat. Verifica'l amb el proveïdor i torna-ho a provar - o inicia sessió amb la teva contrasenya existent."
       otp_challenge:
         session_expired_please_sign_in_again: La sessió ha caducat. Torna a iniciar sessió.
         signed_in_successfully: Sessió iniciada correctament.
@@ -3067,7 +3067,7 @@ ca:
       visits_merged: Visites fusionades.
       visit_removed: Visita eliminada. Els teus punts d'ubicació encara hi són.
       too_many_visits: "Pots actualitzar fins a %{count} visites alhora. Redueix la selecció i torna-ho a provar."
-      missing_visits: Algunes d'aquestes visites ja no hi són — probablement s'han editat en una altra pestanya. Actualitza la pàgina i torna-ho a provar.
+      missing_visits: Algunes d'aquestes visites ja no hi són - probablement s'han editat en una altra pestanya. Actualitza la pàgina i torna-ho a provar.
       plan_window_visits: Algunes d'aquestes visites estan fora de la finestra de 12 mesos del teu pla Lite. Millora a Pro per gestionar dades més antigues.
       bulk_removed:
         one: "%{count} visita eliminada. Els teus punts d'ubicació encara hi són."
@@ -3090,7 +3090,7 @@ ca:
       explore_features:
         subject: Descobreix les funcions de Dawarich!
       archival_approaching:
-        subject: Conserva tot el teu historial — millora a Pro
+        subject: Conserva tot el teu historial - millora a Pro
       oauth_account_link:
         subject: "Confirma la vinculació de %{provider} al teu compte de Dawarich"
       account_destroy_confirmation:
@@ -3101,7 +3101,7 @@ ca:
         year_end:
           subject: El teu any %{year} en retrospectiva - Dawarich
         monthly:
-          subject: El teu %{month} %{year} en retrospectiva — Dawarich
+          subject: El teu %{month} %{year} en retrospectiva - Dawarich
   models:
     family:
       location_request:
@@ -3727,7 +3727,7 @@ ca:
 
         Això elimina els punts, visites, llocs, etiquetes i trajectes de demostració, i el viatge a Praga.
 
-        Les teves dades reals — qualsevol cosa que hagis importat, editat, confirmat o creat tu mateix — NO es veuran afectades.
+        Les teves dades reals - qualsevol cosa que hagis importat, editat, confirmat o creat tu mateix - NO es veuran afectades.
       creating: Creant les teves dades de demostració…
       creating_help: Generant un mes de seguiment a Berlín més un cap de setmana de viatge a Praga. Triga uns segons.
     visits:
@@ -3862,7 +3862,7 @@ ca:
         Això és de llarga durada i reconstrueix dades derivades.
 
         • Els trajectes, estadístiques i resums es regeneraran des de zero fent servir els teus punts i configuració actuals.
-        • Els trajectes/estadístiques existents se substitueixen — qualsevol ajust manual que hagis fet a un trajecte se sobreescriurà.
+        • Els trajectes/estadístiques existents se substitueixen - qualsevol ajust manual que hagis fet a un trajecte se sobreescriurà.
         • En funció del teu historial, això pot trigar diversos minuts; rebràs una notificació quan finalitzi.
 
         Vols continuar?
@@ -3874,8 +3874,8 @@ ca:
         Vols continuar?
       custom_style_load_failed: No s'ha pogut carregar l'estil de mapa personalitzat; es torna a l'estil per defecte.
       invalid_tile_url: "La URL de la tessel·la ha d'incloure els paràmetres {z}, {x} i {y}, o ser una URL d'estil MapLibre"
-      layer_unavailable_custom_style: No disponible amb l'estil de mapa personalitzat — no dibuixa etiquetes ni punts d'interès
-      layer_unavailable_foreign_basemap: No disponible amb un mapa base ràster o d'estil personalitzat — aquestes capes provenen de les tessel·les vectorials integrades
+      layer_unavailable_custom_style: No disponible amb l'estil de mapa personalitzat - no dibuixa etiquetes ni punts d'interès
+      layer_unavailable_foreign_basemap: No disponible amb un mapa base ràster o d'estil personalitzat - aquestes capes provenen de les tessel·les vectorials integrades
       make_changes_to_apply: Fes canvis per activar el botó Aplica
       re_evaluation_queued: Reavaluació posada a la cua. El mapa s'actualitzarà quan finalitzi la tasca.
       recalculation_queued: Recàlcul posat a la cua. Rebràs una notificació quan finalitzi.
@@ -4011,7 +4011,7 @@ ca:
       tracks: Trajectes
       video: Vídeo
       area_number: "Àrea %{id}"
-      place_name_locked: "\U0001F512 Vas posar nom a aquest lloc, així que l'assignació automàtica de noms no el canviarà. Canvia'l a “Lloc suggerit” per tornar-lo a l'assignació automàtica."
+      place_name_locked: "\U0001F512 Vas posar nom a aquest lloc, així que l'assignació automàtica de noms no el canviarà. Canvia'l a \"Suggested place\" per tornar-lo a l'assignació automàtica."
     map_controls:
       add_visit: Afegeix una visita
       create_place: Crea un lloc
@@ -4042,12 +4042,12 @@ ca:
         other: "Ubicacions de la família actualitzades (%{count} membres)"
       refresh_failed: No s'han pogut actualitzar les ubicacions de la família
     hexagons:
-      limit_warning: Es mostren els primers 100.000 punts d'aquest interval — redueix l'interval de dates per obtenir més detall.
+      limit_warning: Es mostren els primers 100.000 punts d'aquest interval - redueix l'interval de dates per obtenir més detall.
       load_failed: 'No s''han pogut carregar els hexàgons: %{error}'
       points: "<strong>%{count}</strong> punts"
     layer_preview:
       ended: "La previsualització de %{layer} ha finalitzat."
-      remaining: "Previsualitzant %{layer} — %{seconds}s restants."
+      remaining: "Previsualitzant %{layer} - %{seconds}s restants."
       started: "Previsualitzant %{layer} durant %{seconds} segons."
     poster:
       categories:
@@ -4056,7 +4056,7 @@ ca:
         wallpaper: Fons de pantalla
       export_failed: "L'exportació del pòster ha fallat: %{error}"
       open_failed: "No s'ha pogut obrir l'estudi de pòsters: %{error}"
-      order_summary: "pòster %{layout} — %{price}"
+      order_summary: "pòster %{layout} - %{price}"
       theme_load_failed: 'No s''ha pogut carregar el tema: %{error}'
       theme_preset_failed: 'No s''ha pogut carregar el preset de tema: %{error}'
       layouts:
@@ -4082,26 +4082,26 @@ ca:
         wallpaper-ultrawide: Escriptori panoràmic
         wallpaper-phone: Mòbil
         wallpaper-tablet: Tauleta
-      frame_too_wide: Aquesta vista és més ampla que l'àrea de pòster més gran — el pòster desat tindrà més zoom que la previsualització.
+      frame_too_wide: Aquesta vista és més ampla que l'àrea de pòster més gran - el pòster desat tindrà més zoom que la previsualització.
       load: Carrega
       loading: Carregant…
       loading_tracks: Carregant trajectes per al nou interval…
-      no_location_data: No hi ha dades d'ubicació en aquest interval de dates — tria un interval amb trajectes a la barra de dates de dalt.
-      no_tracks_in_frame: No hi ha trajectes dins del marc — mou o fes zoom al mapa sobre la teva ruta per desar-la a la galeria.
-      queued: A la cua — generant-se al servidor a Pòsters recents…
+      no_location_data: No hi ha dades d'ubicació en aquest interval de dates - tria un interval amb trajectes a la barra de dates de dalt.
+      no_tracks_in_frame: No hi ha trajectes dins del marc - mou o fes zoom al mapa sobre la teva ruta per desar-la a la galeria.
+      queued: A la cua - generant-se al servidor a Pòsters recents…
       rendering: Generant %{width} × %{height}px…
       saved: Desat
       saved_at_dpi: Desat a %{dpi} ppp (límit GL del dispositiu)
       untitled: Pòster sense títol
       order_errors:
-        connection: No s'ha pogut connectar amb el servei de comandes — comprova la teva connexió.
-        generic: La pujada de la comanda ha fallat — torna-ho a provar.
-        not_pdf: L'exportació no ha generat un PDF vàlid — torna-ho a provar.
-        payment_unavailable: El pagament no està disponible temporalment — torna-ho a provar d'aquí a un minut.
+        connection: No s'ha pogut connectar amb el servei de comandes - comprova la teva connexió.
+        generic: La pujada de la comanda ha fallat - torna-ho a provar.
+        not_pdf: L'exportació no ha generat un PDF vàlid - torna-ho a provar.
+        payment_unavailable: El pagament no està disponible temporalment - torna-ho a provar d'aquí a un minut.
         too_large: El PDF exportat és massa gran (màxim 50 MB). Redueix el límit de PPP o allunya el zoom.
         unknown_sku: Aquest format no es pot encarregar ara mateix.
-        unreadable: No s'ha pogut llegir el PDF exportat — torna-ho a provar.
-        wrong_size: El PDF exportat no coincideix amb el format seleccionat — torna-ho a provar.
+        unreadable: No s'ha pogut llegir el PDF exportat - torna-ho a provar.
+        wrong_size: El PDF exportat no coincideix amb el format seleccionat - torna-ho a provar.
     legacy_settings:
       edit_colors: Edita els colors
       fog_radius: Radi de la boira de guerra
@@ -4132,7 +4132,7 @@ ca:
       last_seen: 'Vist per última vegada: %{date} (%{relative})'
       last_seen_short: Vist per última vegada
       location_hidden: Ubicació amagada.
-      location_unknown: Ubicació desconeguda — esperant una actualització…
+      location_unknown: Ubicació desconeguda - esperant una actualització…
     speed_gradient:
       add_stop: Afegeix una parada de color
       color: Color

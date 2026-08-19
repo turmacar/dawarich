@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Points::AnomalyFilter
-  MAX_SPEED_KMH = 1000 # km/h — floor for speed threshold
+  MAX_SPEED_KMH = 1000 # km/h - floor for speed threshold
   SPEED_MULTIPLIER = 3 # threshold = max(floor, median * multiplier)
   CONTEXT_POINTS = 5   # extra points for speed context at boundaries
   # Two points sharing a timestamp have no meaningful speed, but a displacement
@@ -10,7 +10,7 @@ class Points::AnomalyFilter
   # was skipped outright, however impossible its own position was.
   TELEPORT_METERS = 1_000
   # Longest run of consecutive points that may be convicted as one displaced
-  # reading. Bad GPS arrives as a brief excursion — one point, occasionally a
+  # reading. Bad GPS arrives as a brief excursion - one point, occasionally a
   # handful. A genuine stay bracketed by two impossible hops (sparse sampling
   # either side of a real trip, or a second device interleaved) is far longer,
   # and flagging it wholesale would erase real history. Under-flagging a long
@@ -21,12 +21,12 @@ class Points::AnomalyFilter
   # is a confidence estimate, not proof the position is wrong. Google Timeline
   # routinely reports 1-4km for points that sit exactly on the road, and
   # deleting those replaced real route geometry with straight lines across the
-  # gap — strictly worse than keeping a point that may be a couple of km off.
+  # gap - strictly worse than keeping a point that may be a couple of km off.
   # Positions that are genuinely wrong are caught by the speed passes instead.
   ABSURD_ACCURACY_METERS = 10_000
   # Ceiling for the EXTRA distance an excursion adds, which is a different
-  # question from how fast a single leg was. A genuine journey adds nothing —
-  # its displacement is the trip — so any excess at all is travel that did not
+  # question from how fast a single leg was. A genuine journey adds nothing -
+  # its displacement is the trip - so any excess at all is travel that did not
   # happen, and demanding 1000 km/h of it before acting is far too lax. Google
   # splices stale fixes from other devices into a phone's timelinePath, and each
   # leg then reads as ordinary air travel while the round trip needs hundreds of
@@ -43,19 +43,19 @@ class Points::AnomalyFilter
   # Radius above which a fix whose motion fields are all CoreLocation
   # sentinels (speed -1, vertical accuracy -1) is treated as a tower position
   # rather than a reading of the user. Wifi trilateration also reports the
-  # sentinel combination but lands at 150-450 m and is positionally usable —
+  # sentinel combination but lands at 150-450 m and is positionally usable -
   # a stationary indoor point sits where it says. Cell positioning starts
   # around half a kilometre and lands wherever the tower is. The gate sits
   # between the two tiers so only the tower tier is judged at all.
   SENTINEL_ACCURACY_METERS = 500
-  # What counts as the precise fix a sentinel one is judged against — a
+  # What counts as the precise fix a sentinel one is judged against - a
   # radius any GPS or wifi lock beats, and no tower position reaches.
   PRECISE_FIX_METERS = 100
   # A sentinel fix is only judged against tracking that could have done
   # better: it is flagged when a precise fix sits within this many seconds of
   # it, and kept otherwise. Reduced-accuracy permission, significant-change
   # tracking and genuinely off-grid stretches produce nothing but coarse
-  # fixes — there the tower position is the only record there is, and erasing
+  # fixes - there the tower position is the only record there is, and erasing
   # the history it forms is worse than showing its precision honestly. Six
   # hours spans any GPS dropout inside a tracked day without reaching into a
   # neighbouring coarse-only era.
@@ -63,14 +63,14 @@ class Points::AnomalyFilter
   # Where a visit report keeps its departure date. motion_data first: raw_data
   # is emptied by archival, and a flag that cannot be re-derived would silently
   # return on the next reset re-run. Both values are untrusted client strings,
-  # so the passes prefix-test them instead of casting — a timestamptz cast
+  # so the passes prefix-test them instead of casting - a timestamptz cast
   # raises on junk and would fail the whole batch.
   DEPARTURE_DATE_SQL = "COALESCE(motion_data->>'departure_date', " \
                        "raw_data->'properties'->>'departure_date')"
 
   # invalidate_dependents: flagging detaches points from their tracks and
   # queues the track and the month's stats for a rebuild. The backfill path
-  # opts out — it rebuilds every track and stat wholesale after the filter
+  # opts out - it rebuilds every track and stat wholesale after the filter
   # finishes, and per-point enqueues there would only duplicate that work.
   # job_queue moves the dependent rebuilds off their home queues; housekeeping
   # callers pass :low_priority so their per-track recalculations never compete
@@ -94,7 +94,7 @@ class Points::AnomalyFilter
     count += filter_sentinel_fixes
     count += filter_by_speed
     # Anomalies are excluded from vector tiles, so flipping the flag changes
-    # tile content without a point write. Bump only the window's years — this
+    # tile content without a point write. Bump only the window's years - this
     # runs on every live-ingest batch, so a sentinel here would wipe the whole
     # account's tile cache on the hottest path.
     # Driven by what was actually flagged, not by the caller's window: the
@@ -117,7 +117,7 @@ class Points::AnomalyFilter
     user_settings.gps_filtering_enabled?
   end
 
-  # Pass 0: Null Island — a sustained (0,0) run defeats the speed sandwich
+  # Pass 0: Null Island - a sustained (0,0) run defeats the speed sandwich
   # (internal speeds are 0), so exact zeros are flagged unconditionally.
   def filter_null_island
     flag_anomalies(
@@ -140,16 +140,16 @@ class Points::AnomalyFilter
   end
 
   # Visit-report pass: iOS visit monitoring (Overland `action: visit`) delivers
-  # a stay summary AFTER the stay ended — the visit centroid plus arrival and
+  # a stay summary AFTER the stay ended - the visit centroid plus arrival and
   # departure dates, stamped with delivery time. The device is already moving
   # away by then, so the track leaps to the centroid and back. The coordinate
   # is right and its radius often single-digit metres; only the timeline
   # placement is wrong, which no accuracy or speed gate can see. An arrival
-  # report (no departure date yet) is delivered in place and stays useful —
+  # report (no departure date yet) is delivered in place and stays useful -
   # CLVisit marks "not departed" with a distant-future placeholder (year
   # 4001), so the year guard treats any far-future date the same as none. A
   # report whose departure date is unrecoverable (raw payload archived before
-  # motion_data kept a copy) cannot be classified and is left alone —
+  # motion_data kept a copy) cannot be classified and is left alone -
   # under-flagging is the safer failure.
   def filter_visit_reports
     # The departure date is copied into motion_data as part of the flagging
@@ -170,14 +170,14 @@ class Points::AnomalyFilter
 
   # Sentinel pass: a fix whose motion fields are all invalid markers (speed
   # -1, vertical accuracy -1) with a coarse radius did not come from GPS at
-  # all — it is a tower or cell-grid position, delivered wherever coverage
+  # all - it is a tower or cell-grid position, delivered wherever coverage
   # begins, and each one drags the track sideways by its full radius, so a
   # burst inside an otherwise-tracked day is flagged whole. The precise-fix
   # neighbour test keeps the pass away from histories that are coarse all the
   # way through: reduced-accuracy permission, significant-change tracking and
   # off-grid stretches produce nothing better, and there the tower position
   # is the only record there is. The neighbour must come from the same device
-  # — a second tracker on reduced-accuracy permission stays coarse even when
+  # - a second tracker on reduced-accuracy permission stays coarse even when
   # the account's other device is precise, the same per-stream rule the speed
   # pass applies. Imported histories are untouched because their points do
   # not carry the sentinel combination.
@@ -279,7 +279,7 @@ class Points::AnomalyFilter
     main_range_ids = main_points.map(&:id).to_set
 
     # Each device is its own stream. Interleaving them by timestamp invents
-    # journeys between devices that nobody made — the same reason track
+    # journeys between devices that nobody made - the same reason track
     # generation groups by tracker_id (Tracks::TimeChunkProcessorJob).
     anomaly_ids = points.group_by { |point| point.tracker_id.to_s }.values.flat_map do |stream|
       displaced_run_ids(stream, speeds_by_point, threshold, main_range_ids)
@@ -310,7 +310,7 @@ class Points::AnomalyFilter
 
     # Slide a window of every allowed run length over the stream, judging each
     # against the fixes immediately either side of it. Splitting the stream into
-    # runs first cannot isolate an excursion whose return leg looks plausible —
+    # runs first cannot isolate an excursion whose return leg looks plausible -
     # the excursion simply absorbs the points that follow it.
     # Shortest windows first: once an excursion is explained, longer windows that
     # merely wrap it in innocent neighbours must not convict those neighbours too.
@@ -337,7 +337,7 @@ class Points::AnomalyFilter
 
   # Impossible on both sides convicts on its own: nothing legitimate arrives and
   # departs faster than any aircraft. This catches excursions with no detour to
-  # measure — a straight-line hop where the timestamps themselves are wrong.
+  # measure - a straight-line hop where the timestamps themselves are wrong.
   def both_legs_impossible?(run, speeds_by_point, threshold)
     entry_speed = speeds_by_point.dig(run.first.id, :incoming)
     exit_speed  = speeds_by_point.dig(run.last.id, :outgoing)
@@ -376,7 +376,7 @@ class Points::AnomalyFilter
   # Extra distance the excursion adds over travelling straight from the previous
   # fix to the next one, spread across the time actually available.
   #
-  # A one-way journey adds nothing — the displacement IS the trip, so a real
+  # A one-way journey adds nothing - the displacement IS the trip, so a real
   # flight scores zero here no matter how fast it was. A stale or mislocated fix
   # jumps away and comes back, adding roughly twice its displacement, which no
   # real travel can cover in the gap. This is what catches excursions whose

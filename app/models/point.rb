@@ -74,7 +74,7 @@ class Point < ApplicationRecord
   # points that collapse to the same geography(Point, 4326) double, so a
   # plain string `uniq` keeps both variants and the subsequent
   # `Point.upsert_all` fails with `PG::CardinalityViolation: ON CONFLICT DO
-  # UPDATE command cannot affect row a second time` — losing the entire
+  # UPDATE command cannot affect row a second time` - losing the entire
   # 1000-point slice. Parsing to Float matches PG's IEEE 754 normalization.
   def self.dedup_key(attrs)
     raw = attrs[:lonlat].to_s

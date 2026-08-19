@@ -11,7 +11,7 @@ RSpec.describe 'POST /api/v1/auth/login', type: :request do
     Rack::Attack.enabled = true
     Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
     Rack::Attack.reset!
-    # The login throttle is cloud-only — self-hosted instances skip it.
+    # The login throttle is cloud-only - self-hosted instances skip it.
     allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
   end
 
@@ -53,7 +53,7 @@ RSpec.describe 'POST /api/v1/auth/login', type: :request do
     it 'runs a bcrypt comparison on the unknown-email path (constant time)' do
       # Observable behavior: a bcrypt password verification happens even when
       # no user exists for the submitted email. We assert this by watching
-      # BCrypt::Password#is_password? — it is the heavy operation that, if
+      # BCrypt::Password#is_password? - it is the heavy operation that, if
       # skipped, reveals account existence through response timing.
       expect(BCrypt::Password).to receive(:new).and_call_original.at_least(:once)
       post '/api/v1/auth/login', params: { email: 'no-such-user@example.com', password: 'whatever' }

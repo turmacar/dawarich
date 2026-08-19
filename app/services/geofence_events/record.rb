@@ -4,7 +4,7 @@ module GeofenceEvents
   class Record
     # Best-effort dedup: suppresses webhook fan-out for identical (user, area, type)
     # events within a trailing 120s window based on `occurred_at`. This is not a
-    # strict correctness guarantee — backwards clock skew from a client and
+    # strict correctness guarantee - backwards clock skew from a client and
     # concurrent writers can both defeat it. Webhook consumers should be idempotent.
     DEDUP_WINDOW = 120.seconds
 

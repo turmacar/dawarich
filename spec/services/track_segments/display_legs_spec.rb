@@ -36,7 +36,7 @@ RSpec.describe TrackSegments::DisplayLegs do
       expect(item.segment_id).to eq(segment.id)
     end
 
-    it 'leaves a merged transfer without an id — it is more than one segment' do
+    it 'leaves a merged transfer without an id - it is more than one segment' do
       segments = [seg(:walking, 0, 60, 30), seg(:walking, 70, 60, 30), seg(:driving, 200, 900, 5000)]
       items = described_class.call(segments).items
       transfer = items.find { |i| i.kind == :transfer }
@@ -45,7 +45,7 @@ RSpec.describe TrackSegments::DisplayLegs do
       expect(transfer.segment_id).to be_nil
     end
 
-    it 'leaves an inferred stop without an id — no segment underlies it' do
+    it 'leaves an inferred stop without an id - no segment underlies it' do
       segments = [seg(:walking, 0, 600, 800), seg(:walking, 1800, 600, 800)]
       stop = described_class.call(segments).items.find { |i| i.kind == :stop }
 

@@ -74,7 +74,7 @@ module TransportationModes
     end
 
     def self.velocity_kmh(point)
-      return Float::INFINITY unless point.velocity.present?
+      return Float::INFINITY if point.velocity.blank?
 
       Float(point.velocity)
     rescue ArgumentError
@@ -103,8 +103,7 @@ module TransportationModes
       end
       hints
     rescue StandardError => e
-      Rails.logger.warn("SpatialHintEnricher failed at #{latlon.inspect}: #{e.cl
-ass}: #{e.message}")
+      Rails.logger.warn("SpatialHintEnricher failed at #{latlon.inspect}: #{e.class}: #{e.message}")
       {}
     end
 

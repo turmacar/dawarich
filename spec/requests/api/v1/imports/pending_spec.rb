@@ -10,7 +10,7 @@ RSpec.describe 'POST /api/v1/imports/pending' do
   context 'on a self-hosted instance' do
     before { allow(DawarichSettings).to receive(:self_hosted?).and_return(true) }
 
-    it 'returns 404 — the tools handoff is Cloud-only' do
+    it 'returns 404 - the tools handoff is Cloud-only' do
       post '/api/v1/imports/pending',
            params: { file: fixture_file_upload('sample-export.zip', 'application/zip'),
                      original_filename: 'sample-export.zip' },

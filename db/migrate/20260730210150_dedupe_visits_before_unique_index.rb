@@ -8,7 +8,7 @@ class DedupeVisitsBeforeUniqueIndex < ActiveRecord::Migration[8.0]
 
   # The plan is computed once. Re-deriving it per batch re-ran a full GROUP BY
   # over `visits` just to fetch 500 ids, so N duplicates cost N/500 whole-table
-  # aggregations — all of it while db:migrate blocks container boot.
+  # aggregations - all of it while db:migrate blocks container boot.
   def up
     build_plan
     collapse_planned_groups

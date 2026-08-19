@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Declined visits stop being a user-facing state: the flattened timeline has
-# no review verbs, so historical declines become soft-deleted tombstones —
+# no review verbs, so historical declines become soft-deleted tombstones -
 # hidden from every reader, still visible to Visits::Creator's dedup so the
 # detector never re-suggests them.
 class SoftDeleteDeclinedVisits < ActiveRecord::Migration[8.0]
@@ -16,7 +16,7 @@ class SoftDeleteDeclinedVisits < ActiveRecord::Migration[8.0]
     # Keyset, not LIMIT-on-a-predicate: nothing indexes
     # `status = 2 AND deleted_at IS NULL`, so a re-filtered batch would
     # re-scan the heap from block 0 every iteration and skip the rows it
-    # just wrote — quadratic in the number of declined visits.
+    # just wrote - quadratic in the number of declined visits.
     last_id = 0
 
     loop do

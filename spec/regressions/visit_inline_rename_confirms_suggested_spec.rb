@@ -29,7 +29,7 @@ RSpec.describe 'Inline rename of a suggested visit', type: :request do
       expect(visit.reload.name).to eq('My Coffee Spot')
     end
 
-    it 'silently confirms the visit — editing is asserting it' do
+    it 'silently confirms the visit - editing is asserting it' do
       patch visit_url(visit), params: { visit: { name: 'My Coffee Spot' } }, as: :turbo_stream
 
       expect(visit.reload.status).to eq('confirmed')

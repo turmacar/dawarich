@@ -1,9 +1,9 @@
 <%# Server-render the open + timeline-expanded classes when the URL asks for
-    the timeline panel — avoids the JS-driven `.open` toggle animating the
+    the timeline panel - avoids the JS-driven `.open` toggle animating the
     panel in from off-screen on every Turbo navigation.
 
     `data-turbo-permanent` (with the matching #id) tells Turbo to keep the
-    existing panel DOM across navigations — calendar turbo-frame, filter
+    existing panel DOM across navigations - calendar turbo-frame, filter
     counts, tab state, and Stimulus controller instances are all preserved,
     so clicking a day refetches the map layers without resetting the panel
     (no "Loading calendar…" flash). Turbo only swaps content outside the
@@ -14,7 +14,7 @@
      class="map-control-panel<%= ' open timeline-expanded' if timeline_panel_open %>"
      data-maps--maplibre-target="settingsPanel"
      data-controller="map-panel">
-  <%# The in-panel tab strip is gone — the floating button cluster on the
+  <%# The in-panel tab strip is gone - the floating button cluster on the
       map's left edge (`_button_cluster.html.erb`) doubles as the tab strip
       both when the panel is closed and when it's open (it slides to sit at
       the panel's right edge while open). Single source of truth. %>
@@ -1096,7 +1096,7 @@
               <span><%= t('.more') %></span>
             </div>
 
-            <%# Search — filters the currently loaded day's visit rows by
+            <%# Search - filters the currently loaded day's visit rows by
                 name / place / tag (substring match on data-search-tokens).
                 DaisyUI `input` styles target the <input> element directly;
                 the magnifier overlays via absolute positioning so we get a
@@ -1113,7 +1113,7 @@
                      data-action="input->timeline-feed#search" />
             </div>
 
-            <%# Tag chips — click to toggle as an active filter. Multi-select ANDs
+            <%# Tag chips - click to toggle as an active filter. Multi-select ANDs
                 the chips; clicking an active chip clears it. Pure Stimulus; the
                 visibility is unified with status filters and search in
                 timeline_feed_controller#applyVisibility. %>

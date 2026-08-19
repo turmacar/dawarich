@@ -60,7 +60,7 @@ export default class extends Controller {
     if (event.target === this.dialogTarget) this.close()
   }
 
-  // Native dialog `close` event — return the card to its place in the grid.
+  // Native dialog `close` event - return the card to its place in the grid.
   restore() {
     if (!this.moved || !this.origin) return
 

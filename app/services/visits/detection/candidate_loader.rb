@@ -4,7 +4,7 @@ module Visits
   module Detection
     # Loads the raw evidence for one detection window: candidate points and
     # the transportation segments overlapping it. Unlike the retired
-    # StayPointDetector query, points already owned by a visit are INCLUDED —
+    # StayPointDetector query, points already owned by a visit are INCLUDED -
     # detection is a pure function of raw points, never of prior output.
     class CandidateLoader
       MAX_CANDIDATE_POINTS = 100_000

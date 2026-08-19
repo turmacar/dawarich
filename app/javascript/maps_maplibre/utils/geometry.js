@@ -79,7 +79,7 @@ const OUTLIER_MIN_GAP_DEGREES = 1
  * coordinate set before fitting the map to it, so one bad point can't drag
  * the viewport into the ocean. Only coordinates in the outermost ~1% per
  * axis are eligible, and only when separated from the rest by a gap of at
- * least 20% of the axis span — real trips (a week in Norway, a US visit)
+ * least 20% of the axis span - real trips (a week in Norway, a US visit)
  * carry more mass than the budget and are kept.
  * @param {Array} coords - Array of [lng, lat]
  * @returns {Array} Inlier coordinates (original array if nothing qualifies)

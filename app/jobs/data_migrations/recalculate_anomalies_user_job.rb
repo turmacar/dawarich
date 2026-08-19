@@ -18,11 +18,11 @@ class DataMigrations::RecalculateAnomaliesUserJob < ApplicationJob
   RECALCULATED_SETTINGS_KEY = 'anomaly_rules_recalculated_at'
   # Set when a user has been given up on. Distinct from the claim: releasing the
   # claim would put them straight back at the front of the dispatcher's id-ordered
-  # scan, and they would be handed out, fail, and be released again forever —
+  # scan, and they would be handed out, fail, and be released again forever -
   # occupying a slot nobody else can use. Marked instead, so they drop out of
   # pending_users and an operator can find them.
   FAILED_SETTINGS_KEY = 'anomaly_rules_recalculation_failed_at'
-  # Another backfill already holds this user's lock — an import or a manual
+  # Another backfill already holds this user's lock - an import or a manual
   # re-check. Come back rather than stamping work that never happened.
   LOCK_RETRY_WAIT = 15.minutes
   # A lock still held after this many tries is not transient contention any
@@ -45,7 +45,7 @@ class DataMigrations::RecalculateAnomaliesUserJob < ApplicationJob
   end
 
   # Drops the dispatcher's claim so a later pass can pick the user up again.
-  # Only for work that never started — a job that ran and gave up must use
+  # Only for work that never started - a job that ran and gave up must use
   # mark_failed instead, or it is handed straight back to itself.
   def self.release_claim(user_ids)
     User.where(id: user_ids).update_all(
@@ -81,7 +81,7 @@ class DataMigrations::RecalculateAnomaliesUserJob < ApplicationJob
 
     # Turned filtering off after the dispatcher picked them up. The filter would
     # mark nothing, so a reset would only strip flags this migration was never
-    # asked to touch — settle them rather than leaving the claim dangling.
+    # asked to touch - settle them rather than leaving the claim dangling.
     unless user.safe_settings.gps_filtering_enabled?
       mark_recalculated(user)
       return release_slot
@@ -89,7 +89,7 @@ class DataMigrations::RecalculateAnomaliesUserJob < ApplicationJob
 
     # Three outcomes, and nil is not the same as false: the backfill returns
     # `false` when the advisory lock was busy, but `nil` when a shutdown
-    # interrupted it — ActiveJob's continuation swallows the return value and
+    # interrupted it - ActiveJob's continuation swallows the return value and
     # puts the job back on the queue itself. Retrying an interrupted run would
     # repeat the whole reset and filter pass against the copy already resuming,
     # so let it finish. The user stays unstamped and is picked up again.
@@ -104,7 +104,7 @@ class DataMigrations::RecalculateAnomaliesUserJob < ApplicationJob
   rescue Tracks::PerUserLock::AcquisitionTimeout
     # The track lock is busy, not broken. Retrying the job wholesale would
     # re-run the reset and filter pass each time, so take the bounded path that
-    # lock contention already uses — and leave the user unstamped either way.
+    # lock contention already uses - and leave the user unstamped either way.
     retry_after_lock(user_id, attempt)
   end
 

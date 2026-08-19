@@ -84,7 +84,7 @@ RSpec.describe Visits::SmartDetect do
   end
 
   describe 'failure handling' do
-    it 'raises to the caller — there is no fallback detector' do
+    it 'raises to the caller - there is no fallback detector' do
       seed_cluster(1)
 
       allow_any_instance_of(Visits::Detection::CandidateLoader).to receive(:call)

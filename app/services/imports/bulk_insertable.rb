@@ -12,7 +12,7 @@ module Imports
       compacted = batch.compact
       # Nil timestamp/lonlat bypass model validations via upsert_all and later break read paths.
       usable = compacted.reject do |record|
-        record[:timestamp].nil? || record[:lonlat].nil? || Points::NullIsland.lonlat?(record[:lonlat])
+        record[:timestamp].nil? || record[:lonlat].blank? || Points::NullIsland.lonlat?(record[:lonlat])
       end
       unique_batch = usable.uniq { |record| [record[:lonlat], record[:timestamp], record[:user_id]] }
       zero_skipped = compacted.size - usable.size

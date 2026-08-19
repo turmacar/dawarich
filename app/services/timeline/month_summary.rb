@@ -110,7 +110,7 @@ module Timeline
           result[date_str][:tracked_seconds] += seconds.to_i
         end
 
-        # Track count is independent of duration — a track with NULL duration
+        # Track count is independent of duration - a track with NULL duration
         # still represents activity, so the day shouldn't bucket as 0/black.
         track_count.each do |date_str, count|
           result[date_str] ||= default_day
@@ -118,7 +118,7 @@ module Timeline
         end
 
         # Point presence keeps the day active even when track/visit pipelines
-        # haven't produced a record yet — matches Activity Overview coverage.
+        # haven't produced a record yet - matches Activity Overview coverage.
         points_by_day.each do |date_str, count|
           result[date_str] ||= default_day
           result[date_str][:point_count] += count.to_i

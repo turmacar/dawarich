@@ -2,7 +2,7 @@
 
 module TransportationModes
   # Converts a point's motion_data hint into per-mode log-likelihood boosts.
-  # Hints are fused into emission scores — never a hard gate. OwnTracks' `m`
+  # Hints are fused into emission scores - never a hard gate. OwnTracks' `m`
   # field is deliberately ignored: it is the monitoring-mode flag (significant
   # vs move), not a motion state.
   class HintScorer
@@ -39,7 +39,7 @@ module TransportationModes
       'stationary' => :stationary
     }.freeze
 
-    # Hints are tracker-level sensor conclusions — when a tracker asserts a
+    # Hints are tracker-level sensor conclusions - when a tracker asserts a
     # mode on every point, that should outweigh ambiguous kinematics (e.g.
     # smooth highway cruise vs train).
     DEFAULT_PROBABILITY = 0.6
@@ -47,7 +47,7 @@ module TransportationModes
     OVERLAND_BOOST = Math.log(9)
 
     # Generic vehicle signals (iOS/Android "automotive") cover trains and
-    # buses too — expand them so rail stays reachable when kinematics clearly
+    # buses too - expand them so rail stays reachable when kinematics clearly
     # indicate it, while ambiguity still defaults to driving.
     GENERIC_VEHICLE_HINTS = %w[IN_VEHICLE AUTOMOTIVE].freeze
     TRAIN_SHARE_OF_VEHICLE_HINT = 0.7
@@ -112,7 +112,7 @@ module TransportationModes
     end
 
     # A :driving hint from a generic vehicle signal also partially supports
-    # train — the sensor can't tell a car from a train carriage.
+    # train - the sensor can't tell a car from a train carriage.
     def self.expand_generic_vehicle(hints, source_type)
       driving_boost = hints[:driving]
       return hints unless driving_boost

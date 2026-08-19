@@ -50,7 +50,7 @@ module Tracks::TrackBuilder
   extend ActiveSupport::Concern
 
   # Sane upper bound for a single track's distance, in meters.
-  # 100,000 km is roughly 2.5x Earth's circumference — anything beyond that points
+  # 100,000 km is roughly 2.5x Earth's circumference - anything beyond that points
   # to corrupt input rather than a real journey, so we cap and warn instead of
   # blindly storing it. The underlying column is bigint and could hold more,
   # but bad data is rarely useful.
@@ -109,7 +109,7 @@ module Tracks::TrackBuilder
     unless existing
       # Under READ COMMITTED the conflicting row should be visible immediately
       # after RecordNotUnique. If we still can't find it, something is wrong
-      # (replication lag, snapshot weirdness) — let the caller retry rather
+      # (replication lag, snapshot weirdness) - let the caller retry rather
       # than silently dropping the points from the user's timeline.
       Rails.logger.warn(
         "event=tracks.race_winner_not_visible user_id=#{user.id} " \
@@ -119,7 +119,7 @@ module Tracks::TrackBuilder
     end
 
     # Constrain reassignment to the winner's time window so we don't attach
-    # points outside the existing track's start_at..end_at — the winner's
+    # points outside the existing track's start_at..end_at - the winner's
     # path/distance were computed from its own point set, and stretching it
     # silently corrupts the track's metadata. Points outside the window stay
     # orphaned (track_id: nil) and get picked up by the next generation pass.

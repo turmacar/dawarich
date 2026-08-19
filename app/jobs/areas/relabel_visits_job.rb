@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Labels EXISTING visits with a newly created or reshaped area, so drawing an
-# area still reveals its history immediately — the behavior the retired
+# area still reveals its history immediately - the behavior the retired
 # nightly area detector provided by rescanning raw points. This pass touches
 # only visit rows (place coords or point centroid), never re-detects, and is
 # purely additive: visits already attributed to an area keep it.

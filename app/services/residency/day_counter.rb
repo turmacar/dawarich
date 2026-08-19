@@ -111,7 +111,7 @@ module Residency
       end
     end
 
-    # Single query returning date/country/count — used by both country_days and daily_countries
+    # Single query returning date/country/count - used by both country_days and daily_countries
     def daily_country_counts
       @daily_country_counts ||= begin
         start_of_year = Time.zone.local(year, 1, 1, 0, 0, 0)

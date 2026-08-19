@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   # Set by Omniauthable.from_omniauth. Post-create callbacks re-save the record,
   # which clears `previously_new_record?`, so signup-vs-login can't be read off
-  # the record afterwards — the lookup has to tell us.
+  # the record afterwards - the lookup has to tell us.
   attr_accessor :oauth_newly_created
 
   devise :two_factor_authenticatable, :registerable,
@@ -66,7 +66,7 @@ class User < ApplicationRecord
   scope :active_or_trial, -> { where(status: %i[active trial]) }
 
   enum :status, { inactive: 0, active: 1, trial: 2, pending_payment: 3 }
-  # prefix: :sub_source — the `none` value would otherwise generate a
+  # prefix: :sub_source - the `none` value would otherwise generate a
   # `User#none?` predicate that collides with NilClass semantics in
   # conditional chains. Callers use `user.sub_source_none?` etc.
   enum :subscription_source, { none: 0, paddle: 1, apple_iap: 2, google_play: 3 }, default: :none, prefix: :sub_source
@@ -146,7 +146,7 @@ class User < ApplicationRecord
   end
 
   # `update_all` keeps the write clear of whatever else the request is saving on
-  # this user. The CASE covers rows whose settings are null or not an object —
+  # this user. The CASE covers rows whose settings are null or not an object -
   # `'[]'::jsonb || '{...}'::jsonb` appends an element instead of merging a key.
   def persist_locale!(locale)
     self.class.where(id: id).update_all(
@@ -161,7 +161,7 @@ class User < ApplicationRecord
     )
 
     # `update_all` leaves this instance holding the old settings, and Devise
-    # keeps one instance for the whole session — without this, every later read
+    # keeps one instance for the whole session - without this, every later read
     # of `preferred_locale` would report the language the user just replaced.
     # The change is cleared so a subsequent `save` still writes only what the
     # request itself touched.
@@ -173,7 +173,7 @@ class User < ApplicationRecord
 
   # Only accounts the migration actually handed to a rebuild are waiting on one.
   # Deriving this from live state instead would report a permanent "pending" for
-  # anyone the dispatcher never picked up — no points at the time, filtering off
+  # anyone the dispatcher never picked up - no points at the time, filtering off
   # at the time, or created after the migration ran.
   def gps_noise_recheck_pending?
     job = DataMigrations::RecalculateAnomaliesUserJob

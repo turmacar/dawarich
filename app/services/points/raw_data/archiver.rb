@@ -21,7 +21,7 @@ module Points
         @stats = { processed: 0, archived: 0, failed: 0 }
       end
 
-      # Called by ArchiveUserJob — archives all eligible points for a user.
+      # Called by ArchiveUserJob - archives all eligible points for a user.
       # Walks forward by PK, never scans the whole table.
       # Each fetched batch is partitioned by the points' own UTC month so that
       # archive year/month labels stay truthful for month-scoped restore/verify/clear.
@@ -60,7 +60,7 @@ module Points
           true
         end
 
-        raise "Could not acquire lock for #{lock_key} — archival already in progress" unless lock_acquired
+        raise "Could not acquire lock for #{lock_key} - archival already in progress" unless lock_acquired
       end
 
       private

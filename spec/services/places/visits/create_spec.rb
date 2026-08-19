@@ -23,7 +23,7 @@ RSpec.describe Places::Visits::Create do
   end
 
   describe '#create_or_update_visit' do
-    context 'idempotency — running twice for the same place/start' do
+    context 'idempotency - running twice for the same place/start' do
       it 'does not create a duplicate visit on the second run' do
         run_create
         run_create
@@ -45,7 +45,7 @@ RSpec.describe Places::Visits::Create do
       end
     end
 
-    context 'pre-existing winner — visit already created by a racing job' do
+    context 'pre-existing winner - visit already created by a racing job' do
       it 'reuses the pre-created visit and assigns all points to it' do
         started_at = Time.zone.at(ts_start)
         winner = create(:visit,
@@ -67,7 +67,7 @@ RSpec.describe Places::Visits::Create do
     end
   end
 
-  describe 'DB constraint — partial unique index' do
+  describe 'DB constraint - partial unique index' do
     let(:started_at) { Time.zone.at(ts_start) }
 
     it 'raises RecordNotUnique when two visits share the same user/place/started_at' do

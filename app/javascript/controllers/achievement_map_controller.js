@@ -56,7 +56,7 @@ export default class extends Controller {
   connect() {
     if (!this.hasHostTarget) return
 
-    // Paint a cached snapshot the moment the controller boots — no observer,
+    // Paint a cached snapshot the moment the controller boots - no observer,
     // no queue, no map. This is what makes a reload appear instant instead of
     // flashing empty and then filling in.
     const cached = readCache(cacheStore(), this.cacheKey())
@@ -96,7 +96,7 @@ export default class extends Controller {
     }
   }
 
-  // Keyed on the map inputs plus devicePixelRatio only — NOT the pixel size,
+  // Keyed on the map inputs plus devicePixelRatio only - NOT the pixel size,
   // which is 0 at connect() (before layout) and would never match a value
   // measured later at render time. object-fit: cover absorbs size differences.
   cacheKey() {
@@ -135,7 +135,7 @@ export default class extends Controller {
       this.map = map
 
       let settled = false
-      // Free the concurrency slot on the FIRST terminal signal — success,
+      // Free the concurrency slot on the FIRST terminal signal - success,
       // error, lost WebGL context, or timeout. A map that never idles (a lost
       // context or a stalled sprite fetch fires neither idle nor error) would
       // otherwise hold its slot forever and stall every remaining card.
@@ -195,7 +195,7 @@ export default class extends Controller {
     if (!this.hasPinTarget || !this.hasMarkerLatValue) return null
 
     // map.project returns CSS pixels. Derive the CSS size from the canvas
-    // buffer and the map's own pixel ratio — the buffer is oversampled beyond
+    // buffer and the map's own pixel ratio - the buffer is oversampled beyond
     // devicePixelRatio, and the host's clientHeight reads 0 mid-animation.
     const point = map.project([this.markerLngValue, this.markerLatValue])
     const canvas = map.getCanvas()

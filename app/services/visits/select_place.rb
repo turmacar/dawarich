@@ -16,7 +16,7 @@ module Visits
       with_dedup_lock do
         place = find_by_name_and_proximity || create_place
         place.update!(name_locked_at: Time.current) unless place.name_locked?
-        # Picking a place is asserting the visit — no separate confirm step.
+        # Picking a place is asserting the visit - no separate confirm step.
         @visit.update!(place_id: place.id, name: place.name, status: :confirmed)
         place
       end

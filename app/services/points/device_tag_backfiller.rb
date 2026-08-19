@@ -6,7 +6,7 @@
 # Those imports stamped every point with one tracker_id, so a device sitting at
 # home and a phone that travelled became a single "device". Track generation
 # groups by tracker_id, so it then stitched the two together and invented
-# journeys between them — long straight lines radiating from wherever the
+# journeys between them - long straight lines radiating from wherever the
 # stationary device sat.
 #
 # Points::TrackerIdBackfiller cannot repair these: it reads deviceTag from
@@ -62,7 +62,7 @@ class Points::DeviceTagBackfiller
   # Read in two passes so the file is never held in memory. The first keeps only
   # timestamp -> deviceTag; the second runs solely when two devices claimed the
   # same second, and then collects coordinates for those seconds alone. Building
-  # the position map for every location instead would cost an entry per record —
+  # the position map for every location instead would cost an entry per record -
   # millions of them on a real account.
   def read_source
     mapping = first_pass

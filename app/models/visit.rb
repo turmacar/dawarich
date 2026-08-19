@@ -33,8 +33,8 @@ class Visit < ApplicationRecord
   # Visits::Detection::Persister so the detector never resurrects a visit
   # the user removed.
   scope :active, -> { where(deleted_at: nil).where.not(status: :declined) }
-  # Rows the detector may regenerate wholesale. Everything else — confirmed,
-  # declined, tombstoned, imported, demo-seeded, or annotated with a note —
+  # Rows the detector may regenerate wholesale. Everything else - confirmed,
+  # declined, tombstoned, imported, demo-seeded, or annotated with a note -
   # is user-owned and anchors re-detection.
   scope :machine_detected, lambda {
     active.where(status: :suggested, import_id: nil, demo: false)
@@ -141,7 +141,7 @@ class Visit < ApplicationRecord
   end
 
   # Keeps the Timeline calendar/filter-count cache fresh when visits are
-  # created or changed by ANY path — background import/detection jobs as well
+  # created or changed by ANY path - background import/detection jobs as well
   # as the controller. Without this, MonthSummary (cached 5 min) serves stale
   # status_counts right after a visit is auto-detected, so the FILTER pills
   # read 0 until the user happens to act. Busts both the old and new month so

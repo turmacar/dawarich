@@ -2,7 +2,7 @@
 
 module Visits
   module Detection
-    # Labels a detected stay — attribution, not detection. Evidence order:
+    # Labels a detected stay - attribution, not detection. Evidence order:
     # containing user area > nearby known place (manual-first, history-boosted)
     # > POI voted from the stay's own reverse-geocoded points > bare address.
     # Below the POI gate no Place row is minted and no business name is
@@ -14,7 +14,7 @@ module Visits
         @policy = policy
       end
 
-      # OSM keys that describe ways and land, not venues — a stay may be ON
+      # OSM keys that describe ways and land, not venues - a stay may be ON
       # them but never AT them.
       STREETISH_OSM_KEYS = %w[highway place boundary landuse natural waterway railway].freeze
 
@@ -100,7 +100,7 @@ module Visits
       end
 
       # A reverse-geocoded feature counts as a venue only when it is an actual
-      # named non-street thing that verifiably sits inside the stay — the
+      # named non-street thing that verifiably sits inside the stay - the
       # nearest-POI guess that named road clusters after restaurants does not
       # clear this bar.
       def venue_name(stay, lookup)

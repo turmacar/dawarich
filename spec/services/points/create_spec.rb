@@ -210,7 +210,7 @@ RSpec.describe Points::Create do
       # Regression: clients (e.g. Overland on iOS) occasionally emit the same
       # location in two different WKT-string forms inside a single batch. Ruby
       # string equality would keep both, but the PostgreSQL UNIQUE index on
-      # (lonlat, timestamp, user_id) treats them as equal — so `upsert_all`
+      # (lonlat, timestamp, user_id) treats them as equal - so `upsert_all`
       # fails with PG::CardinalityViolation and the whole 1000-point slice is
       # lost.
       let(:collapsed_processed_data) do

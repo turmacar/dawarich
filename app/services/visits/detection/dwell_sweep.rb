@@ -3,13 +3,13 @@
 module Visits
   module Detection
     # Single-pass dwell sweep over time-ordered points (the v2 detector core).
-    # Emits EVERY colocated run as a fragment — including runs far below the
-    # minimum dwell — because what a short run *means* is decided later:
+    # Emits EVERY colocated run as a fragment - including runs far below the
+    # minimum dwell - because what a short run *means* is decided later:
     # GapBridger may bridge across silence and StayAssembler applies the
     # dwell/point-count filters after merging.
     class DwellSweep
       # A stay may drift with its running mean, but never further than this
-      # factor times the stay radius from its first member — a slow walker
+      # factor times the stay radius from its first member - a slow walker
       # can't drag the circle into one giant blob.
       DRIFT_CAP_FACTOR = 1.5
 

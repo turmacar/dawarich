@@ -1,6 +1,6 @@
 /**
  * Persists the map's last viewport (center + zoom) in localStorage so the map
- * can reopen where the user left off instead of the zoomed-out globe — most
+ * can reopen where the user left off instead of the zoomed-out globe - most
  * importantly when the selected date range has no data to fit bounds to.
  *
  * The storage key is scoped per user so a shared browser doesn't leak one
@@ -28,7 +28,7 @@ function storageKey(scope) {
  */
 export function loadLastView(scope) {
   // Without a scope the key would collapse to the shared prefix, leaking one
-  // account's viewport into another's on a shared browser — skip persistence.
+  // account's viewport into another's on a shared browser - skip persistence.
   if (!scope) return null
 
   try {
@@ -68,6 +68,6 @@ export function saveView(map, scope) {
       JSON.stringify({ center: [center.lng, center.lat], zoom: map.getZoom() }),
     )
   } catch (_error) {
-    // localStorage may be unavailable (private mode, quota) — non-fatal.
+    // localStorage may be unavailable (private mode, quota) - non-fatal.
   }
 }

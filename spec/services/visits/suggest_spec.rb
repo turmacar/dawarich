@@ -62,7 +62,7 @@ RSpec.describe Visits::Suggest do
       allow(Geocoder).to receive(:search).and_return(geocoder_response)
     end
 
-    it 'does not mint a place for street-level evidence — the visit is named by the street' do
+    it 'does not mint a place for street-level evidence - the visit is named by the street' do
       expect { subject }.not_to change(Place, :count)
     end
 
@@ -91,7 +91,7 @@ RSpec.describe Visits::Suggest do
       let(:reverse_geocoding_end_at) { Time.zone.local(2020, 6, 1, 5, 0, 0) }
 
       let(:venue_result) do
-        # A venue (non-street OSM key) at the known point location — clears
+        # A venue (non-street OSM key) at the known point location - clears
         # the attribution evidence gate, so a place is minted.
         double(data: {
                  'geometry' => { 'coordinates' => [37.6173, 55.755826] },

@@ -36,7 +36,7 @@ module TransportationModes
     end
 
     # Two-pointer slicing: window starts are monotonic, so the left cursor
-    # only ever advances — O(points), not O(windows × points).
+    # only ever advances - O(points), not O(windows × points).
     def self.chain_windows(rows)
       return [] if rows.empty?
 

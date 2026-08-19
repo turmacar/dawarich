@@ -41,8 +41,8 @@ module Map
     end
 
     # When the URL carries only `?date=` (deep-links, the unified-timeline
-    # redirect, the Timeline panel's own day navigation) — but no explicit
-    # start_at/end_at — derive the map's data window from that day so the
+    # redirect, the Timeline panel's own day navigation) - but no explicit
+    # start_at/end_at - derive the map's data window from that day so the
     # map, the top date-range form, and the Timeline panel all agree.
     # Without this the map silently stays on "today" while the panel shows
     # the requested day (the C1 desync).

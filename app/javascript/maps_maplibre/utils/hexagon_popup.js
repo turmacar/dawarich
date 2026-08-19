@@ -1,7 +1,7 @@
 import { translate } from "i18n"
 
 // MapLibre serializes nested GeoJSON property values to JSON strings on
-// queried features — `center` arrives as "[lng,lat]", not an array.
+// queried features - `center` arrives as "[lng,lat]", not an array.
 function parsedCenter(props) {
   if (Array.isArray(props.center)) return props.center
   if (typeof props.center !== "string") return null

@@ -2,7 +2,7 @@
 
 module TransportationModes
   # Per-mode emission scoring for windowed movement features, plus the single
-  # source of pipeline tuning constants. All values here are eval-tunable —
+  # source of pipeline tuning constants. All values here are eval-tunable -
   # change numbers, never structure (see spec/eval/transportation_eval_spec.rb).
   module Emissions
     TUNING = {
@@ -17,7 +17,7 @@ module TransportationModes
 
     # Log-priors: rare modes must earn their classification with clear
     # evidence; kinematic ambiguity defaults toward common modes (train vs
-    # highway cruise is THE known tie — without map context, prefer driving).
+    # highway cruise is THE known tie - without map context, prefer driving).
     MODE_PRIORS = {
       stationary: 0.0, walking: 0.0, running: -0.3, cycling: -0.3,
       driving: 0.0, train: -1.75, flying: -2.5,

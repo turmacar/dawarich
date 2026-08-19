@@ -55,7 +55,7 @@ RSpec.describe 'POST /api/v1/auth/otp_challenge', type: :request do
     post '/api/v1/auth/otp_challenge', params: { challenge_token: challenge_token, otp_code: current_totp }
     expect(response).to have_http_status(:ok)
 
-    # Replay the same challenge token with a fresh OTP — must be rejected
+    # Replay the same challenge token with a fresh OTP - must be rejected
     post '/api/v1/auth/otp_challenge', params: { challenge_token: challenge_token, otp_code: current_totp }
     expect(response).to have_http_status(:unauthorized)
     expect(JSON.parse(response.body)['error']).to eq('auth_failed')
@@ -123,7 +123,7 @@ RSpec.describe 'POST /api/v1/auth/otp_challenge', type: :request do
              params: { challenge_token: challenge_token, otp_code: '000000' }
       end
       # A fifth attempt against a DIFFERENT token passes the token throttle
-      # (separate bucket) and is still under the IP throttle — so it reaches
+      # (separate bucket) and is still under the IP throttle - so it reaches
       # the controller and returns 401.
       other_token = Auth::IssueOtpChallengeToken.new(user).call
       post '/api/v1/auth/otp_challenge',

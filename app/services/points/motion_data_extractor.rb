@@ -8,7 +8,7 @@ module Points
   # The `from_raw_data` method auto-detects the source and is used by the backfill job.
   class MotionDataExtractor
     class << self
-      # Overland / GeoJSON / Points API — motion, activity, action and visit
+      # Overland / GeoJSON / Points API - motion, activity, action and visit
       # departure_date from properties hash. The departure date rides along
       # because raw_data is emptied by archival, and the anomaly filter must
       # still tell a departed visit report from an arrival one afterwards.
@@ -27,7 +27,7 @@ module Points
         data
       end
 
-      # Google Phone Takeout — activityRecord.probableActivities and activity
+      # Google Phone Takeout - activityRecord.probableActivities and activity
       def from_google_phone_takeout(raw_data)
         return {} unless raw_data
 
@@ -39,7 +39,7 @@ module Points
         data
       end
 
-      # Google Records.json — activity or activityRecord wrapped as 'activity'
+      # Google Records.json - activity or activityRecord wrapped as 'activity'
       def from_google_records(location)
         return {} unless location
 
@@ -49,7 +49,7 @@ module Points
         { 'activity' => activity }
       end
 
-      # Google Semantic History — activities, activityType, travelMode
+      # Google Semantic History - activities, activityType, travelMode
       def from_google_semantic_history(raw_data)
         return {} unless raw_data
 
@@ -61,7 +61,7 @@ module Points
         data
       end
 
-      # Traccar mobile client (react-native-background-geolocation payload) —
+      # Traccar mobile client (react-native-background-geolocation payload) -
       # activity, is_moving, event
       def from_traccar(payload)
         return {} unless payload
@@ -81,7 +81,7 @@ module Points
         data
       end
 
-      # OwnTracks — monitoring mode (m) and type
+      # OwnTracks - monitoring mode (m) and type
       def from_owntracks(params)
         return {} unless params
 
@@ -107,7 +107,7 @@ module Points
 
       private
 
-      # Comprehensive Google extraction for backfill — covers all Google formats.
+      # Comprehensive Google extraction for backfill - covers all Google formats.
       def from_google_all(raw_data)
         data = {}
         data['activity']       = raw_data['activity']       if raw_data['activity']

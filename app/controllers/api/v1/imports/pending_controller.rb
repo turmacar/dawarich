@@ -73,7 +73,7 @@ class Api::V1::Imports::PendingController < ApiController
   private
 
   # The tools handoff is a Cloud acquisition funnel; self-hosted instances
-  # have no dawarich.app tools pointing at them — don't expose the surface.
+  # have no dawarich.app tools pointing at them - don't expose the surface.
   def ensure_cloud!
     head :not_found if DawarichSettings.self_hosted?
   end
@@ -111,7 +111,7 @@ class Api::V1::Imports::PendingController < ApiController
   end
 
   # The signup that claims the ticket lives on the same host that served
-  # this request — no configuration needed, works on any environment.
+  # this request - no configuration needed, works on any environment.
   def build_claim_url(ticket)
     "#{request.base_url}/users/sign_up?import_ticket=#{ticket}&utm_source=tool&utm_medium=save-to-account"
   end

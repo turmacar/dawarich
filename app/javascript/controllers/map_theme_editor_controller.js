@@ -71,7 +71,7 @@ export default class extends Controller {
   }
 
   // Clicking a theme swatch from any built-in style switches the map to
-  // the Custom style with that theme — no need to find it in the select.
+  // the Custom style with that theme - no need to find it in the select.
   async activateCustomStyle() {
     if (
       this.hasStyleSelectTarget &&

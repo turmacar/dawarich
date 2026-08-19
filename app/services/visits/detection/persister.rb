@@ -6,8 +6,8 @@ module Visits
     # anchors: machine stays are trimmed around them by exact interval
     # exclusion (no fuzzy dedup). Machine `suggested` rows in the window are
     # replaced wholesale in one transaction, which makes detection idempotent
-    # by construction. The per-user advisory xact lock lives HERE — the single
-    # lock primitive for every machine writer — so compute and geocoder I/O
+    # by construction. The per-user advisory xact lock lives HERE - the single
+    # lock primitive for every machine writer - so compute and geocoder I/O
     # stay outside any lock or transaction.
     class Persister
       include Visits::AdvisoryLockable
@@ -190,7 +190,7 @@ module Visits
         nil
       end
 
-      # Only unowned points are claimed — anchors keep theirs (the machine
+      # Only unowned points are claimed - anchors keep theirs (the machine
       # rows in the window were just destroyed, which nullified their cache).
       def claim_points(point_ids, visit)
         return if point_ids.blank?

@@ -48,7 +48,7 @@ export class VisitsManager {
       const mapReady = Boolean(map?.isStyleLoaded?.())
 
       // Skip the per-day fetch when the day already falls inside the
-      // controller's loaded date range — `loadMapData()` (triggered by
+      // controller's loaded date range - `loadMapData()` (triggered by
       // `timeline-feed:date-navigated`) has already fetched visits for
       // the broader range. Re-fetching causes a race where the smaller
       // request can resolve last and overwrite the larger result.
@@ -56,7 +56,7 @@ export class VisitsManager {
         try {
           // Local day bounds (no trailing Z) to match navigateToDay and the
           // top date-range form. Using UTC here shifted the window by the tz
-          // offset, so the day's visits — including the one just clicked —
+          // offset, so the day's visits - including the one just clicked -
           // could fall outside it and the layer got replaced with nothing.
           const startAt = `${date}T00:00:00`
           const endAt = `${date}T23:59:59`
@@ -167,7 +167,7 @@ export class VisitsManager {
   /**
    * Toggle visits layer
    * Fetches visits from backend on first enable (lazy-load pattern).
-   * Fetches are bounded to the current map viewport — see refetchInViewport.
+   * Fetches are bounded to the current map viewport - see refetchInViewport.
    */
   async toggleVisits(event) {
     const enabled = event.target.checked
@@ -224,8 +224,8 @@ export class VisitsManager {
     const swLng = b.getWest()
     const neLng = b.getEast()
 
-    // When zoomed out far enough to see the whole world — or far enough that
-    // getBounds() wraps the antimeridian and returns west >= east — a bbox is
+    // When zoomed out far enough to see the whole world - or far enough that
+    // getBounds() wraps the antimeridian and returns west >= east - a bbox is
     // meaningless. Sending it builds an inverted ST_MakeEnvelope server-side
     // that matches nothing, so every visit marker vanishes on zoom-out.
     // Drop the bounds entirely; fetchVisits then returns all visits in range.
@@ -254,7 +254,7 @@ export class VisitsManager {
 
   /**
    * Refetch visits for the current viewport and replace the layer's data.
-   * Debounced via moveend timer — see attachViewportRefetch.
+   * Debounced via moveend timer - see attachViewportRefetch.
    */
   async refetchVisitsForViewport() {
     const visitsLayer = this.layerManager.getLayer("visits")
@@ -413,7 +413,7 @@ export class VisitsManager {
       const visit = event?.detail?.visit
       let visits
       if (visit && this.filterManager.allVisits?.length) {
-        // Layer already populated — append/replace this visit locally instead
+        // Layer already populated - append/replace this visit locally instead
         // of re-pulling the whole viewport from the backend.
         visits = this._upsertVisit(this.filterManager.allVisits, visit)
       } else {

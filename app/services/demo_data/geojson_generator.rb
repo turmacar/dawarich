@@ -22,7 +22,7 @@ class DemoData::GeojsonGenerator
     path = ENV.fetch('E2E_DEMO_DATA', DEFAULT_FIXTURE_PATH)
     return path if File.exist?(path)
 
-    raise "e2e demo fixture not found at #{path} — set E2E_DEMO_DATA to demo_data.json in the e2e repo"
+    raise "e2e demo fixture not found at #{path} - set E2E_DEMO_DATA to demo_data.json in the e2e repo"
   end
 
   def shift_timestamps!(features)

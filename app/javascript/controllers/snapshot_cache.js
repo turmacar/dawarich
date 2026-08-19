@@ -25,7 +25,7 @@ export function writeCache(store, key, value, now) {
     try {
       store.setItem(key, payload)
     } catch {
-      // Still no room even after eviction — skip caching this snapshot.
+      // Still no room even after eviction - skip caching this snapshot.
     }
   }
 }

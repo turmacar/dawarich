@@ -35,7 +35,7 @@ function drawFades(ctx, width, height, color, strength) {
 
 // Centered fillText with wide tracking. ctx.letterSpacing adds the spacing
 // after every glyph including the last, which shifts the visual center left
-// by spacing/2 — compensate so the line stays centered.
+// by spacing/2 - compensate so the line stays centered.
 function fillSpaced(ctx, text, x, y, spacing) {
   const supported = "letterSpacing" in ctx
   if (supported && spacing > 0) {
@@ -95,7 +95,7 @@ function drawTitle(ctx, width, height, color, text, font) {
   }
 }
 
-// A small, low-key credit line hugging the bottom edge — sits below the
+// A small, low-key credit line hugging the bottom edge - sits below the
 // title/coords stack, inside the bottom fade so it stays legible.
 function drawAttribution(ctx, width, height, color, text, font) {
   if (!text) return

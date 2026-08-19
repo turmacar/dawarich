@@ -194,7 +194,7 @@ export class ApiClient {
 
   /**
    * Fetch visits for date range (paginated). Optional bounds narrow the
-   * query to visits whose place falls inside the rectangle — backed by
+   * query to visits whose place falls inside the rectangle - backed by
    * Visits::FindWithinBoundingBox via `selection=true`.
    * @param {Object} options - { start_at, end_at, page, per_page, sw_lat, sw_lng, ne_lat, ne_lng }
    * @returns {Promise<Object>} { visits, currentPage, totalPages }
@@ -249,7 +249,7 @@ export class ApiClient {
   /**
    * Fetch visits for date range, optionally bounded to a viewport bbox.
    * Loops pages until the API reports no more. When bounds are provided
-   * the result is windowed to that rectangle — fewer pages, smaller
+   * the result is windowed to that rectangle - fewer pages, smaller
    * payloads, and the layer no longer hauls every visit at world zoom.
    * @param {Object} options - { start_at, end_at, sw_lat, sw_lng, ne_lat, ne_lng, onProgress }
    * @returns {Promise<Array>} Visits in range (and viewport, if bounded)
@@ -720,7 +720,7 @@ export class ApiClient {
       try {
         body = await response.json()
       } catch (_) {
-        // Non-JSON error body — leave body as null.
+        // Non-JSON error body - leave body as null.
       }
       const error = new Error(
         body?.error || `Failed to delete points: ${response.statusText}`,

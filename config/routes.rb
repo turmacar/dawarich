@@ -173,7 +173,7 @@ Rails.application.routes.draw do
   get  '/s/:id',         to: 'shared/links#show',     as: :public_shared_link
   post '/s/:id/unlock',  to: 'shared/links#unlock',   as: :unlock_public_shared_link
 
-  # Family management routes. Always defined — per-user access is enforced by
+  # Family management routes. Always defined - per-user access is enforced by
   # ApplicationController#ensure_family_feature_available!, since the routes are
   # built at boot and cannot depend on the current user's plan.
   resource :family, only: %i[show new create edit update destroy] do

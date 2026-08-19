@@ -3,12 +3,12 @@
 module Visits
   module Detection
     # Recomputes confidence for a persisted visit from its own slim point
-    # rows — shared by the legacy backfill and batch-edge stitching. Pass
+    # rows - shared by the legacy backfill and batch-edge stitching. Pass
     # preloaded points when batching; otherwise they are fetched here.
     class VisitRescore
       def self.call(visit, policy, points: nil)
         points ||= Point.where(visit_id: visit.id).select(:id, :accuracy, :lonlat).to_a
-        # No point evidence means any score would be fabricated — an unscored
+        # No point evidence means any score would be fabricated - an unscored
         # visit renders at full strength instead of a false low band.
         return if points.empty?
 

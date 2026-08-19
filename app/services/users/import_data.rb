@@ -161,8 +161,8 @@ class Users::ImportData
   # gps_filtering_enabled setting, which was restored moments ago.
   #
   # Runs AFTER the import transaction commits. Inside it, a database error here
-  # would leave the transaction aborted, and the next statement — the success
-  # notification — would fail with PG::InFailedSqlTransaction, discarding an
+  # would leave the transaction aborted, and the next statement - the success
+  # notification - would fail with PG::InFailedSqlTransaction, discarding an
   # otherwise complete restore over a filtering problem.
   def filter_restored_anomalies
     min_timestamp, max_timestamp = user.points.pick(
@@ -170,7 +170,7 @@ class Users::ImportData
     )
     return if min_timestamp.nil?
 
-    # Leading :: is required — Users::ImportData::Points is the points handler
+    # Leading :: is required - Users::ImportData::Points is the points handler
     # and would otherwise shadow the top-level Points namespace.
     flagged = ::Points::AnomalyFilter.new(user.id, min_timestamp, max_timestamp).call
     Rails.logger.info "Flagged #{flagged} anomalous points after restore for user: #{user.email}"

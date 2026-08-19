@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Adds `subscription_source` (where the user's subscription originates —
+# Adds `subscription_source` (where the user's subscription originates -
 # Paddle, Apple IAP, Google Play, or none) and `signup_variant` (reverse-trial
 # A/B bucketing) to the users table.
 class AddSubscriptionSourceAndSignupVariantToUsers < ActiveRecord::Migration[8.0]
@@ -17,7 +17,7 @@ class AddSubscriptionSourceAndSignupVariantToUsers < ActiveRecord::Migration[8.0
   end
 
   def down
-    # Drop dependent indexes BEFORE the columns — Postgres rejects `DROP COLUMN`
+    # Drop dependent indexes BEFORE the columns - Postgres rejects `DROP COLUMN`
     # on an indexed column unless the index is dropped first (CASCADE would also
     # remove the partial index on signup_variant, but doing it explicitly is safer).
     remove_index :users, name: SUBSCRIPTION_SOURCE_INDEX if index_name_exists?(:users, SUBSCRIPTION_SOURCE_INDEX)

@@ -32,7 +32,7 @@ export default class extends Controller {
     // Honor ?panel=timeline on first load by opening the panel and activating
     // the Timeline tab. `openTabByName` both opens the panel (maps--maplibre
     // controller's toggleSettings, so the `.open` class lands) AND activates
-    // the tab — necessary because `.timeline-expanded` positions the panel at
+    // the tab - necessary because `.timeline-expanded` positions the panel at
     // `left: -720px`, which stays off-screen until `.open` is added.
     // Defer to the next frame so the maps--maplibre controller has connected
     // and its target queries resolve.
@@ -59,7 +59,7 @@ export default class extends Controller {
       this.boundTabChangedListener,
     )
 
-    // Keyboard shortcuts for the button cluster — bound at document level so
+    // Keyboard shortcuts for the button cluster - bound at document level so
     // they fire regardless of which map-panel instance is focused.
     this.boundClusterKeys = (e) => {
       if (
@@ -69,7 +69,7 @@ export default class extends Controller {
       ) {
         return
       }
-      // Don't hijack modified combos — Cmd+Shift+C (DevTools picker),
+      // Don't hijack modified combos - Cmd+Shift+C (DevTools picker),
       // Ctrl+L (address bar), etc. must stay with the browser.
       if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return
 
@@ -91,7 +91,7 @@ export default class extends Controller {
         return
       }
 
-      // Replay isn't a tab — it toggles a separate panel. Wire R into the
+      // Replay isn't a tab - it toggles a separate panel. Wire R into the
       // same hotkey handler so it shares the input/modifier-key guards
       // already established above.
       if (e.key === "r" || e.key === "R") {
@@ -110,13 +110,13 @@ export default class extends Controller {
     }
     document.addEventListener("keydown", this.boundClusterKeys)
 
-    // Clicking a visit pin on the map dispatches `timeline:open-visit` — open
+    // Clicking a visit pin on the map dispatches `timeline:open-visit` - open
     // the Timeline tab so the list + halo are visible (timeline_feed_controller
     // handles day selection on its own).
     this.boundOpenVisit = () => this.openTabByName("timeline-feed")
     document.addEventListener("timeline:open-visit", this.boundOpenVisit)
 
-    // Same for tracks — clicking a track line on the map opens the Timeline
+    // Same for tracks - clicking a track line on the map opens the Timeline
     // tab and expands the matching journey entry inline.
     this.boundOpenTrack = () => this.openTabByName("timeline-feed")
     document.addEventListener("timeline:open-track", this.boundOpenTrack)
@@ -169,7 +169,7 @@ export default class extends Controller {
   }
 
   /**
-   * A deliberate user gesture — a cluster button click or its keyboard
+   * A deliberate user gesture - a cluster button click or its keyboard
    * shortcut. Asking for the tab already on screen dismisses the panel, the
    * way the header X does. Programmatic callers use openTabByName instead, so
    * a visit or track click can switch to Timeline without dismissing it.
@@ -208,7 +208,7 @@ export default class extends Controller {
     this.markActiveClusterButton(null)
   }
 
-  // The poster button skips the panel entirely — the full-screen studio
+  // The poster button skips the panel entirely - the full-screen studio
   // (rendered outside the panel) listens for this event.
   openPosterStudio() {
     document.dispatchEvent(new CustomEvent("poster-studio:open"))
@@ -255,7 +255,7 @@ export default class extends Controller {
 
   /**
    * Reflect the currently-active tab on the map-edge cluster buttons.
-   * Pass `null` to clear every cluster button — used when the panel is
+   * Pass `null` to clear every cluster button - used when the panel is
    * dismissed (no tab is "active" because the panel itself is hidden).
    */
   markActiveClusterButton(activeTab) {
@@ -347,7 +347,7 @@ export default class extends Controller {
 
     if (!panel) return
 
-    // One-shot transition listener — fire map:resize-needed once the panel
+    // One-shot transition listener - fire map:resize-needed once the panel
     // geometry has actually settled. Safe-guarded by a timeout fallback in
     // case the transition doesn't run (reduced-motion, no CSS, etc.).
     const resizer = (e) => {

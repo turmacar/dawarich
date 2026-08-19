@@ -8,7 +8,7 @@ Sidekiq.configure_server do |config|
 
   # yabeda-sidekiq auto-registers server middleware and the death handler on require.
   # Keep the cluster-metrics poller (queue latency/depth/process counts) running in
-  # the Sidekiq server process — web workers should not poll Redis for these.
+  # the Sidekiq server process - web workers should not poll Redis for these.
   require 'yabeda/sidekiq'
 
   # Start the standalone Prometheus exporter inside the Sidekiq container on port 9394,

@@ -2,7 +2,7 @@ import maplibregl from "maplibre-gl"
 import { trimOutlierCoords } from "maps_maplibre/utils/geometry"
 
 // Live map inside the poster frame: pan and zoom stay enabled, rotation and
-// pitch are disabled everywhere — the export reproduces the view from its
+// pitch are disabled everywhere - the export reproduces the view from its
 // axis-aligned bounds, which a rotated viewport would break.
 export function createPreviewMap({ container, style, bounds }) {
   const map = new maplibregl.Map({
@@ -63,7 +63,7 @@ export function trackBounds(geojson) {
 }
 
 // Largest frame with the given aspect that fits the stage alongside its
-// sibling controls (Recenter button, hint text). The frame is a flex item —
+// sibling controls (Recenter button, hint text). The frame is a flex item -
 // without reserving the controls' height up front, flexbox would shrink the
 // frame vertically and silently break the preview's aspect ratio.
 export function fitFrame(stage, aspect) {

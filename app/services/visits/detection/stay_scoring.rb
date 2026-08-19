@@ -2,7 +2,7 @@
 
 module Visits
   module Detection
-    # Scores a stay hash after attribution — shared by the Runner's initial
+    # Scores a stay hash after attribution - shared by the Runner's initial
     # pass and the Persister's post-trim rescore, so a stay's confidence
     # always reflects the interval actually persisted.
     module StayScoring

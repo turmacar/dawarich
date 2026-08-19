@@ -2,7 +2,7 @@
 
 class ChangeArchiveFkToRestrict < ActiveRecord::Migration[8.0]
   # Both operations are metadata-only (no table scan) because validate: false.
-  # Safe for large tables — no locks, no I/O.
+  # Safe for large tables - no locks, no I/O.
   def up
     remove_foreign_key :points, :points_raw_data_archives,
                        column: :raw_data_archive_id, if_exists: true

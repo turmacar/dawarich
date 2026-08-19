@@ -178,7 +178,7 @@ RSpec.describe Stats::DailyDistanceQuery do
     context 'with sparse points inside a single photo-library import' do
       # Photo integrations (Immich, PhotoPrism, Google Photos) sync the whole
       # library as one import, so its points are snapshots, not a continuous
-      # track — the gap between photo locations must not be counted.
+      # track - the gap between photo locations must not be counted.
       let(:import) { create(:import, user: user, source: :immich_api) }
 
       let!(:point1) do
@@ -278,9 +278,9 @@ RSpec.describe Stats::DailyDistanceQuery do
 
       subject { described_class.new(monthly_points, timespan, 'Etc/UTC', minutes_between_routes: 30).call }
 
-      it 'does not carry the segment across the day partition' do
+      it 'carries the segment into the next day (no intra-day partition)' do
         expect(subject.find { |day, _| day == 1 }&.last).to eq(0)
-        expect(subject.find { |day, _| day == 2 }&.last).to eq(0)
+        expect(subject.find { |day, _| day == 2 }&.last).to be > 0
       end
     end
 

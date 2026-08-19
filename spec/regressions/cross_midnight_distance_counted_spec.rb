@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Daily distance includes segments crossing midnight' do
   let(:user) { create(:user) }
+  let(:import) { create(:import, user: user) }
 
   let(:departure) { Time.utc(2026, 5, 23, 23, 0) }
 
@@ -13,7 +14,7 @@ RSpec.describe 'Daily distance includes segments crossing midnight' do
       [[25.0000, 50.0000], departure + 50.minutes],
       [[116.4074, 39.9042], departure + 150.minutes]
     ].each do |(lon, lat), time|
-      create(:point, user: user, timestamp: time.to_i, lonlat: "POINT(#{lon} #{lat})")
+      create(:point, user: user, import: import, timestamp: time.to_i, lonlat: "POINT(#{lon} #{lat})")
     end
   end
 

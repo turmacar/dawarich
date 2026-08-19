@@ -37,7 +37,7 @@ This file contains essential information for Claude to work effectively with the
 
 ## Conventions
 - **Enums over strings:** Prefer Rails enums (integer columns) over string columns for status/type fields. Use `enum :field_name, { ... }, prefix: :field_name` to get scoped predicate methods and avoid name collisions.
-- **Turbo first:** Follow Rails 8 conventions — use Turbo Frames and Turbo Streams/broadcasts wherever appropriate to avoid full page reloads and provide smooth, in-place UI updates.
+- **Turbo first:** Follow Rails 8 conventions - use Turbo Frames and Turbo Streams/broadcasts wherever appropriate to avoid full page reloads and provide smooth, in-place UI updates.
 - **SVGs as files:** Never inline SVG markup in views. Instead, save SVGs to `app/assets/svg/icons` and use `inline_svg_tag "name.svg"` to render them. This keeps views clean and SVGs reusable. Use `rails_icons` to manage SVG assets and ensure consistent styling.
 
 ## Code Style
@@ -45,7 +45,7 @@ This file contains essential information for Claude to work effectively with the
 - Follow rubocop conventions (see `.rubocop.yml`)
 - Rails defaults: convention over configuration
 - Prefer Hotwire (Turbo Frames/Streams + Stimulus) over custom JS
-- Use importmap for JS dependencies — no npm/yarn
+- Use importmap for JS dependencies - no npm/yarn
 
 ### Key Gems
 - `activerecord-postgis-adapter` - PostgreSQL PostGIS support
@@ -126,20 +126,20 @@ bundle exec rspec spec/models/       # Model specs only
 npx playwright test                  # E2E tests
 ```
 
-### Testing Best Practices — Test Behavior, Not Implementation
+### Testing Best Practices - Test Behavior, Not Implementation
 
 When writing or modifying tests, always test **observable behavior** (return values, state changes, side effects) rather than **implementation details** (which internal methods are called, in what order, with what exact arguments).
 
 **Anti-patterns to AVOID:**
 
-1. **Never mock the object under test** — `allow(subject).to receive(:internal_method)` makes the test a tautology
-2. **Never test private methods via `send()`** — test through the public interface instead; if creating a user triggers a trial, test by creating the user and checking `user.trial?`, not by calling `user.send(:start_trial)`
-3. **Never use `receive_message_chain`** — `allow(x).to receive_message_chain(:a, :b, :c)` breaks on any scope reorder; use real data instead
-4. **Avoid over-stubbing** — if every collaborator is mocked, the test proves nothing; mock only at external boundaries (HTTP, geocoder, external APIs)
-5. **Don't test wiring without outcomes** — `expect(Service).to receive(:new).with(args)` only proves a method was called, not that it works; verify the returned data or state change instead
-6. **Prefer `have_enqueued_job` over `expect(Job).to receive(:perform_later)`** — the former tests real ActiveJob integration; the latter just tests a mock
-7. **Don't assert on cache key formats or internal metric JSON shapes** — test that caching works (2nd call doesn't requery) or that metrics fire, not exact internal formats
-8. **Use real factory data over `allow(user).to receive(:active?).and_return(true)`** — set the actual user state: `create(:user, status: :active)`
+1. **Never mock the object under test** - `allow(subject).to receive(:internal_method)` makes the test a tautology
+2. **Never test private methods via `send()`** - test through the public interface instead; if creating a user triggers a trial, test by creating the user and checking `user.trial?`, not by calling `user.send(:start_trial)`
+3. **Never use `receive_message_chain`** - `allow(x).to receive_message_chain(:a, :b, :c)` breaks on any scope reorder; use real data instead
+4. **Avoid over-stubbing** - if every collaborator is mocked, the test proves nothing; mock only at external boundaries (HTTP, geocoder, external APIs)
+5. **Don't test wiring without outcomes** - `expect(Service).to receive(:new).with(args)` only proves a method was called, not that it works; verify the returned data or state change instead
+6. **Prefer `have_enqueued_job` over `expect(Job).to receive(:perform_later)`** - the former tests real ActiveJob integration; the latter just tests a mock
+7. **Don't assert on cache key formats or internal metric JSON shapes** - test that caching works (2nd call doesn't requery) or that metrics fire, not exact internal formats
+8. **Use real factory data over `allow(user).to receive(:active?).and_return(true)`** - set the actual user state: `create(:user, status: :active)`
 
 **Good test pattern:**
 ```ruby
@@ -275,7 +275,7 @@ bundle exec bundle-audit             # Dependency security
 - **Always run RuboCop** on modified Ruby files before committing: `bundle exec rubocop <files>`
 - **Always run Biome** on modified JS/CSS files before committing: `npx @biomejs/biome check --write <files>`
 - If Biome `--write` leaves remaining errors, use `--write --unsafe` to apply fixes like `parseInt` radix and `Number.isNaN`
-- CI runs `biome ci --changed --since=dev` — it compares against the `dev` branch, not `master`
+- CI runs `biome ci --changed --since=dev` - it compares against the `dev` branch, not `master`
 - The `noStaticOnlyClass` warning is acceptable and does not fail CI
 - Tailwind CSS files (`*.tailwind.css`) have `@import` position rules disabled in `biome.json` because `@tailwind` directives must come first
 
@@ -287,11 +287,11 @@ bundle exec bundle-audit             # Dependency security
 
 When adding frontend behavior, follow this order of preference:
 
-1. **Turbo Drive** — Default. Links and forms work as SPAs with zero JS.
-2. **Turbo Frames** — Partial page updates. Wrap a section in `<turbo-frame>` and target it from links/forms.
-3. **Turbo Streams** — Server-pushed DOM updates. Use for CRUD operations that need to update multiple page sections. Respond with `turbo_stream` format from controllers.
-4. **Stimulus controller** — Client-side behavior that Turbo can't handle (toggles, form validation, UI interactions). Keep controllers thin.
-5. **Direct JS** — Last resort. Only for complex map interactions, canvas rendering, or third-party library integration (MapLibre, Chartkick).
+1. **Turbo Drive** - Default. Links and forms work as SPAs with zero JS.
+2. **Turbo Frames** - Partial page updates. Wrap a section in `<turbo-frame>` and target it from links/forms.
+3. **Turbo Streams** - Server-pushed DOM updates. Use for CRUD operations that need to update multiple page sections. Respond with `turbo_stream` format from controllers.
+4. **Stimulus controller** - Client-side behavior that Turbo can't handle (toggles, form validation, UI interactions). Keep controllers thin.
+5. **Direct JS** - Last resort. Only for complex map interactions, canvas rendering, or third-party library integration (MapLibre, Chartkick).
 
 ### Turbo Stream Responses
 
@@ -342,7 +342,7 @@ stream_flash(:error, "Error message")
 - Use `static targets` for DOM references, `static values` for data from HTML attributes
 - Always clean up in `disconnect()` (event listeners, timers, subscriptions)
 - Prefer `data-action` attributes in HTML over `addEventListener` in JS
-- For forms, prefer `this.formTarget.requestSubmit()` over manual `fetch()` calls — this preserves Turbo form handling, CSRF tokens, and Turbo Stream responses
+- For forms, prefer `this.formTarget.requestSubmit()` over manual `fetch()` calls - this preserves Turbo form handling, CSRF tokens, and Turbo Stream responses
 
 ### File Uploads
 
@@ -360,11 +360,11 @@ Use the unified `upload` controller (`upload_controller.js`) for all file upload
 
 ### What NOT to Do
 
-- **No `fetch()` for form submissions** — Use `form_with` with Turbo. If you need custom headers (API key), use Stimulus to submit the form via `requestSubmit()`.
-- **No `document.getElementById()` for updates** — Use Turbo Frames/Streams to replace DOM sections server-side.
-- **No `showFlashMessage()` or ad-hoc flash functions** — Use `Flash.show()` (client) or `stream_flash` (server).
-- **No ActionCable subscriptions for CRUD updates** — Use Turbo Stream broadcasts from models/controllers instead.
-- **No separate upload controllers per form** — Use the unified `upload` controller with value attributes for configuration.
+- **No `fetch()` for form submissions** - Use `form_with` with Turbo. If you need custom headers (API key), use Stimulus to submit the form via `requestSubmit()`.
+- **No `document.getElementById()` for updates** - Use Turbo Frames/Streams to replace DOM sections server-side.
+- **No `showFlashMessage()` or ad-hoc flash functions** - Use `Flash.show()` (client) or `stream_flash` (server).
+- **No ActionCable subscriptions for CRUD updates** - Use Turbo Stream broadcasts from models/controllers instead.
+- **No separate upload controllers per form** - Use the unified `upload` controller with value attributes for configuration.
 
 ### When Direct JS Is Acceptable
 
@@ -431,8 +431,8 @@ Dawarich Cloud has a two-tier plan system. Self-hosted instances bypass all plan
 
 ### Plans
 
-- **Pro** (`plan: :pro`, enum value `1`) — Full access to all features, no data window
-- **Lite** (`plan: :lite`, enum value `0`) — Free tier with restricted feature set
+- **Pro** (`plan: :pro`, enum value `1`) - Full access to all features, no data window
+- **Lite** (`plan: :lite`, enum value `0`) - Free tier with restricted feature set
 
 Plan is stored as an integer enum on the `users` table. New cloud users start on Lite via trial flow.
 
@@ -442,7 +442,7 @@ Plan is stored as an integer enum on the `users` table. New cloud users start on
 - Lite users only see data from the last 12 months (`DawarichSettings::LITE_DATA_WINDOW`)
 - Implemented as a query-time filter in `PlanScopable` concern (`app/models/concerns/plan_scopable.rb`)
 - Scoped methods: `scoped_points`, `scoped_tracks`, `scoped_visits`, `scoped_stats`
-- Data is **never deleted** — only filtered from UI and API reads. Export uses unscoped `user.points` etc.
+- Data is **never deleted** - only filtered from UI and API reads. Export uses unscoped `user.points` etc.
 - `plan_restricted?` returns `true` only when `!self_hosted? && lite?`
 
 **Disabled map layers (Pro-only):**
@@ -466,9 +466,9 @@ Plan is stored as an integer enum on the `users` table. New cloud users start on
 ### Archival Warning System
 
 `Lite::ArchivalWarningJob` runs daily for Lite users and sends warnings at three thresholds:
-1. **11 months** — In-app notification warning data will archive in 30 days
-2. **11.5 months** — Email notification
-3. **12 months** — In-app notification that data has been archived (hidden from view)
+1. **11 months** - In-app notification warning data will archive in 30 days
+2. **11.5 months** - Email notification
+3. **12 months** - In-app notification that data has been archived (hidden from view)
 
 Warnings are deduped via `settings['archival_warnings']` JSONB on the user record.
 
@@ -479,7 +479,7 @@ Warnings are deduped via `settings['archival_warnings']` JSONB on the user recor
 - Use `require_pro_api!` or `require_write_api!` before_actions in API controllers
 - Use `apply_plan_scope(relation)` when scoping points that don't start from `user.points`
 - Frontend: use `isGatedPlan(userPlan)` and `gatedToggle()` from `layer_gate.js` for map layer toggling
-- Export must always use unscoped relations — users can export all their data regardless of plan
+- Export must always use unscoped relations - users can export all their data regardless of plan
 
 ## Contributing
 

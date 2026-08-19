@@ -74,7 +74,7 @@ module VisitScenarioGenerator
   end
 
   # Continuous slow city drive with five 2.5-minute traffic stops.
-  # Ground truth: no stays, no untracked — it is all one drive.
+  # Ground truth: no stays, no untracked - it is all one drive.
   def build_drive_carving(rng, start_ts)
     points = []
     pos = offset(HOME, north_m: -500, east_m: -500)
@@ -179,7 +179,7 @@ module VisitScenarioGenerator
 
   # One fix on arrival, 78 min of GPS-dark silence inside the venue, four
   # fixes reacquired on the way out with the departure walk already under
-  # way — the walking segment starts between those fixes, so the stay's end
+  # way - the walking segment starts between those fixes, so the stay's end
   # snaps ahead of most of its own evidence. Ground truth: ONE stay spanning
   # the silence; the edge fixes ARE the evidence and must keep counting.
   def build_dark_venue(rng, start_ts)

@@ -131,7 +131,7 @@ RSpec.describe 'German interface copy', type: :helper do
       [mail.subject, mail.html_part.body.decoded]
     end
 
-    expect(subject).to eq('Dein August 2026 im Rückblick — Dawarich')
+    expect(subject).to eq('Dein August 2026 im Rückblick - Dawarich')
     expect(html).to include('ÜBERBLICK')
   end
 end

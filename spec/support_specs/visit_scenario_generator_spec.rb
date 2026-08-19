@@ -90,7 +90,7 @@ RSpec.describe VisitScenarioGenerator do
       resume_point = result[:points].find { |p| p[:timestamp] >= untracked[:end_ts] }
       dist_deg = Math.sqrt(((resume_point[:lat] - stay[:lat]) * 111_320)**2 +
                            ((resume_point[:lon] - stay[:lon]) * 69_600)**2)
-      expect(dist_deg).to be > 400 # resumes far from the stay — displaced gap
+      expect(dist_deg).to be > 400 # resumes far from the stay - displaced gap
     end
   end
 
@@ -101,7 +101,7 @@ RSpec.describe VisitScenarioGenerator do
       expect(result[:expected][:untracked]).to be_empty
 
       stop_gaps = result[:points].each_cons(2).count { |a, b| (b[:timestamp] - a[:timestamp]) > 60 }
-      expect(stop_gaps).to eq(0) # continuous recording — stops are slow points, not gaps
+      expect(stop_gaps).to eq(0) # continuous recording - stops are slow points, not gaps
     end
   end
 

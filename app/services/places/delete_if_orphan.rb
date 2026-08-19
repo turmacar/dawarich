@@ -21,7 +21,7 @@ module Places
       Place.transaction do
         # Only hidden visits (tombstones/declines) can still reference the
         # place here; detach them so the FK allows the delete. Their dedup
-        # role survives — Visit#center falls back to the visit's own points.
+        # role survives - Visit#center falls back to the visit's own points.
         Visit.where(place_id: @place_id).update_all(place_id: nil)
         PlaceVisit.where(place_id: @place_id).delete_all
         place.delete

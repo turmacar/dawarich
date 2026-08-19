@@ -8,7 +8,7 @@ module Auth
   #
   # The mobile clients base64-decode the JWT payload and read api_key WITHOUT
   # verifying the signature, and nothing verifies the token server-side either.
-  # So any non-empty String works — the secret exists purely so JWT.encode does
+  # So any non-empty String works - the secret exists purely so JWT.encode does
   # not raise on a nil HMAC key.
   #
   # Cloud requires an explicit AUTH_JWT_SECRET_KEY (enforced at boot by

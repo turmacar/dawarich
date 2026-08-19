@@ -19,7 +19,7 @@ module Points
           true
         end
 
-        Rails.logger.info("Skipping user #{user_id} — already locked") unless lock_acquired
+        Rails.logger.info("Skipping user #{user_id} - already locked") unless lock_acquired
       rescue StandardError => e
         ExceptionReporter.call(e, "Points raw data archival failed for user #{user_id}")
         raise

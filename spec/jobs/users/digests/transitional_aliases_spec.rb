@@ -6,7 +6,7 @@ RSpec.describe 'Users::Digests transitional aliases', type: :job do
   # Helper that mimics the end-to-end path Sidekiq exercises when it pops a
   # JobWrapper payload off the queue: ActiveJob::Base.execute is called with
   # the raw job_data hash. ActiveJob's deserialize does
-  # `job_data["job_class"].constantize.new` — so passing the legacy class
+  # `job_data["job_class"].constantize.new` - so passing the legacy class
   # name (the transitional alias) verifies the autoload path resolves the
   # class without raising NameError, and that the resulting instance can
   # actually run the wrapped job's logic.
@@ -92,7 +92,7 @@ RSpec.describe 'Users::Digests transitional aliases', type: :job do
       user = create(:user)
 
       # The yearly calculating job recalculates monthly stats and computes
-      # the year digest. We're not testing those services here — only that
+      # the year digest. We're not testing those services here - only that
       # the autoload path resolves the legacy alias and the wrapped #perform
       # is reached. Stub the leaf collaborators so the side effect we
       # assert on (the follow-up email-sending job being enqueued) is the

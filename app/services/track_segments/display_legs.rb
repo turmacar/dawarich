@@ -5,14 +5,14 @@ module TrackSegments
   # at the first expansion level of the timeline: real legs, stops, one chip
   # per run of micro-segments, and unclaimed "moving" stretches where the
   # posterior is too weak to assert a mode. Returns nil when segments are not
-  # time-anchored (legacy index rows) or contain no movement — callers fall
+  # time-anchored (legacy index rows) or contain no movement - callers fall
   # back to the raw segment list.
   class DisplayLegs
     UNCERTAIN_BELOW = 0.6
     SHORT_LEG_S = 300
     STOP_GAP_S = 240
 
-    # segment_id is present only when the item maps to exactly one segment —
+    # segment_id is present only when the item maps to exactly one segment -
     # a merged transfer spans several and an inferred stop has none, so
     # neither can be edited as a single unit.
     Item = Struct.new(:kind, :mode, :distance, :duration, :segment_count, :segment_id, keyword_init: true)

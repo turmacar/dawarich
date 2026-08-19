@@ -107,19 +107,19 @@ RSpec.describe 'GET /trial/welcome', type: :request do
       # Browser back / reload / accidental re-visit of the welcome URL after
       # the user has already been onboarded. For the same signed-in user we
       # just send them to the map without adding a new flash (they already
-      # saw the welcome notice on first visit) — and never to /users/sign_in
+      # saw the welcome notice on first visit) - and never to /users/sign_in
       # (which would trigger Devise's "You are already signed in" alert).
       Rails.cache.clear
       t = issue_welcome_token(user)
       get "/trial/welcome?token=#{t}"
       expect(response).to redirect_to(%r{/map/v\d})
 
-      # Follow the redirect so the first request's flash gets consumed —
+      # Follow the redirect so the first request's flash gets consumed -
       # otherwise Rack carries it into the next request and masks what the
       # reload branch actually sets.
       follow_redirect! if response.redirect?
 
-      # Same session, same signed-in user — simulate reload.
+      # Same session, same signed-in user - simulate reload.
       get "/trial/welcome?token=#{t}"
       expect(response).to redirect_to(%r{/map/v\d})
       expect(flash[:alert]).to be_blank

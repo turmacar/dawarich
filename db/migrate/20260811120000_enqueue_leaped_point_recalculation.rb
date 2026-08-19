@@ -3,7 +3,7 @@
 # Two anomaly passes were added after 1.12.0: visit reports delivered after
 # departure, and coarse tower fixes carrying no motion data. Points flagged by
 # neither pass sat in every history the 1.11.0 recalculation already swept, and
-# its dispatcher trusts the per-user completion stamps it left behind — so
+# its dispatcher trusts the per-user completion stamps it left behind - so
 # without clearing those stamps the fleet would never see the new rules. Strip
 # the stamps, then hand the fleet back to the same dispatcher; per-user
 # ordering, concurrency and the track/stat rebuilds are unchanged.
@@ -12,18 +12,18 @@
 # telling them apart up front would mean scanning each account's points inside
 # the migration, which is exactly the work the staggered sweep exists to
 # spread out. The repeat completion notification is accepted for the same
-# reason — and the filter did change, so it is not even wrong.
+# reason - and the filter did change, so it is not even wrong.
 #
 # Enqueue only: the migration hands the work to Sidekiq and returns immediately.
 # An instance whose queue is unreachable at upgrade time boots anyway and can
-# start the job by hand afterwards. A NameError still aborts — that is a broken
+# start the job by hand afterwards. A NameError still aborts - that is a broken
 # deploy, not an infrastructure hiccup, and must not be swallowed.
 class EnqueueLeapedPointRecalculation < ActiveRecord::Migration[8.0]
   # Sidekiq receives the job the moment perform_later runs, and a worker from
   # the still-running old deployment can pop it before a wrapping migration
   # transaction commits the stamp-clearing UPDATE. The dispatcher would then
-  # see every user still stamped, hand out nobody, and — having found no work
-  # — never reschedule itself: the fleet sweep silently never happens. Without
+  # see every user still stamped, hand out nobody, and - having found no work
+  # - never reschedule itself: the fleet sweep silently never happens. Without
   # the transaction the UPDATE is committed before the job exists.
   disable_ddl_transaction!
 

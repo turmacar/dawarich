@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Fleet-rollout worker: full-history re-detection for one user. No cooldown
-# and no notifications — this is maintenance, not a user action. The lock
+# and no notifications - this is maintenance, not a user action. The lock
 # keeps it from racing the user's own redetect button; a collision re-enqueues
 # with a delay (bounded) so the rollout doesn't silently skip the user.
 class Visits::UserRedetectJob < ApplicationJob
@@ -19,7 +19,7 @@ class Visits::UserRedetectJob < ApplicationJob
     Tracks::PerUserLock.with_user_lock(user_id) do
       result = Visits::Detection::HistoryRedetect.new(user).call
       # A partial run must not unlock post-redetect behavior like the tighter
-      # timeline gap bar — the retry or the next rollout pass finishes it.
+      # timeline gap bar - the retry or the next rollout pass finishes it.
       user.update!(visits_redetected_at: Time.current) if result.months_failed.empty?
     end
   rescue Tracks::PerUserLock::AcquisitionTimeout => e

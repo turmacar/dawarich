@@ -37,7 +37,7 @@ module Map
                                                     partial: 'calendar',
                                                     locals: { summary: @summary })
         end
-        # Initial frame load on page open is an HTML request — fall back to
+        # Initial frame load on page open is an HTML request - fall back to
         # the bare calendar partial.
         format.html do
           render partial: 'calendar', locals: { summary: @summary }

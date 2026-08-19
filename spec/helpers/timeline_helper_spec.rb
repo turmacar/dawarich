@@ -427,7 +427,7 @@ RSpec.describe TimelineHelper, type: :helper do
       expect(helper.timeline_entries_with_gaps(entries)).to eq(entries)
     end
 
-    it 'marks a 79-minute silence — the dark-dinner case earns its row' do
+    it 'marks a 79-minute silence - the dark-dinner case earns its row' do
       entries = [visit('16:00', '16:42'), journey('18:01', '19:30')]
       result = helper.timeline_entries_with_gaps(entries)
 

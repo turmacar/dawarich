@@ -7,7 +7,7 @@ module Dawarich
   # Rack middleware that wraps a local metrics endpoint (Yabeda::Prometheus::Exporter)
   # and appends metrics fetched from a remote in-network endpoint (typically the
   # Sidekiq container's WEBrick exporter). The combined response is served from a
-  # single external URL — used when the remote endpoint cannot be exposed publicly.
+  # single external URL - used when the remote endpoint cannot be exposed publicly.
   #
   # Failure mode: if the remote fetch fails (network error, non-200), the middleware
   # logs a warning and returns local metrics only. Prometheus sees a momentary gap
@@ -61,7 +61,7 @@ module Dawarich
     # metadata.
     #
     # Both processes register some collectors independently, so the same metric
-    # name and label set can arrive from each with a different value — which
+    # name and label set can arrive from each with a different value - which
     # OpenMetrics forbids and strict ingesters reject. Those samples, and only
     # those, get a `process` label naming where they came from, so the series
     # stay distinct without renaming anything that isn't ambiguous.

@@ -52,7 +52,7 @@ RSpec.describe TrackSegments::TimeAnchorBackfillJob do
 
   it 'deletes a segment whose point slice is incomplete (points deleted since) instead of anchoring it wrongly' do
     track = build_track_with_points(legs: [{ mode: :walking, duration_s: 120, dt_s: 10 }])
-    # Index range reaches past the surviving points — a truncated slice would
+    # Index range reaches past the surviving points - a truncated slice would
     # otherwise anchor to the wrong end timestamp.
     seg = create(:track_segment, track: track, transportation_mode: :walking,
                                  start_index: 8, end_index: 30, start_at: nil, end_at: nil)

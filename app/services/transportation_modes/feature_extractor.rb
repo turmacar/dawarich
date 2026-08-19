@@ -2,7 +2,7 @@
 
 module TransportationModes
   # One window-function SQL pass producing per-point movement primitives for a
-  # track. Returns plain hashes ordered by (timestamp, id) — never Point
+  # track. Returns plain hashes ordered by (timestamp, id) - never Point
   # models, never raw_data. Distances come from PostGIS geography (meters).
   class FeatureExtractor
     def self.call(track_id)

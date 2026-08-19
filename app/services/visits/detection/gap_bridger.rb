@@ -6,7 +6,7 @@ module Visits
     # same place is evidence of a continuous stay (phone idle indoors, dead
     # battery at home) and is bridged into one fragment. A gap that ends
     # somewhere else is honest ignorance: the fragments stay apart, the
-    # silence stays a hole on the timeline — never a fabricated visit.
+    # silence stays a hole on the timeline - never a fabricated visit.
     class GapBridger
       def initialize(policy)
         @policy = policy
@@ -61,7 +61,7 @@ module Visits
         previous[:point_ids] += current[:point_ids]
         previous[:end_ts] = current[:end_ts]
         previous[:count] = total
-        # Only true silence counts as bridged time — sub-sweep-gap blips are
+        # Only true silence counts as bridged time - sub-sweep-gap blips are
         # ordinary tracking, not inference.
         previous[:bridged_s] += silence if silence > policy.sweep_gap_s
       end

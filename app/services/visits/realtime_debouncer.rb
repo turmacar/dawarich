@@ -5,7 +5,7 @@ class Visits::RealtimeDebouncer
   REDIS_KEY_TTL = 10.minutes
   # Clusters that match an existing visit never claim their points, so every run
   # re-detects and re-names them. Now that the key is released each run, keep the
-  # window tight — BulkVisitsSuggestingJob still re-scans the whole previous day.
+  # window tight - BulkVisitsSuggestingJob still re-scans the whole previous day.
   LOOKBACK_WINDOW = 6.hours
 
   def initialize(user_id)

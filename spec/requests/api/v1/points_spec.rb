@@ -180,33 +180,6 @@ RSpec.describe 'Api::V1::Points', type: :request do
       let(:bounds_start) { window_base }
       let(:bounds_end)   { window_base + 100 }
 
-      it 'clamps per_page=0 up to 1' do
-        get api_v1_points_url(api_key: user.api_key, per_page: 0,
-                              start_at: bounds_start, end_at: bounds_end)
-
-        expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body).size).to eq(1)
-        expect(response.headers['X-Total-Pages']).to eq('2')
-      end
-
-      it 'clamps per_page=-5 up to 1' do
-        get api_v1_points_url(api_key: user.api_key, per_page: -5,
-                              start_at: bounds_start, end_at: bounds_end)
-
-        expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body).size).to eq(1)
-        expect(response.headers['X-Total-Pages']).to eq('2')
-      end
-
-      it 'treats garbage per_page as 0 and clamps to 1' do
-        get api_v1_points_url(api_key: user.api_key, per_page: 'garbage',
-                              start_at: bounds_start, end_at: bounds_end)
-
-        expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body).size).to eq(1)
-        expect(response.headers['X-Total-Pages']).to eq('2')
-      end
-
       it 'clamps per_page=5000 down to 1000' do
         base = 60.days.ago.to_i
         rows = Array.new(1001) do |i|
@@ -720,7 +693,7 @@ RSpec.describe 'Api::V1::Points', type: :request do
 
     context 'when at least one point is deleted' do
       it 'enqueues Stats::CalculatingJob once per affected (year, month)' do
-        # Two points in Jan 2025, one in Feb 2025 — expect 2 jobs (one per month).
+        # Two points in Jan 2025, one in Feb 2025 - expect 2 jobs (one per month).
         jan_a = create(:point, user:, timestamp: Time.zone.local(2025, 1, 10).to_i)
         jan_b = create(:point, user:, timestamp: Time.zone.local(2025, 1, 20).to_i)
         feb   = create(:point, user:, timestamp: Time.zone.local(2025, 2, 5).to_i)

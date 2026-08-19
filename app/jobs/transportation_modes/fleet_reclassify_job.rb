@@ -39,7 +39,7 @@ module TransportationModes
         ActiveJob.perform_all_later(jobs)
       end
 
-      # Self-re-enqueue relies on queue_as — never set(queue:) here (dropped
+      # Self-re-enqueue relies on queue_as - never set(queue:) here (dropped
       # silently for self-rescheduling jobs).
       self.class.set(wait: NEXT_BATCH_DELAY).perform_later(ids.last)
     end

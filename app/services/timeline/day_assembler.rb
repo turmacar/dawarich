@@ -15,7 +15,7 @@ module Timeline
     # chips (matches the display gate in TrackSegments::DisplayLegs).
     CHIP_CONFIDENCE_MIN = TrackSegments::DisplayLegs::UNCERTAIN_BELOW
     # Modes that moved less than this (in the user's display unit) stay off
-    # the day chips — a 200 m jog across a parking lot is not a story.
+    # the day chips - a 200 m jog across a parking lot is not a story.
     CHIP_MIN_DISTANCE = 0.5
 
     def initialize(user, start_at:, end_at:, distance_unit: 'km')
@@ -42,7 +42,7 @@ module Timeline
       build_days(days)
     end
 
-    # Public entry-point for building a single visit's hash payload — used by
+    # Public entry-point for building a single visit's hash payload - used by
     # VisitsController#update so the turbo_stream response can re-render the
     # row with fresh status / name / place / suggested_places data.
     # (Helpers it calls remain private; same-class access is allowed.)
@@ -204,7 +204,7 @@ module Timeline
 
     # Geocoder suggestions often include near-identical rows (same name,
     # slightly different ids). We dedupe by normalized name so the picker
-    # UI can stay compact — if a user actually needs the tail, the view
+    # UI can stay compact - if a user actually needs the tail, the view
     # reveals it behind a disclosure.
     def build_suggested_places(visit)
       seen = {}
@@ -273,7 +273,7 @@ module Timeline
       total_distance_m = tracks.sum { |t| t.distance.to_f * track_shares.fetch(t.id, 1.0) }
       # Asymmetry with fetch_tracks is intentional: stationary tracks with >=100m
       # still surface in the timeline as "🛑 stayed" rows, but their duration must
-      # not contribute to "time_moving_minutes" — "stayed" is not "moving".
+      # not contribute to "time_moving_minutes" - "stayed" is not "moving".
       moving_tracks = tracks.reject { |t| t.dominant_mode == 'stationary' }
       moving_seconds = moving_tracks.sum { |t| t.duration.to_f * track_shares.fetch(t.id, 1.0) }
       # NOTE: visit.duration is stored in MINUTES (see Visits::Creator / Visits::Create).

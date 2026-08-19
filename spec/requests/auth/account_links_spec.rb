@@ -86,7 +86,7 @@ RSpec.describe 'GET /auth/account_link', type: :request do
     token = issue
     get "/auth/account_link?token=#{token}" # first use, succeeds
 
-    # Replay — sign out to simulate an attacker on a different session
+    # Replay - sign out to simulate an attacker on a different session
     delete destroy_user_session_path
     get "/auth/account_link?token=#{token}"
 

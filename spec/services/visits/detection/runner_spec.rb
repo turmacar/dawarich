@@ -58,7 +58,7 @@ RSpec.describe Visits::Detection::Runner do
     expect(user.visits.count).to eq(0)
   end
 
-  it 'creates only the real stop in the dark-dinner scenario — nothing at the resume location' do
+  it 'creates only the real stop in the dark-dinner scenario - nothing at the resume location' do
     scenario = seed_scenario(:dark_dinner)
 
     created = run
@@ -151,7 +151,7 @@ RSpec.describe Visits::Detection::Runner do
     expect(second).to eq(first)
   end
 
-  it 'labels a stay inside a user area — area visit counts keep working without the old area detector' do
+  it 'labels a stay inside a user area - area visit counts keep working without the old area detector' do
     area = create(:area, user: user, latitude: 51.3402, longitude: 12.3712, radius: 200, name: 'Home Zone')
     seed_scenario(:home_gap)
 

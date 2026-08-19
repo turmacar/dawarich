@@ -35,7 +35,7 @@ PostHog::Rails.configure do |config|
   config.capture_user_context = true
 
   # Controller method name to get current user (default: :current_user)
-  # Exceptions are tagged with the user's id (distinct_id) only — no email or name.
+  # Exceptions are tagged with the user's id (distinct_id) only - no email or name.
   config.current_user_method = :current_user
 
   # Additional exception classes to exclude from reporting
@@ -53,7 +53,7 @@ end
 # CORE POSTHOG CONFIGURATION
 # ============================================================================
 # Initialize the PostHog client with core SDK options.
-# IMPORTANT: Use PostHog.init once — creating multiple clients can cause dropped events.
+# IMPORTANT: Use PostHog.init once - creating multiple clients can cause dropped events.
 # PostHog.init provides a singleton-like pattern; use PostHog.capture, PostHog.identify, etc.
 
 PostHog.init do |config|

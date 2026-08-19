@@ -34,7 +34,7 @@ RSpec.describe 'Transportation detection performance', :eval do
     expect(elapsed).to be < 10.0
     expect(segments).not_to be_empty
     # A constant-speed 14h cruise is kinematically ambiguous between highway
-    # driving and rail (the documented no-map-context cap) — both are
+    # driving and rail (the documented no-map-context cap) - both are
     # acceptable here; this spec gates performance, not that distinction.
     expect(segments.map { |s| s[:mode] }.uniq - %i[driving train]).to be_empty
   end

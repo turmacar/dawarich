@@ -101,7 +101,7 @@ de:
         your_trial_period_ends_at: Dein Testzeitraum endet am
         plan_usage: Plan-Nutzung
         subscription: Abonnement
-        your_signup_isn_t_complete_yet_finish_setting_up_your: Deine Registrierung ist noch nicht abgeschlossen — vervollständige die Einrichtung deines Abonnements, um deinen Testzeitraum zu starten.
+        your_signup_isn_t_complete_yet_finish_setting_up_your: Deine Registrierung ist noch nicht abgeschlossen - vervollständige die Einrichtung deines Abonnements, um deinen Testzeitraum zu starten.
         change_plan_update_your_payment_method_or_cancel_your_subscription: Ändere deinen Tarif, aktualisiere deine Zahlungsmethode oder kündige dein Abonnement im Manager.
         manage_your_subscription_change_plan_or_update_billing_on_manager: Verwalte dein Abonnement, ändere deinen Tarif oder aktualisiere deine Abrechnung im Manager.
         api_access: API-Zugriff
@@ -114,7 +114,7 @@ de:
         cancel_my_account: Mein Konto löschen
         delete_your_account: Dein Konto löschen
         this_is_permanent_and_removes_all_your_data_this_cannot: Dies ist endgültig und entfernt alle deine Daten. Dies kann nicht rückgängig gemacht werden.
-        this_is_permanent_and_removes_all_your_data_this_cannot_2: Dies ist endgültig und entfernt alle deine Daten. Dies kann nicht rückgängig gemacht werden. Wir senden dir eine E-Mail mit einem Link zur Bestätigung — dein Konto wird nur gelöscht, nachdem du den Link anklickst.
+        this_is_permanent_and_removes_all_your_data_this_cannot_2: Dies ist endgültig und entfernt alle deine Daten. Dies kann nicht rückgängig gemacht werden. Wir senden dir eine E-Mail mit einem Link zur Bestätigung - dein Konto wird nur gelöscht, nachdem du den Link anklickst.
         type_your_email: Gib deine E-Mail-Adresse ein (
         to_confirm: ") zur Bestätigung"
         enter_your_current_password_to_confirm: Gib dein aktuelles Passwort ein, um zu bestätigen
@@ -216,7 +216,7 @@ de:
       last_7_days: Letzte 7 Tage
       last_30_days: Letzte 30 Tage
       since_sharing_started: Seit Beginn der Freigabe
-      a_separate_setting_from_live_location_when_on_family_can: Diese Einstellung ist von der Live-Position getrennt. Ist sie aktiviert, kann deine Familie auf der neuen Karte (v2) deinen letzten Track sehen — nicht nur deine aktuelle Position. Es werden ausschließlich Punkte geteilt, die nach der Aktivierung aufgezeichnet wurden.
+      a_separate_setting_from_live_location_when_on_family_can: Diese Einstellung ist von der Live-Position getrennt. Ist sie aktiviert, kann deine Familie auf der neuen Karte (v2) deinen letzten Track sehen - nicht nur deine aktuelle Position. Es werden ausschließlich Punkte geteilt, die nach der Aktivierung aufgezeichnet wurden.
       expires_in_time: Verfällt in %{time}
     edit:
       delete_family: Familie löschen
@@ -240,8 +240,8 @@ de:
       title: Familie bearbeiten
     lapsed:
       family_plan_no_longer_active: Family-Tarif ist nicht mehr aktiv
-      your_family_plan_is_no_longer_active_so_family_features: Dein Family-Tarif ist nicht mehr aktiv. Deshalb sind die Familienfunktionen für alle pausiert. Deine Familie und ihre Mitglieder bleiben erhalten — nach der Verlängerung ist der volle Zugriff wieder verfügbar.
-      your_family_s_plan_is_no_longer_active_so_family: Der Family-Tarif ist nicht mehr aktiv. Deshalb sind die Familienfunktionen pausiert. Sie werden wieder freigeschaltet, sobald der Familieninhaber den Tarif verlängert — du benötigst kein eigenes Abonnement.
+      your_family_plan_is_no_longer_active_so_family_features: Dein Family-Tarif ist nicht mehr aktiv. Deshalb sind die Familienfunktionen für alle pausiert. Deine Familie und ihre Mitglieder bleiben erhalten - nach der Verlängerung ist der volle Zugriff wieder verfügbar.
+      your_family_s_plan_is_no_longer_active_so_family: Der Family-Tarif ist nicht mehr aktiv. Deshalb sind die Familienfunktionen pausiert. Sie werden wieder freigeschaltet, sobald der Familieninhaber den Tarif verlängert - du benötigst kein eigenes Abonnement.
       members: Mitglieder
       remove: Entfernen
       your_location_sharing: Deine Standortfreigabe
@@ -489,11 +489,11 @@ de:
       extract_additional_data_from_this_import: Zusätzliche Daten aus dieser Importdatei extrahieren
       dawarich_originally_imported_your_file_as_raw_gps_points_the: 'Dawarich hat deine Datei ursprünglich als Roh-GPS-Punkte importiert. Die Datei enthält außerdem:'
       visits: Aufenthalte
-      places_where_the_source_app_recorded_you_spending_time_with: "— Orte, an denen die Quelle-App festgehalten hat, dass du Zeit verbracht hast, mit Start- und Endzeit."
+      places_where_the_source_app_recorded_you_spending_time_with: "- Orte, an denen die Quelle-App festgehalten hat, dass du Zeit verbracht hast, mit Start- und Endzeit."
       tracks: Tracks
-      journeys_identified_between_those_visits_with_their_classified_transport: "— Reisen, die zwischen diesen Aufenthalten erkannt wurden, mit ihrer klassifizierten Fortbewegungsmethode (Fahren, Gehen, Radfahren, ÖPNV, …)."
+      journeys_identified_between_those_visits_with_their_classified_transport: "- Reisen, die zwischen diesen Aufenthalten erkannt wurden, mit ihrer klassifizierten Fortbewegungsmethode (Fahren, Gehen, Radfahren, ÖPNV, …)."
       places: Orte
-      the_named_places_home_work_frequent_restaurants_the_source_app: "— die benannten Orte (Zuhause, Arbeit, häufige Restaurants), die die Quell-App mit deinen Aufenthalten verknüpft."
+      the_named_places_home_work_frequent_restaurants_the_source_app: "- die benannten Orte (Zuhause, Arbeit, häufige Restaurants), die die Quell-App mit deinen Aufenthalten verknüpft."
       extract: Extrahieren
       extract_to_add_html: Klicke auf <strong>Extrahieren</strong>, um diese Daten deinem Dawarich-Konto hinzuzufügen. Bestehende Punkte werden nicht verändert. Aufenthalte und Orte, die Dawarich bereits aus deinen Punkten erkannt hat, bleiben parallel zu den importierten Einträgen erhalten.
       trust_the_source_app_s_classification: Vertraue der Klassifizierung der Quelle-App
@@ -572,7 +572,7 @@ de:
     new:
       back_to_imports: Zurück zu den Importen
       google_timeline_file_too_large: Google Timeline-Datei zu groß?
-      your_data_never_leaves_your_browser: "— deine Daten verlassen nie deinen Browser."
+      your_data_never_leaves_your_browser: "- deine Daten verlassen nie deinen Browser."
       new_import: Neuer Import
       split_it_with_our_free_private_tool: Teile es mit unserem kostenlosen privaten Tool
       new_import_2: Neuer Import
@@ -790,17 +790,17 @@ de:
       try_dawarich_cloud: Probier Dawarich Cloud aus
       shared_with_dawarich: Mit Dawarich geteilt
       map_your_own_journeys: Zeichne deine eigenen Reisen auf einer Karte auf.
-      dawarich_turns_your_own_location_history_into_maps_worth_sharing: Dawarich verwandelt deinen Standortverlauf in sehenswerte Karten — Open Source, selbst hostbar und unter deiner Kontrolle.
+      dawarich_turns_your_own_location_history_into_maps_worth_sharing: Dawarich verwandelt deinen Standortverlauf in sehenswerte Karten - Open Source, selbst hostbar und unter deiner Kontrolle.
       see_how_it_works: Sieh dir an, wie es funktioniert
       open_source: Open Source
       self_hostable: Selbst hostbar
-      managed_cloud_no_setup: Managed Cloud — kein Setup
+      managed_cloud_no_setup: Managed Cloud - kein Setup
       shared_on_dawarich: Auf Dawarich geteilt
       dawarich_logo: Dawarich-Logo
   map:
     onboarding_modal:
       welcome_to_dawarich: Willkommen bei Dawarich!
-      your_map_starts_with_your_next_step_literally: Deine Karte beginnt mit deinem nächsten Schritt — wörtlich.
+      your_map_starts_with_your_next_step_literally: Deine Karte beginnt mit deinem nächsten Schritt - wörtlich.
       start_tracking_now: Jetzt starten
       minutes: 2 Minuten
       get_the_app_scan_a_qr_code_and_watch_your: Hol dir die App, scanne einen QR-Code und sieh deine ersten Punkte auf der Karte heute.
@@ -876,12 +876,12 @@ de:
         show_individual_location_points: Zeige einzelne Standortpunkte
         edit_points: Punkte bearbeiten
         allow_dragging_points_to_correct_their_position: Erlaube das Ziehen von Punkten, um ihre Position zu korrigieren.
-        editing_points_is_a_pro_feature_this_stays_on_for: Die Bearbeitung von Punkten ist eine Pro-Funktion — dies bleibt für die aktuelle Sitzung aktiv, und Bewegungen werden auf dem Lite-Plan nicht gespeichert.
+        editing_points_is_a_pro_feature_this_stays_on_for: Die Bearbeitung von Punkten ist eine Pro-Funktion - dies bleibt für die aktuelle Sitzung aktiv, und Bewegungen werden auf dem Lite-Plan nicht gespeichert.
         allow_dragging_points_to_correct_their_position_remembered_across_sessio: Erlaube das Ziehen von Punkten, um ihre Position zu korrigieren. Wird über Sitzungen hinweg gespeichert.
         tiled_rendering: "Gekachelte Darstellung"
         beta: "Beta"
         tiled_rendering_description: "Zeichnet Punkte beim Bewegen der Karte aus Vektorkacheln, statt den gesamten Zeitraum vorab zu laden."
-        tiled_rendering_caveats: "Dichte Bereiche werden zu Markern mit Punktanzahl zusammengefasst — zoome hinein, um einzelne Punkte zu öffnen. Bearbeitung ist nicht verfügbar, die Live-Spur kann einige Minuten nachhängen."
+        tiled_rendering_caveats: "Dichte Bereiche werden zu Markern mit Punktanzahl zusammengefasst - zoome hinein, um einzelne Punkte zu öffnen. Bearbeitung ist nicht verfügbar, die Live-Spur kann einige Minuten nachhängen."
         routes: Routen
         show_connected_route_lines: Zeige verbundene Routenlinien
         color_by_speed: Farbe nach Geschwindigkeit
@@ -944,8 +944,8 @@ de:
         serve_the_base_map_from_your_own_source_accepts_protomaps: Verwende eine Basiskarte aus einer eigenen Quelle. Unterstützt werden Protomaps-Vektorkacheln oder Raster-XYZ-Kacheln (jeweils mit {z}, {x} und {y}) sowie vollständige MapLibre-Stil-URLs. Leer lassen, um die integrierten Kacheln zu verwenden.
         base_map_layers: Basiskartenebenen
         toggle_base_map_elements_changes_apply_immediately: Basiskarten-Elemente ein-/ausschalten. Änderungen werden sofort angewendet.
-        pro_feature_you_can_preview_changes_here_but_they_won: Pro-Funktion — du kannst Änderungen hier vorschauen, aber sie werden auf dem Lite-Plan nicht gespeichert.
-        the_custom_style_draws_no_labels_or_points_of_interest: Der benutzerdefinierte Stil zeichnet keine Beschriftungen oder Sehenswürdigkeiten — diese Schalter sind während der Aktivierung deaktiviert.
+        pro_feature_you_can_preview_changes_here_but_they_won: Pro-Funktion - du kannst Änderungen hier vorschauen, aber sie werden auf dem Lite-Plan nicht gespeichert.
+        the_custom_style_draws_no_labels_or_points_of_interest: Der benutzerdefinierte Stil zeichnet keine Beschriftungen oder Sehenswürdigkeiten - diese Schalter sind während der Aktivierung deaktiviert.
         points_of_interest: Sehenswürdigkeiten
         choose_which_poi_categories_appear_on_the_map: Wähle aus, welche POI-Kategorien auf der Karte angezeigt werden.
         meters_between_routes: Meter zwischen Routen
@@ -966,7 +966,7 @@ de:
         fog_of_war_threshold: Schwellenwert des Kartennebels
         minimum_points_to_clear_fog: Mindestanzahl an Punkten zum Aufdecken
         gps_noise_filtering: GPS-Rauschfilterung
-        hide_readings_that_cannot_be_a_real_position_impossible_jumps: Blendet Messwerte aus, die keine echte Position darstellen können — etwa unmögliche Sprünge oder beschädigte Koordinaten. Deaktivieren, um alle Rohpunkte anzuzeigen.
+        hide_readings_that_cannot_be_a_real_position_impossible_jumps: Blendet Messwerte aus, die keine echte Position darstellen können - etwa unmögliche Sprünge oder beschädigte Koordinaten. Deaktivieren, um alle Rohpunkte anzuzeigen.
         re_evaluate_past_data: Vergangene Daten erneut prüfen
         clears_existing_anomaly_flags_and_re_runs_the_filter_on: Entfernt vorhandene Anomaliemarkierungen und prüft alle Punkte mit den aktuellen Einstellungen erneut. Tracks, Statistiken und Zusammenfassungen werden anschließend im Hintergrund neu erstellt.
         recalculate_tracks_stats: Tracks & Statistiken neu berechnen
@@ -1292,7 +1292,7 @@ de:
       last_month: Letzter Monat
       close_studio: Studio schließen
       recenter: Zentrieren
-      drag_to_pan_scroll_to_zoom_the_frame_is_what: Ziehen, um zu verschieben, scrollen, um zu zoomen — das Bildfeld ist, was exportiert wird.
+      drag_to_pan_scroll_to_zoom_the_frame_is_what: Ziehen, um zu verschieben, scrollen, um zu zoomen - das Bildfeld ist, was exportiert wird.
       layout: Layout
       theme: Thema
       customize_colors: Farben anpassen
@@ -1308,7 +1308,7 @@ de:
       track_opacity: Deckkraft des Tracks
       track_width: Breite des Tracks
       recent_posters: Letzte Poster
-      server_rendered_posters_from_save_to_gallery_they_stay_here: Server-renderte Poster von „Speichern in Galerie“ — sie bleiben hier über Sitzungen hinweg.
+      server_rendered_posters_from_save_to_gallery_they_stay_here: Server-renderte Poster von „Speichern in Galerie“ - sie bleiben hier über Sitzungen hinweg.
       export_a_file: Exportiere eine Datei
       format: Format
       png: PNG
@@ -1377,7 +1377,7 @@ de:
       changelog_consent:
         what_s_new_notices: Neuigkeiten-Benachrichtigungen
         a_what_s_new_notice_is_shown_when_a_new: Bei einer neuen Dawarich-Version wird ein Hinweis zu den Neuerungen angezeigt, auch bei Sicherheitsupdates. Dafür wird ein kleines Widget von
-        which_like_any_web_request_sees_your_ip_address_browser: ", das — wie jede Webanfrage — deine IP-Adresse, Browser und die Seite-URL sowie deine Dawarich-Version sieht. Es erhält niemals dein Konto, E-Mail-Adresse oder Standort."
+        which_like_any_web_request_sees_your_ip_address_browser: ", das - wie jede Webanfrage - deine IP-Adresse, Browser und die Seite-URL sowie deine Dawarich-Version sieht. Es erhält niemals dein Konto, E-Mail-Adresse oder Standort."
         get_a_what_s_new_notice_when_a_new_dawarich: Erhalte eine "Neuigkeiten"-Benachrichtigung, wenn eine neue Dawarich-Version veröffentlicht wird, einschließlich Sicherheitsupdates. Die Benachrichtigung lädt ein kleines Widget von
         turn_off_notices: Benachrichtigungen deaktivieren
         turn_on_notices: Benachrichtigungen aktivieren
@@ -1652,7 +1652,7 @@ de:
       changelog_prompt:
         stay_up_to_date: Aktuell bleiben?
         get_a_what_s_new_notice_when_a_new_dawarich: Erhalte eine "Was Neues"-Benachrichtigung, wenn eine neue Dawarich-Version veröffentlicht wird, einschließlich Sicherheitsupdates. Die Benachrichtigung lädt ein kleines Widget von
-        like_any_web_request_that_host_sees_your_ip_address: ". Wie bei jeder Webanfrage sieht der Host deine IP-Adresse, Browser und die Seite-URL, plus deine Dawarich-Version — niemals dein Konto, deine E-Mail-Adresse oder dein Standort. Du kannst dies jederzeit ändern."
+        like_any_web_request_that_host_sees_your_ip_address: ". Wie bei jeder Webanfrage sieht der Host deine IP-Adresse, Browser und die Seite-URL, plus deine Dawarich-Version - niemals dein Konto, deine E-Mail-Adresse oder dein Standort. Du kannst dies jederzeit ändern."
         no_thanks: Danke, nein
         yes_notify_me: Ja, benachrichtige mich
       help_links:
@@ -1778,15 +1778,15 @@ de:
       not_found:
         this_shared_link_is_no_longer_available: Dieser geteilte Link ist nicht mehr verfügbar
         the_owner_may_have_revoked_the_link_or_it_may: Der Besitzer hat den Link möglicherweise widerrufen oder er ist abgelaufen.
-        not_found_dawarich: Nicht gefunden — Dawarich
+        not_found_dawarich: Nicht gefunden - Dawarich
       phrase_prompt:
         enter_the_magic_phrase: Gib die magische Phrase ein
         this_shared_link_is_protected_ask_the_owner_for_the: Dieser geteilte Link ist geschützt. Frag den Besitzer nach der Phrase.
         magic_phrase: magische Phrase
         unlock: Entsperrung
-        enter_phrase_dawarich: Phrase eingeben — Dawarich
+        enter_phrase_dawarich: Phrase eingeben - Dawarich
       show:
-        name_shared_on_dawarich: "%{name} — Geteilt auf Dawarich"
+        name_shared_on_dawarich: "%{name} - Geteilt auf Dawarich"
         shared_from_dawarich: Von Dawarich geteilt
     map:
       date_navigation_v2:
@@ -1842,7 +1842,7 @@ de:
       also_show_the_path_travelled_since_this_link_was_created: Zeige auch den Weg, den du seit der Erstellung dieses Links zurückgelegt hast.
       cancel: Abbrechen
       create_share_link: Teilen-Link erstellen
-      this_shares_your_location_with_anyone_html: "Damit teilst du %{location} mit allen, die den Link haben — bis er abläuft oder du ihn widerrufst."
+      this_shares_your_location_with_anyone_html: "Damit teilst du %{location} mit allen, die den Link haben - bis er abläuft oder du ihn widerrufst."
     modal_timeline_create_form:
       start_date: Startdatum
       end_date: Enddatum
@@ -1989,7 +1989,7 @@ de:
         stop_duration: "Halt · %{duration}"
         transfer: Umstieg
         moving: unterwegs
-        mode_unclear: Verkehrsmittel unklar — die Erkennungssicherheit ist zu niedrig für eine Zuordnung
+        mode_unclear: Verkehrsmittel unklar - die Erkennungssicherheit ist zu niedrig für eine Zuordnung
         short_segments:
           one: "1 kurzes Segment"
           other: "%{count} kurze Segmente"
@@ -2013,7 +2013,7 @@ de:
     resume:
       show:
         finish_setting_up_your_account: Konto einrichten abschließen
-        your_account_is_almost_ready_to_start_tracking_your_location: Dein Konto ist fast bereit. Schließe die Einrichtung deines Abonnements ab, um deine Standortdaten aufzuzeichnen. Während des 7-tägigen kostenlosen Testzeitraums fallen keine Kosten an — kündige vor Ablauf, damit dir nichts berechnet wird.
+        your_account_is_almost_ready_to_start_tracking_your_location: Dein Konto ist fast bereit. Schließe die Einrichtung deines Abonnements ab, um deine Standortdaten aufzuzeichnen. Während des 7-tägigen kostenlosen Testzeitraums fallen keine Kosten an - kündige vor Ablauf, damit dir nichts berechnet wird.
         resume_checkout: Check-out fortsetzen
         or_delete_my_account: Oder mein Konto löschen
         are_you_sure_this_cannot_be_undone: Bist du sicher? Dies kann nicht rückgängig gemacht werden.
@@ -2034,7 +2034,7 @@ de:
     recalculate_button:
       recalculating_hellip: Wiederberechnung…
       recalculate: Wiederberechnen
-      recalculation_failed_try_again: Wiederberechnung fehlgeschlagen — erneut versuchen.
+      recalculation_failed_try_again: Wiederberechnung fehlgeschlagen - erneut versuchen.
       recalculate_this_trip_s_path_distance_and_countries_from_your: Diese Reise wiederberechnen und den Weg, die Distanz und die Länder aus deinen neuesten Punkten ermitteln?
     trip:
       no_points_found: Keine Punkte gefunden
@@ -2144,7 +2144,7 @@ de:
         total_distance: Gesamtstrecke
         track_your_own_adventures_with: Verfolge deine eigenen Abenteuer mit
         dawarich: Dawarich
-        your_personal_memories_mapper: "— deine persönliche Erinnerungskarte."
+        your_personal_memories_mapper: "- deine persönliche Erinnerungskarte."
         month: Monat
         distance: Strecke
         first_time_count:
@@ -2262,15 +2262,15 @@ de:
       once_confirmed_all_your_location_history_tracks_areas_visits_trips: Sobald bestätigt, werden alle deine Standortverläufe, Tracks, Gebiete, Aufenthalte, Reisen und Familienmitgliedschaften dauerhaft gelöscht.
       permanently_delete_my_account: Mein Konto dauerhaft löschen
       didn_t_request_this: Dies war keine Anfrage von dir?
-      ignore_this_email_the_link_expires_in_1_hour_and: Ignoriere diese E-Mail — der Link läuft in 1 Stunde ab und dein Konto bleibt unangetastet. Wenn du diese E-Mails weiterhin erhältst, ändere dein Passwort sofort.
+      ignore_this_email_the_link_expires_in_1_hour_and: Ignoriere diese E-Mail - der Link läuft in 1 Stunde ab und dein Konto bleibt unangetastet. Wenn du diese E-Mails weiterhin erhältst, ändere dein Passwort sofort.
       if_you_have_an_active_apple_or_google_subscription_remember: Wenn du ein aktives Apple- oder Google-Abonnement hast, vergiss nicht, es in den Einstellungen deiner Plattform zu kündigen, um weitere Gebühren zu vermeiden.
       link: 'Link:'
       confirm_account_deletion_hi: Konto löschen bestätigen Hi
       we_received_a_request_to_delete_your_dawarich_account_this: ", Wir haben eine Anfrage erhalten, dein Dawarich-Konto zu löschen. Dies ist dein letzter Versuch, die Löschung zu stoppen. Sobald bestätigt, werden alle deine Standortverläufe, Tracks, Gebiete, Aufenthalte, Reisen und Familienmitgliedschaften dauerhaft entfernt. Dauerhaftes Konto löschen:"
-      didn_t_request_this_ignore_this_email_the_link_expires: Du hast das nicht angefordert? Ignoriere diese E-Mail — der Link läuft in 1 Stunde ab und dein Konto bleibt unangetastet. Wenn du weiterhin diese E-Mails erhältst, ändere dein Passwort sofort. Wenn du ein aktives Apple- oder Google-Abonnement hast, vergiss nicht, es in den Einstellungen deiner Plattform zu kündigen, um weitere Gebühren zu vermeiden.
+      didn_t_request_this_ignore_this_email_the_link_expires: Du hast das nicht angefordert? Ignoriere diese E-Mail - der Link läuft in 1 Stunde ab und dein Konto bleibt unangetastet. Wenn du weiterhin diese E-Mails erhältst, ändere dein Passwort sofort. Wenn du ein aktives Apple- oder Google-Abonnement hast, vergiss nicht, es in den Einstellungen deiner Plattform zu kündigen, um weitere Gebühren zu vermeiden.
       we_received_a_request_to_delete_your_dawarich_account_this_2: Wir haben eine Anfrage erhalten, dein Dawarich-Konto zu löschen. Dies ist dein letzter Versuch, die Löschung zu stoppen. Sobald bestätigt, werden alle deine Standortverläufe, Tracks, Gebiete, Aufenthalte, Reisen und Familienmitgliedschaften dauerhaft entfernt.
       permanently_delete_my_account_2: 'Dauerhaftes Konto löschen:'
-      didn_t_request_this_ignore_this_email_the_link_expires_2: Du hast das nicht angefordert? Ignoriere diese E-Mail — der Link läuft in 1 Stunde ab und dein Konto bleibt unangetastet. Wenn du weiterhin diese E-Mails erhältst, ändere dein Passwort sofort.
+      didn_t_request_this_ignore_this_email_the_link_expires_2: Du hast das nicht angefordert? Ignoriere diese E-Mail - der Link läuft in 1 Stunde ab und dein Konto bleibt unangetastet. Wenn du weiterhin diese E-Mails erhältst, ändere dein Passwort sofort.
     archival_approaching:
       your_data_history_is_filling_up: Deine Datenhistorie füllt sich auf
       hi: Hallo
@@ -2278,22 +2278,22 @@ de:
       heads_up: 'Achtung:'
       your_oldest_location_data_will_be_archived_in_about: Deine ältesten Standortdaten werden in etwa
       weeks: 2 Wochen
-      on_the_lite_plan_your_most_recent_12_months_of: Auf dem Lite-Plan bleiben deine letzten 12 Monate Daten vollständig suchbar und interaktiv. Ältere Daten werden archiviert — sie können immer exportiert werden, erscheinen aber nicht auf deiner Karte, in der Suche, den Statistiken oder der Zeitleistenwiedergabe.
+      on_the_lite_plan_your_most_recent_12_months_of: Auf dem Lite-Plan bleiben deine letzten 12 Monate Daten vollständig suchbar und interaktiv. Ältere Daten werden archiviert - sie können immer exportiert werden, erscheinen aber nicht auf deiner Karte, in der Suche, den Statistiken oder der Zeitleistenwiedergabe.
       upgrade_to_pro_to_keep_your_full_history: 'Upgrade auf Pro, um deinen vollständigen Verlauf zu behalten:'
-      unlimited_searchable_history_every_month_every_year: Unbegrenzter Suchverlauf — monatlich, jährlich
+      unlimited_searchable_history_every_month_every_year: Unbegrenzter Suchverlauf - monatlich, jährlich
       heatmap_fog_of_war_and_globe_view: Heatmap, Kartennebel und Globusansicht
       full_write_api_access: Vollständiger Schreibzugriff über die API
       immich_and_photoprism_integrations: Integrationen mit Immich und PhotoPrism
       upgrade_to_pro: Auf Pro upgraden
-      your_data_is_always_yours_pro_simply_makes_all_of: Deine Daten sind immer dein Eigentum — Pro macht einfach alles suchbar und interaktiv in der App.
+      your_data_is_always_yours_pro_simply_makes_all_of: Deine Daten sind immer dein Eigentum - Pro macht einfach alles suchbar und interaktiv in der App.
       questions_drop_me_a_message_at_hi_dawarich_app_or: Fragen? Schreib mir eine Nachricht an hi@dawarich.app oder antworte einfach auf diese E-Mail.
       best_regards: Mit freundlichen Grüßen,
       evgenii_from_dawarich: Evgenii von Dawarich
       your_data_history_is_filling_up_hi: Deine Datenhistorie füllt sich auf Hi
-      this_is_evgenii_from_dawarich_heads_up_your_oldest_location: ", hier ist Evgenii von Dawarich. Achtung: Deine ältesten Standortdaten werden in etwa zwei Wochen archiviert. Im Lite-Tarif bleiben die Daten deiner letzten 12 Monate vollständig durchsuchbar und interaktiv. Ältere Daten werden archiviert — du kannst sie weiterhin exportieren, sie erscheinen aber nicht mehr auf der Karte, in der Suche, in Statistiken oder in der Zeitleistenwiedergabe. Upgrade auf Pro, um deinen gesamten Verlauf zu behalten: - Unbegrenzt durchsuchbarer Verlauf für alle Monate und Jahre - Heatmap, Kartennebel und Globusansicht - Vollständiger Schreibzugriff über die API - Integrationen mit Immich und PhotoPrism Jetzt upgraden:"
-      your_data_is_always_yours_pro_simply_makes_all_of_2: Deine Daten sind immer dein Eigentum — Pro macht einfach alles suchbar und interaktiv in der App. Fragen? Schreib mir eine Nachricht an hi@dawarich.app oder antworte einfach auf diese E-Mail. Mit freundlichen Grüßen, Evgenii von Dawarich
+      this_is_evgenii_from_dawarich_heads_up_your_oldest_location: ", hier ist Evgenii von Dawarich. Achtung: Deine ältesten Standortdaten werden in etwa zwei Wochen archiviert. Im Lite-Tarif bleiben die Daten deiner letzten 12 Monate vollständig durchsuchbar und interaktiv. Ältere Daten werden archiviert - du kannst sie weiterhin exportieren, sie erscheinen aber nicht mehr auf der Karte, in der Suche, in Statistiken oder in der Zeitleistenwiedergabe. Upgrade auf Pro, um deinen gesamten Verlauf zu behalten: - Unbegrenzt durchsuchbarer Verlauf für alle Monate und Jahre - Heatmap, Kartennebel und Globusansicht - Vollständiger Schreibzugriff über die API - Integrationen mit Immich und PhotoPrism Jetzt upgraden:"
+      your_data_is_always_yours_pro_simply_makes_all_of_2: Deine Daten sind immer dein Eigentum - Pro macht einfach alles suchbar und interaktiv in der App. Fragen? Schreib mir eine Nachricht an hi@dawarich.app oder antworte einfach auf diese E-Mail. Mit freundlichen Grüßen, Evgenii von Dawarich
       heads_up_your_oldest_location_data_will_be_archived_in: 'Achtung: Deine ältesten Standortdaten werden in etwa zwei Wochen archiviert.'
-      unlimited_searchable_history_every_month_every_year_2: "- Unbegrenzter Suchverlauf — monatlich, jährlich"
+      unlimited_searchable_history_every_month_every_year_2: "- Unbegrenzter Suchverlauf - monatlich, jährlich"
       heatmap_fog_of_war_and_globe_view_2: "- Heatmap, Kartennebel und Globusansicht"
       full_write_api_access_2: "- Vollständiger Schreibzugriff über die API"
       immich_and_photoprism_integrations_2: "- Immich und PhotoPrism-Integrationen"
@@ -2331,9 +2331,9 @@ de:
       account_link_request_text: Jemand – hoffentlich du – versucht, die Anmeldemethode %{provider} mit deinem Dawarich-Konto zu verknüpfen. Mit dem Link unten erlaubst du dieser Anmeldemethode künftig den Zugriff auf dieses Konto.
       link: Verknüpfen
       didn_t_request_this: Warst du das nicht?
-      ignore_this_email_the_link_expires_in_15_minutes_and: Ignoriere diese E-Mail — der Link läuft in 15 Minuten ab und wird keine Änderungen an deinem Konto vornehmen. Wenn du diese E-Mails weiterhin erhältst, ändere dein Passwort.
+      ignore_this_email_the_link_expires_in_15_minutes_and: Ignoriere diese E-Mail - der Link läuft in 15 Minuten ab und wird keine Änderungen an deinem Konto vornehmen. Wenn du diese E-Mails weiterhin erhältst, ändere dein Passwort.
       link_2: 'Link:'
-      didn_t_request_this_ignore_this_email_the_link_expires: Warst du das nicht? Ignoriere diese E-Mail — der Link läuft in 15 Minuten ab und es werden keine Änderungen an deinem Konto vorgenommen. Wenn du solche E-Mails weiterhin erhältst, ändere dein Passwort.
+      didn_t_request_this_ignore_this_email_the_link_expires: Warst du das nicht? Ignoriere diese E-Mail - der Link läuft in 15 Minuten ab und es werden keine Änderungen an deinem Konto vorgenommen. Wenn du solche E-Mails weiterhin erhältst, ändere dein Passwort.
     otp_account_locked:
       account_temporarily_locked: Konto vorübergehend gesperrt
       hi: Hallo
@@ -2547,7 +2547,7 @@ de:
       finish_signup: Registrierung abschließen
       resume: Fortsetzen
       subscribe: Abonnieren
-      pro_preview: Auf Pro verfügbar — klicken, um Vorschau zu zeigen
+      pro_preview: Auf Pro verfügbar - klicken, um Vorschau zu zeigen
       pro_only: Auf Pro verfügbar
       pro_badge: " Pro"
     timeline:
@@ -2702,12 +2702,12 @@ de:
         auth:
           apple:
             apple_has_not_verified_this_email_sign_in_with_password: Apple hat diese E-Mail nicht verifiziert. Melde dich mit Passwort an und verknüpfe sie in den Einstellungen.
-            this_email_already_has_a_dawarich_account_we_sent_a: Diese E-Mail hat bereits ein Dawarich-Konto. Wir haben einen Bestätigungslink an diese Adresse gesendet — klicke darauf, um deinen Apple-ID zu verknüpfen.
+            this_email_already_has_a_dawarich_account_we_sent_a: Diese E-Mail hat bereits ein Dawarich-Konto. Wir haben einen Bestätigungslink an diese Adresse gesendet - klicke darauf, um deinen Apple-ID zu verknüpfen.
             we_couldn_t_find_your_existing_account_and_apple_didn: Wir konnten dein bestehendes Konto nicht finden, und Apple hat dieses Mal deine E-Mail nicht mit uns geteilt. Apple teilt die E-Mail nur einmal. Gehe zu appleid.apple.com → Anmeldung mit Apple, finde Dawarich, wähle "Nicht mehr mit Apple anmelden" und versuche es erneut.
             token_verification_failed: 'Apple-Token-Überprüfung fehlgeschlagen: %{message}'
           google:
             google_has_not_verified_this_email_sign_in_with_password: Google hat diese E-Mail nicht verifiziert. Melde dich mit Passwort an und verknüpfe sie in den Einstellungen.
-            this_email_already_has_a_dawarich_account_we_sent_a: Diese E-Mail hat bereits ein Dawarich-Konto. Wir haben einen Bestätigungslink an diese Adresse gesendet — klicke darauf, um deine Google-Anmeldung zu verknüpfen.
+            this_email_already_has_a_dawarich_account_we_sent_a: Diese E-Mail hat bereits ein Dawarich-Konto. Wir haben einen Bestätigungslink an diese Adresse gesendet - klicke darauf, um deine Google-Anmeldung zu verknüpfen.
             token_verification_failed: 'Google-Token-Überprüfung fehlgeschlagen: %{message}'
           otp_challenges:
             invalid_challenge: 'Ungültiger oder abgelaufener Challenge: %{message}'
@@ -3024,9 +3024,9 @@ de:
     tracks:
       recalculations:
         re_classification_already_running: Re-Klassifizierung läuft bereits
-        re_classification_started_your_tracks_will_update_over_the_next: Re-Klassifizierung gestartet — deine Tracks werden in den nächsten Minuten aktualisiert
+        re_classification_started_your_tracks_will_update_over_the_next: Re-Klassifizierung gestartet - deine Tracks werden in den nächsten Minuten aktualisiert
       segments:
-        reprocess_failed: Neuerkennung fehlgeschlagen — deine Korrektur wurde beibehalten
+        reprocess_failed: Neuerkennung fehlgeschlagen - deine Korrektur wurde beibehalten
         segment_updated: Segment aktualisiert
         mode_not_enabled: Dieser Modus ist in deinen Einstellungen nicht aktiviert
         update_failed: Segment konnte nicht aktualisiert werden
@@ -3039,8 +3039,8 @@ de:
         this_welcome_link_has_already_been_used: Dieser Willkommenslink wurde bereits verwendet.
         link_invalid_or_expired_please_sign_in: Link ungültig oder abgelaufen. Bitte melde dich an.
         account_no_longer_exists_please_sign_up_again: Das Konto existiert nicht mehr. Bitte registriere dich erneut.
-        trial_active_until: Willkommen bei Dawarich — dein kostenloser 7-tägiger Testzeitraum läuft bis zum %{date}.
-        trial_activating: Willkommen bei Dawarich — dein Testzeitraum wird gerade aktiviert.
+        trial_active_until: Willkommen bei Dawarich - dein kostenloser 7-tägiger Testzeitraum läuft bis zum %{date}.
+        trial_activating: Willkommen bei Dawarich - dein Testzeitraum wird gerade aktiviert.
     trips:
       notes:
         invalid_date: Ungültiges Datum
@@ -3050,8 +3050,8 @@ de:
       trip_was_successfully_created_data_is_being_calculated_in_the: Reise wurde erfolgreich erstellt. Die Daten werden im Hintergrund berechnet.
       trip_was_successfully_updated: Reise wurde erfolgreich aktualisiert.
       trip_was_successfully_destroyed: Reise wurde erfolgreich gelöscht.
-      already_recalculating_this_page_will_update_when_it_s_done: Berechnung läuft — diese Seite wird aktualisiert, sobald sie fertig ist.
-      recalculating_the_page_will_update_automatically_when_it_s_ready: Berechnung läuft — die Seite wird automatisch aktualisiert, sobald sie fertig ist.
+      already_recalculating_this_page_will_update_when_it_s_done: Berechnung läuft - diese Seite wird aktualisiert, sobald sie fertig ist.
+      recalculating_the_page_will_update_automatically_when_it_s_ready: Berechnung läuft - die Seite wird automatisch aktualisiert, sobald sie fertig ist.
       unsupported_export_format_choose_gpx_or_geojson: Nicht unterstütztes Exportformat. Wähle GPX oder GeoJSON.
       trip_export_initiated_check_the_exports_page_when_it_s: Der Reiseexport wurde gestartet. Prüfe die Exportseite, sobald er abgeschlossen ist.
       export_failed_to_initiate_please_try_again: Der Export konnte nicht gestartet werden. Bitte versuche es erneut.
@@ -3167,7 +3167,7 @@ de:
         year_end:
           subject: Dein %{year} Jahresrückblick – Dawarich
         monthly:
-          subject: Dein %{month} %{year} im Rückblick — Dawarich
+          subject: Dein %{month} %{year} im Rückblick - Dawarich
   models:
     family:
       location_request:
@@ -3715,9 +3715,9 @@ de:
     map:
       tiled_rendering:
         inactive_note:
-          one: "Inaktiv, solange %{layers} aktiv ist — diese Ebene benötigt alle Punkte."
-          other: "Inaktiv, solange %{layers} aktiv sind — diese Ebenen benötigen alle Punkte."
-        editing_unavailable: "Bei gekachelter Darstellung nicht verfügbar — Vektorkacheln haben keine verschiebbaren Punkte"
+          one: "Inaktiv, solange %{layers} aktiv ist - diese Ebene benötigt alle Punkte."
+          other: "Inaktiv, solange %{layers} aktiv sind - diese Ebenen benötigen alle Punkte."
+        editing_unavailable: "Bei gekachelter Darstellung nicht verfügbar - Vektorkacheln haben keine verschiebbaren Punkte"
         failed: "Kartenkacheln konnten nicht geladen werden. Versuche einen kürzeren Zeitraum oder schalte die gekachelte Darstellung in den Karteneinstellungen aus."
         blockers:
           routes: "Routen"
@@ -3772,7 +3772,7 @@ de:
 
         Dies entfernt die Demo-Punkte, Aufenthalte, Orte, Tags, Tracks und die Prager Reise.
 
-        Deine echten Daten — alles, was du importiert, bearbeitet, bestätigt oder selbst erstellt hast — bleibt unangetastet.
+        Deine echten Daten - alles, was du importiert, bearbeitet, bestätigt oder selbst erstellt hast - bleibt unangetastet.
       creating: Deine Demo-Daten werden erstellt…
       creating_help: Ein Monat Berlin-Tracking plus eine Prager Wochenende-Reise wird gesät. Das dauert etwa eine Sekunde.
     visits:
@@ -3907,7 +3907,7 @@ de:
         Dies ist langsam und erneuert abgeleitete Daten.
 
         • Tracks, Statistiken und Digests werden aus den vorhandenen Punkten und Einstellungen neu erstellt.
-        • Bestehende Tracks/Statistiken werden ersetzt — alles, was du manuell an einem Track angepasst hast, wird überschrieben.
+        • Bestehende Tracks/Statistiken werden ersetzt - alles, was du manuell an einem Track angepasst hast, wird überschrieben.
         • Je nach deiner Geschichte kann dies mehrere Minuten dauern; du erhältst eine Benachrichtigung, sobald es fertig ist.
 
         Weiter?
@@ -3919,8 +3919,8 @@ de:
         Möchtest du fortfahren?
       custom_style_load_failed: Benutzerdefinierte Kartenstil konnte nicht geladen werden; zurück zum Standardstil.
       invalid_tile_url: Tile-URL muss {z}, {x} und {y} Platzhalter enthalten oder eine MapLibre-Stil-URL sein
-      layer_unavailable_custom_style: Nicht mit dem benutzerdefinierten Kartenstil verfügbar — es werden keine Beschriftungen oder Sehenswürdigkeiten gezeichnet
-      layer_unavailable_foreign_basemap: Nicht mit einer benutzerdefinierten Raster- oder Stil-Basiskarte verfügbar — diese Ebenen stammen aus den integrierten Vektorkacheln
+      layer_unavailable_custom_style: Nicht mit dem benutzerdefinierten Kartenstil verfügbar - es werden keine Beschriftungen oder Sehenswürdigkeiten gezeichnet
+      layer_unavailable_foreign_basemap: Nicht mit einer benutzerdefinierten Raster- oder Stil-Basiskarte verfügbar - diese Ebenen stammen aus den integrierten Vektorkacheln
       make_changes_to_apply: Änderungen vornehmen, um den Anwenden-Button zu aktivieren
       re_evaluation_queued: Die erneute Prüfung wurde eingereiht. Die Karte wird aktualisiert, sobald die Aufgabe abgeschlossen ist.
       recalculation_queued: Die Neuberechnung wurde eingereiht. Du erhältst eine Benachrichtigung, sobald sie abgeschlossen ist.
@@ -4087,12 +4087,12 @@ de:
         other: Familienstandorte aktualisiert (%{count} Mitglieder)
       refresh_failed: Aktualisierung der Familienstandorte fehlgeschlagen
     hexagons:
-      limit_warning: Zeige die ersten 100.000 Punkte in diesem Bereich — schränke den Zeitraum ein, um dichtere Details anzuzeigen.
+      limit_warning: Zeige die ersten 100.000 Punkte in diesem Bereich - schränke den Zeitraum ein, um dichtere Details anzuzeigen.
       load_failed: 'Hexagone konnten nicht geladen werden: %{error}'
       points: "<strong>%{count}</strong> Punkte"
     layer_preview:
       ended: "%{layer} Vorschau beendet."
-      remaining: Vorschau von %{layer} — %{seconds} Sekunden verbleibend.
+      remaining: Vorschau von %{layer} - %{seconds} Sekunden verbleibend.
       started: Vorschau von %{layer} für %{seconds} Sekunden.
     poster:
       categories:
@@ -4101,7 +4101,7 @@ de:
         wallpaper: Hintergrundbild
       export_failed: 'Poster-Export fehlgeschlagen: %{error}'
       open_failed: 'Poster-Studio konnte nicht geöffnet werden: %{error}'
-      order_summary: "%{layout} Poster — %{price}"
+      order_summary: "%{layout} Poster - %{price}"
       theme_load_failed: 'Thema konnte nicht geladen werden: %{error}'
       theme_preset_failed: 'Themevorlage konnte nicht geladen werden: %{error}'
       layouts:
@@ -4127,26 +4127,26 @@ de:
         wallpaper-ultrawide: Desktop Ultrawide
         wallpaper-phone: Smartphone
         wallpaper-tablet: Tablet
-      frame_too_wide: Diese Ansicht ist breiter als der größte Posterbereich — das gespeicherte Poster wird enger zoomt als der Vorschau.
+      frame_too_wide: Diese Ansicht ist breiter als der größte Posterbereich - das gespeicherte Poster wird enger zoomt als der Vorschau.
       load: Laden
       loading: Lade…
       loading_tracks: Lade Tracks für den neuen Bereich…
-      no_location_data: Keine Standortdaten in diesem Zeitraum — wähle einen Zeitraum mit Tracks in der Zeitleiste oben aus.
-      no_tracks_in_frame: Keine Tracks im Rahmen — verschiebe oder zoome die Karte über deinen Weg, um sie in die Galerie zu speichern.
-      queued: In der Warteschlange — wird auf der Serverseite in Recent Posters gerendert…
+      no_location_data: Keine Standortdaten in diesem Zeitraum - wähle einen Zeitraum mit Tracks in der Zeitleiste oben aus.
+      no_tracks_in_frame: Keine Tracks im Rahmen - verschiebe oder zoome die Karte über deinen Weg, um sie in die Galerie zu speichern.
+      queued: In der Warteschlange - wird auf der Serverseite in Recent Posters gerendert…
       rendering: Rendere %{width} × %{height}px…
       saved: Gespeichert
       saved_at_dpi: Gespeichert bei %{dpi} dpi (Gerätsgrenze GL)
       untitled: Unbenannter Poster
       order_errors:
-        connection: Kann den Bestellservice nicht erreichen — überprüfe deine Verbindung.
-        generic: Bestellupload fehlgeschlagen — versuche es erneut.
-        not_pdf: Der Export hat kein gültiges PDF erzeugt — versuche es erneut.
-        payment_unavailable: Zahlung ist vorübergehend nicht verfügbar — versuche es in einer Minute erneut.
+        connection: Kann den Bestellservice nicht erreichen - überprüfe deine Verbindung.
+        generic: Bestellupload fehlgeschlagen - versuche es erneut.
+        not_pdf: Der Export hat kein gültiges PDF erzeugt - versuche es erneut.
+        payment_unavailable: Zahlung ist vorübergehend nicht verfügbar - versuche es in einer Minute erneut.
         too_large: Das exportierte PDF ist zu groß (max. 50 MB). Verringere den DPI-Bereich oder zoome aus.
         unknown_sku: Dieses Format ist derzeit nicht bestellbar.
-        unreadable: Das exportierte PDF konnte nicht gelesen werden — versuche es erneut.
-        wrong_size: Das exportierte PDF entspricht nicht dem ausgewählten Format — versuche es erneut.
+        unreadable: Das exportierte PDF konnte nicht gelesen werden - versuche es erneut.
+        wrong_size: Das exportierte PDF entspricht nicht dem ausgewählten Format - versuche es erneut.
     legacy_settings:
       edit_colors: Farben bearbeiten
       fog_radius: Radius des Nebels des Krieges
@@ -4177,7 +4177,7 @@ de:
       last_seen: 'Zuletzt gesehen: %{date} (%{relative})'
       last_seen_short: Zuletzt gesehen
       location_hidden: Standort versteckt.
-      location_unknown: Standort unbekannt — warte auf eine Aktualisierung …
+      location_unknown: Standort unbekannt - warte auf eine Aktualisierung …
     speed_gradient:
       add_stop: Farbstop hinzufügen
       color: Farbe

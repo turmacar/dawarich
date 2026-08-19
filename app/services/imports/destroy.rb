@@ -40,7 +40,7 @@ class Imports::Destroy
     total_deleted = 0
 
     loop do
-      # delete_all returns no rows, so capture the timestamps BEFORE deleting —
+      # delete_all returns no rows, so capture the timestamps BEFORE deleting -
       # the tile epoch needs to know which years the deletion touched.
       rows = @import.points.limit(BATCH_SIZE).pluck(:id, :timestamp)
       break if rows.empty?

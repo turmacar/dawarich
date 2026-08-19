@@ -98,7 +98,7 @@ RSpec.describe 'Visit detection eval' do
 
     if ENV['REGENERATE_VISITS_EVAL_BASELINE']
       File.write(baseline_path, JSON.pretty_generate(report))
-      skip 'baseline regenerated — commit the new file deliberately'
+      skip 'baseline regenerated - commit the new file deliberately'
     end
 
     baseline = JSON.parse(File.read(baseline_path))
@@ -115,10 +115,10 @@ RSpec.describe 'Visit detection eval' do
     end
   end
 
-  it 'fails loudly when bridging is disabled — the harness catches semantic regressions' do
+  it 'fails loudly when bridging is disabled - the harness catches semantic regressions' do
     allow(DawarichSettings).to receive_messages(reverse_geocoding_enabled?: false, store_geodata?: false)
     # Silence-bridging lives in TWO cooperating layers (fragment-level
-    # GapBridger and the Runner's row-level stitcher) — a real regression
+    # GapBridger and the Runner's row-level stitcher) - a real regression
     # means losing both, so the probe disables both.
     allow_any_instance_of(Visits::Detection::GapBridger)
       .to receive(:call) { |_, fragments| fragments }
@@ -134,6 +134,6 @@ RSpec.describe 'Visit detection eval' do
                                scenario[:points].last[:timestamp] + 3600)
 
     durations = visits.map { |v| v['end_offset'] - v['start_offset'] }
-    expect(durations.max.to_i).to be < 4 * 3600 # the bridged 4h stay is gone — gate would fail
+    expect(durations.max.to_i).to be < 4 * 3600 # the bridged 4h stay is gone - gate would fail
   end
 end

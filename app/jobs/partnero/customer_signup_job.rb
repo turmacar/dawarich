@@ -5,7 +5,7 @@
 #
 # This runs server-side rather than as a po('customers','signup') call in the
 # browser because reverse-trial signups redirect straight to manager.dawarich.app
-# for checkout — those users never load another page on this host, so a JS call
+# for checkout - those users never load another page on this host, so a JS call
 # would never fire for them.
 class Partnero::CustomerSignupJob < ApplicationJob
   class AttributionFailed < StandardError; end

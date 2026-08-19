@@ -20,7 +20,7 @@ class DataMigrations::BackfillPointDimensionsJob < ApplicationJob
   # after_discard procs on EVERY attempt before re-raising to Sidekiq, so a
   # transient lock timeout would announce that the backfill had stopped and
   # hand out a resume cursor that starts a second chain over the same rows.
-  # These blocks run once, when the attempts are actually spent — and that is
+  # These blocks run once, when the attempts are actually spent - and that is
   # the moment worth reporting, because the tail enqueue below is the chain's
   # only link to the next batch.
   retry_on ActiveRecord::LockWaitTimeout, wait: 1.minute, attempts: MAX_ATTEMPTS do |job, error|
@@ -133,7 +133,7 @@ class DataMigrations::BackfillPointDimensionsJob < ApplicationJob
   # Under READ COMMITTED each statement takes its own snapshot, so a point
   # committed into this id range after the seeds ran is visible here but was
   # never seeded and matches neither dimension. The inner join skips it and it
-  # stays NULL — which is why the backfill is documented as re-runnable rather
+  # stays NULL - which is why the backfill is documented as re-runnable rather
   # than one-shot. Only the tail batches can see this, since earlier ranges are
   # closed by the time the cursor passes them.
   def stamp_dimensions(start_id, end_id)

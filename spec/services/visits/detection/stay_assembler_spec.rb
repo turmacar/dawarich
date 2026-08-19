@@ -34,7 +34,7 @@ RSpec.describe Visits::Detection::StayAssembler do
   end
 
   it 'keeps a dark-venue stay whose evidence sits at the snapped-off edges' do
-    # One fix on arrival, four reacquired on departure — the show happened in
+    # One fix on arrival, four reacquired on departure - the show happened in
     # the dark. Departure snapping moved the end before the trailing fixes.
     points = [pt(1, at: 0), pt(2, at: 4700), pt(3, at: 4730),
               pt(4, at: 4760), pt(5, at: 4800)]
@@ -78,7 +78,7 @@ RSpec.describe Visits::Detection::StayAssembler do
     expect(assemble(far_apart_space, (1..12).map { |i| pt(i, at: i * 100) }).size).to eq(2)
   end
 
-  it 'drops fragments below min dwell or min points — and only here' do
+  it 'drops fragments below min dwell or min points - and only here' do
     points = (1..5).map { |i| pt(i, at: i * 10) }
     short = fragment((1..5).to_a, 10, 50)
     sparse = fragment([1, 2], 10, 400)

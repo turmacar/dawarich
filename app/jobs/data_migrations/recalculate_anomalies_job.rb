@@ -7,7 +7,7 @@
 # directions, and the tracks, stats and digests built on top of them are stale.
 #
 # Dispatcher only: the per-user work is DataMigrations::RecalculateAnomaliesUserJob.
-# Running this twice is safe — users already handed out are skipped, so a re-run
+# Running this twice is safe - users already handed out are skipped, so a re-run
 # only picks up whatever is left.
 class DataMigrations::RecalculateAnomaliesJob < ApplicationJob
   queue_as :data_migrations
@@ -36,7 +36,7 @@ class DataMigrations::RecalculateAnomaliesJob < ApplicationJob
     if claimed.empty?
       # Nothing was handed out, so nobody will hand the slot back. That happens
       # when this pass only settled skipped users, and when it lost the claim
-      # race to a concurrent dispatcher — ask again rather than losing a slot.
+      # race to a concurrent dispatcher - ask again rather than losing a slot.
       self.class.perform_later(limit: limit) if skipped.any? || runnable.any?
       return
     end
@@ -64,7 +64,7 @@ class DataMigrations::RecalculateAnomaliesJob < ApplicationJob
   #
   # Users who turned filtering off keep the flags they have. Re-running the
   # filter for them marks nothing, so a reset would silently unflag their
-  # history — a change this migration was not asked to make. They are still
+  # history - a change this migration was not asked to make. They are still
   # marked as handed out, so the queue drains and nothing reports them waiting.
   #
   # The boolean stays in Ruby rather than SQL: SafeSettings casts it with
@@ -105,14 +105,14 @@ class DataMigrations::RecalculateAnomaliesJob < ApplicationJob
   # but is wrong: config.time_zone defaults to Europe/Berlin and is settable per
   # instance, so a claim can be stored with a "+02:00" or "-07:00" offset. Those
   # sort by wall-clock digits, and on any zone behind UTC a claim written a
-  # second ago sorts below a UTC cutoff — instantly "stale", handing a second
+  # second ago sorts below a UTC cutoff - instantly "stale", handing a second
   # worker a user the first is still rebuilding.
   #
   # The pattern guard keeps the cast from raising on an absent or malformed
   # value, which would take the dispatcher down; anything unparseable is treated
   # as stale, since a claim nobody can date is a claim nobody can trust. It
   # matches the whole date-and-time prefix, not just the date, and COALESCEs
-  # first — a JSON null yields NULL from ->>, which would otherwise make both
+  # first - a JSON null yields NULL from ->>, which would otherwise make both
   # arms NULL and leave the user claimable by nobody, forever.
   def claimable_condition
     [

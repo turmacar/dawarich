@@ -22,7 +22,7 @@ RSpec.describe Visits::Detection::CandidateLoader do
   end
 
   describe '#call points' do
-    it 'includes points already owned by a visit — detection is stateless over raw points' do
+    it 'includes points already owned by a visit - detection is stateless over raw points' do
       visit = create(:visit, user: user)
       owned = make_point(at: base_ts + 10, visit_id: visit.id)
       free = make_point(at: base_ts + 20)

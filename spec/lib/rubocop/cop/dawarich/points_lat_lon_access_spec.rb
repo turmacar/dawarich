@@ -9,37 +9,37 @@ RSpec.describe RuboCop::Cop::Dawarich::PointsLatLonAccess, :config do
     it 'flags pluck(:latitude, :longitude)' do
       expect_offense(<<~RUBY)
         visit.points.pluck(:latitude, :longitude)
-                           ^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table — those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
-                                      ^^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table — those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
+                           ^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table - those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
+                                      ^^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table - those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
       RUBY
     end
 
     it 'flags pluck on a renamed local' do
       expect_offense(<<~RUBY)
         sampled.pluck(:latitude, :longitude, :timestamp)
-                      ^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table — those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
-                                 ^^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table — those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
+                      ^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table - those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
+                                 ^^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table - those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
       RUBY
     end
 
     it 'flags select(:latitude)' do
       expect_offense(<<~RUBY)
         relation.select(:latitude)
-                        ^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table — those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
+                        ^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table - those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
       RUBY
     end
 
     it 'flags where(latitude: ...) hash form' do
       expect_offense(<<~RUBY)
         relation.where(latitude: 0)
-                       ^^^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table — those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
+                       ^^^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table - those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
       RUBY
     end
 
     it 'flags order(:longitude)' do
       expect_offense(<<~RUBY)
         relation.order(:longitude)
-                       ^^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table — those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
+                       ^^^^^^^^^^ Avoid querying `:latitude`/`:longitude` on the `points` table - those columns are nil since the `lonlat` migration. Read `Point#lat`/`Point#lon` or use `ST_Y(lonlat::geometry)`/`ST_X(lonlat::geometry)`. Disable locally if querying `Place` or `Area`.
       RUBY
     end
   end

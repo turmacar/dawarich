@@ -82,8 +82,8 @@ RSpec.describe 'Rendered French copy' do
       yearly_parts = normalized_parts(yearly_mail)
       monthly_parts = normalized_parts(monthly_mail)
 
-      expect(yearly_mail.subject).to eq('Bilan annuel 2026 — Dawarich')
-      expect(monthly_mail.subject).to eq('Bilan mensuel — août 2026 — Dawarich')
+      expect(yearly_mail.subject).to eq('Bilan annuel 2026 - Dawarich')
+      expect(monthly_mail.subject).to eq('Bilan mensuel - août 2026 - Dawarich')
       yearly_parts.each do |body|
         expect(body).to include('Votre année 2026 en revue')
         expect(body).to include("Voici votre année 2026 en un coup d'œil.")
@@ -91,7 +91,7 @@ RSpec.describe 'Rendered French copy' do
         expect(body).not_to match(/\bJan\b/)
       end
       monthly_parts.each do |body|
-        expect(body).to include('Bilan mensuel — août 2026')
+        expect(body).to include('Bilan mensuel - août 2026')
         expect(body).to include('votre historique de localisation le mois dernier')
         expect(body).to include('lun')
         expect(body).not_to match(/\bMon\b/)

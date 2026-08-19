@@ -199,7 +199,7 @@ export class RoutesManager {
     try {
       // In simplified mode the points layer holds a thinned subset, so
       // rebuild routes from the cached full point set. Otherwise the layer
-      // data is authoritative — it reflects point edits immediately.
+      // data is authoritative - it reflects point edits immediately.
       const cachedPoints =
         this.controller.mapDataManager?.lastLoadedData?.points
       const useCachedPoints =

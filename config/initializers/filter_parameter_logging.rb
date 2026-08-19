@@ -22,6 +22,6 @@ Rails.application.config.filter_parameters += [
     end
     value.replace(parsed.to_json)
   rescue JSON::ParserError, TypeError
-    # Not valid JSON — leave the value untouched
+    # Not valid JSON - leave the value untouched
   end
 ]

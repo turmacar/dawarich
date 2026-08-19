@@ -94,7 +94,7 @@ export default class extends Controller {
         coordinates = JSON.parse(pathData)
       }
 
-      // Coordinates are already [lng, lat] from PostGIS — MapLibre uses the same order
+      // Coordinates are already [lng, lat] from PostGIS - MapLibre uses the same order
       return coordinates.filter(
         (coord) =>
           Array.isArray(coord) &&

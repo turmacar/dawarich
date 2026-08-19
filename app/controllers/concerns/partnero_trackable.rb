@@ -10,7 +10,7 @@
 module PartneroTrackable
   extend ActiveSupport::Concern
 
-  # Partnero's referral param is configured per program — their docs describe
+  # Partnero's referral param is configured per program - their docs describe
   # `via`, the snippet generated for this program emits `aff`. Both are read so
   # a dashboard setting cannot silently cost every commission; `aff` wins because
   # that is what the program's own snippet writes.

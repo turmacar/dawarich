@@ -6,7 +6,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
   let(:owner) { create(:user) }
 
   context 'with an authenticated Warden user' do
-    it 'connects (regression — existing path unchanged)' do
+    it 'connects (regression - existing path unchanged)' do
       connect env: { 'warden' => instance_double(Warden::Proxy, user: owner) }
       expect(connection.current_user).to eq(owner)
       expect(connection.current_share).to be_nil
@@ -55,7 +55,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
     let(:trip) { create(:trip, user: owner) }
     let(:share) { create(:shared_link, user: owner, resource_type: :trip, resource_id: trip.id) }
 
-    it 'is rejected — only live shares grant anonymous cable access' do
+    it 'is rejected - only live shares grant anonymous cable access' do
       expect { connect params: { share_id: share.id } }.to have_rejected_connection
     end
   end

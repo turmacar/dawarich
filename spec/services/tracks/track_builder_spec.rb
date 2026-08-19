@@ -104,7 +104,7 @@ RSpec.describe Tracks::TrackBuilder do
       end
 
       it 'allows tracks longer than the legacy 999_999 m cap' do
-        long_distance = 5_000_000 # 5,000 km — long-haul flight territory
+        long_distance = 5_000_000 # 5,000 km - long-haul flight territory
 
         track = builder.create_track_from_points(points, long_distance)
 

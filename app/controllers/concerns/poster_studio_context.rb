@@ -11,7 +11,7 @@ module PosterStudioContext
   end
 
   # Poster theme tokens are vendored under public/poster_themes and read
-  # directly — they also power the map's custom-colour editor.
+  # directly - they also power the map's custom-colour editor.
   def local_poster_themes
     Rails.cache.fetch('local_poster_themes', expires_in: 1.hour) do
       Dir.glob(Rails.root.join('public/poster_themes/*.json')).sort.filter_map do |path|

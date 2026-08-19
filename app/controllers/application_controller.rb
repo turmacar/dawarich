@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 
   # Memoized per-request SafeSettings for the current user. Use this instead of
   # `current_user.safe_settings` in partials/helpers that may render many rows
-  # — User#safe_settings allocates a fresh deep_dup'd hash on every call.
+  # - User#safe_settings allocates a fresh deep_dup'd hash on every call.
   def current_user_safe_settings
     @current_user_safe_settings ||= current_user&.safe_settings
   end
@@ -40,14 +40,14 @@ class ApplicationController < ActionController::Base
   end
 
   # Where "back to the family" should land: the family page while the plan is
-  # active, the lapsed/upgrade panel when it is not — going through the gated
+  # active, the lapsed/upgrade panel when it is not - going through the gated
   # #show would bounce and overwrite the flash.
   def family_home_path
     family_feature_available? ? family_path : new_family_path
   end
 
   # Ordering is on unless this instance turned the flag off, so an install
-  # that never registered the flag — or lost it — still offers prints rather
+  # that never registered the flag - or lost it - still offers prints rather
   # than silently hiding a shipped feature.
   def poster_ordering_enabled?
     return true unless Flipper.exist?(:poster_ordering)
@@ -248,7 +248,7 @@ status: :see_other
 
   # Each locale names its own flag, so adding a language stays a one-file
   # change. A language is not a country, so this is a label, not a claim about
-  # where it is spoken — the native name next to it is what identifies it.
+  # where it is spoken - the native name next to it is what identifies it.
   def locale_flag(locale)
     I18n.t('language_flag', locale: locale, default: nil, fallback: false)
   end

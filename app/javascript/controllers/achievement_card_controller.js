@@ -46,7 +46,7 @@ export default class extends Controller {
 
   // Engagement is proximity-based rather than enter/leave on the element. The
   // card scales to 1.04 while the wrap carrying the listener does not, so it
-  // overhangs its own hit area by a few px — and in that halo the pointer sits
+  // overhangs its own hit area by a few px - and in that halo the pointer sits
   // on the card but off the listener, flipping the state on every sub-pixel
   // move. Releasing only past PROXIMITY + HYSTERESIS gives the boundary a dead
   // band it cannot oscillate inside.
@@ -77,7 +77,7 @@ export default class extends Controller {
 
   leave() {
     // the pointer may still be inside the proximity zone, and mouseleave fires
-    // at the element edge — exactly the boundary proximity exists to soften
+    // at the element edge - exactly the boundary proximity exists to soften
     if (this.engaged) return
 
     this.clear()

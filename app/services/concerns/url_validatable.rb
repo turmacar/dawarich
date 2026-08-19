@@ -11,8 +11,8 @@
 #   ULA addresses; outbound traffic should always go to a routable public
 #   address.
 #
-# - **Self-hosted** allows the typical homelab targets — RFC1918,
-#   loopback, IPv6 ULA, etc. — because hitting `http://immich.lan/` or
+# - **Self-hosted** allows the typical homelab targets - RFC1918,
+#   loopback, IPv6 ULA, etc. - because hitting `http://immich.lan/` or
 #   `http://immich-server:2283` (Docker DNS) is the *normal* case. We
 #   still apply the always-blocked tier (cloud metadata, multicast,
 #   reserved, all-zero, link-local) and the basic well-formedness checks
@@ -68,7 +68,7 @@ module UrlValidatable
     raise BlockedUrlError, I18n.t('services.concerns.url_validatable.host_required') if uri.host.blank?
 
     # Cloud refuses URLs that embed credentials. Self-hosters legitimately
-    # use http://user:pass@host — homelab Immich behind nginx basic-auth
+    # use http://user:pass@host - homelab Immich behind nginx basic-auth
     # is a real config we don't want to break.
     if uri.userinfo.present? && !DawarichSettings.self_hosted?
       raise BlockedUrlError, I18n.t('services.concerns.url_validatable.embedded_credentials')

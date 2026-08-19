@@ -137,7 +137,7 @@
 
                           <% if is_in_year && !is_future && cell_color %>
                             <div class="w-3 h-3 rounded-sm cursor-pointer transition-opacity hover:opacity-80 hover:z-50 tooltip tooltip-top <%= cell_color %>"
-                                 data-tip="<%= country_name %> — <%= l(date, format: :short_weekday_month_day) %>">
+                                 data-tip="<%= country_name %> - <%= l(date, format: :short_weekday_month_day) %>">
                             </div>
                           <% elsif is_in_year && !is_future %>
                             <div class="w-3 h-3 rounded-sm bg-base-300"></div>

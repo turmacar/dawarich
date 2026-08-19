@@ -7,7 +7,7 @@ import { BaseLayer } from "./base_layer"
  * Supports dragging points to update their positions.
  */
 /**
- * A stored coordinate is usable only when it is neither nullish nor blank —
+ * A stored coordinate is usable only when it is neither nullish nor blank -
  * legacy points with no lonlat serialize to an empty string.
  */
 function storedOr(value, fallback) {
@@ -223,7 +223,7 @@ export class TrackPointsLayer extends BaseLayer {
     this.map.off("mousemove", this._onMouseMove)
 
     if (!wasDrag) {
-      // Just a click — no position update, let the click handler show info
+      // Just a click - no position update, let the click handler show info
       this.draggedFeature = null
       return
     }
