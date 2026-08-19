@@ -17,8 +17,8 @@ class CreateGeofenceEvents < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :geofence_events, [:user_id, :occurred_at], order: { occurred_at: :desc }
-    add_index :geofence_events, [:area_id, :occurred_at], order: { occurred_at: :desc }
+    add_index :geofence_events, %i[user_id occurred_at], order: { occurred_at: :desc }
+    add_index :geofence_events, %i[area_id occurred_at], order: { occurred_at: :desc }
     add_index :geofence_events, :lonlat, using: :gist
   end
 end

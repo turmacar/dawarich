@@ -3,8 +3,12 @@
 class Api::V1::PointsController < ApiController
   include SafeTimestampParser
 
-  before_action :authenticate_active_api_user!, only: %i[create update destroy bulk_destroy reapply_anomaly_filter create_transition]
-  before_action :require_write_api!, only: %i[update destroy bulk_destroy reapply_anomaly_filter create_transition]
+  before_action :authenticate_active_api_user!, only: %i[
+    create update destroy bulk_destroy reapply_anomaly_filter create_transition
+  ]
+  before_action :require_write_api!, only: %i[
+    update destroy bulk_destroy reapply_anomaly_filter create_transition
+  ]
   before_action :validate_points_limit, only: %i[create]
 
   def index

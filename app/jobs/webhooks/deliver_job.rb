@@ -26,7 +26,10 @@ module Webhooks
       delivery.increment!(:attempt_count)
 
       if Webhooks::UrlValidator.call(webhook.url) != :ok
-        record_failure(delivery, webhook, status: nil, body: nil, error: 'URL failed revalidation (possible DNS rebinding)')
+        record_failure(
+          delivery, webhook,
+          status: nil, body: nil, error: 'URL failed revalidation (possible DNS rebinding)'
+        )
         webhook.update!(active: false)
         return
       end

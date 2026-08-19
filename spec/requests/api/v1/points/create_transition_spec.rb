@@ -52,7 +52,9 @@ RSpec.describe 'POST /api/v1/points/transitions', type: :request do
     allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
     lite_user = create(:user, plan: :lite)
     lite_headers = { 'Authorization' => "Bearer #{lite_user.api_key}", 'CONTENT_TYPE' => 'application/json' }
-    post '/api/v1/points/transitions', params: payload(area_id: create(:area, user: lite_user).id), headers: lite_headers
+    post '/api/v1/points/transitions',
+         params: payload(area_id: create(:area, user: lite_user).id),
+         headers: lite_headers
     expect(response).to have_http_status(:forbidden)
   end
 

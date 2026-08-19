@@ -16,7 +16,8 @@ const settingsManagerPath = path.join(
 )
 let dataLoaderSource = await readFile(dataLoaderPath, "utf8")
 dataLoaderSource = dataLoaderSource
-  .replace(/^import .*$/gm, "")
+  .replace(/import\s*\{[\s\S]*?\}\s*from\s*['"][^'"]+['"]\s*;?/g, "")
+  .replace(/^import .+$/gm, "")
   .replace("export class DataLoader", "class DataLoader")
   .concat("\nglobalThis.DataLoader = DataLoader\n")
 let settingsManagerSource = await readFile(settingsManagerPath, "utf8")

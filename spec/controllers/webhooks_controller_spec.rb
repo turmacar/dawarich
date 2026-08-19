@@ -94,9 +94,9 @@ RSpec.describe WebhooksController, type: :controller do
 
     it 'creates a WebhookDelivery and enqueues delivery job' do
       webhook = create(:webhook, user: user)
-      expect {
+      expect do
         post :test, params: { id: webhook.id }, format: :turbo_stream
-      }.to change(WebhookDelivery, :count).by(1)
+      end.to change(WebhookDelivery, :count).by(1)
     end
 
     it 'returns 200' do

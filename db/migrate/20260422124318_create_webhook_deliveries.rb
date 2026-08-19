@@ -15,6 +15,6 @@ class CreateWebhookDeliveries < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :webhook_deliveries, [:webhook_id, :created_at], order: { created_at: :desc }
+    add_index :webhook_deliveries, %i[webhook_id created_at], order: { created_at: :desc }
   end
 end

@@ -14,6 +14,6 @@ class CreateUserDevices < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :user_devices, [:user_id, :device_id], unique: true
+    add_index :user_devices, %i[user_id device_id], unique: true
   end
 end
