@@ -23,6 +23,9 @@ class CleanUpAndConstrainNullLonlatPoints < ActiveRecord::Migration[8.0]
   private
 
   def backfill_lonlat_from_legacy_columns
+    # latitude/longitude may already have been dropped by a later migration on this instance
+    return unless column_exists?(:points, :latitude) && column_exists?(:points, :longitude)
+
     backfilled = 0
 
     Point.where(lonlat: nil).where.not(latitude: nil).where.not(longitude: nil)
