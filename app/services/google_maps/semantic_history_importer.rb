@@ -29,6 +29,11 @@ class GoogleMaps::SemanticHistoryImporter
                    .reject { |record| Points::NullIsland.lonlat?(record[:lonlat]) }
     return if records.empty?
 
+    # Dual-write the dimension FK: the backfill only sweeps rows that exist
+    # when it passes. This importer bypasses Imports::BulkInsertable, so it
+    # stamps for itself.
+    dimension_resolver.stamp(records)
+
     Point.upsert_all(
       records,
       unique_by: %i[user_id timestamp lonlat],
@@ -39,6 +44,12 @@ class GoogleMaps::SemanticHistoryImporter
     Points::TileEpoch.bump(user_id, timestamps: records.map { |record| record[:timestamp] })
   rescue StandardError => e
     create_notification(I18n.t('services.google_maps.semantic_history_importer.batch_failed', message: e.message))
+  end
+
+  # Memoised across batches: every point of one import shares a single
+  # topic/tracker_id combo, so the whole run costs one lookup.
+  def dimension_resolver
+    @dimension_resolver ||= Points::DimensionResolver.new
   end
 
   def prepare_point_data(point_data)
@@ -90,7 +101,7 @@ class GoogleMaps::SemanticHistoryImporter
       build_point_from_location(
         longitude: activity['startLocation']['longitudeE7'],
         latitude: activity['startLocation']['latitudeE7'],
-        timestamp: duration_timestamp(activity),
+        timestamp: activity['duration']['startTimestamp'] || activity['duration']['startTimestampMs'],
         accuracy: activity.dig('startLocation', 'accuracyMetres'),
         raw_data: activity
       )
@@ -104,7 +115,7 @@ class GoogleMaps::SemanticHistoryImporter
       build_point_from_location(
         longitude: waypoint['lngE7'],
         latitude: waypoint['latE7'],
-        timestamp: duration_timestamp(activity),
+        timestamp: activity['duration']['startTimestamp'] || activity['duration']['startTimestampMs'],
         raw_data: activity
       )
     end
@@ -116,7 +127,7 @@ class GoogleMaps::SemanticHistoryImporter
       build_point_from_location(
         longitude: place_visit['location']['longitudeE7'],
         latitude: place_visit['location']['latitudeE7'],
-        timestamp: duration_timestamp(place_visit),
+        timestamp: place_visit['duration']['startTimestamp'] || place_visit['duration']['startTimestampMs'],
         accuracy: place_visit.dig('location', 'accuracyMetres'),
         raw_data: place_visit
       )
@@ -131,24 +142,18 @@ class GoogleMaps::SemanticHistoryImporter
     build_point_from_location(
       longitude: candidate['longitudeE7'],
       latitude: candidate['latitudeE7'],
-      timestamp: duration_timestamp(place_visit),
+      timestamp: place_visit['duration']['startTimestamp'] || place_visit['duration']['startTimestampMs'],
       accuracy: candidate['accuracyMetres'],
       raw_data: place_visit
     )
   end
 
   def build_point_from_location(longitude:, latitude:, timestamp:, raw_data:, accuracy: nil)
-    return nil if timestamp.blank?
-
     {
       lonlat: "POINT(#{longitude.to_f / 10**7} #{latitude.to_f / 10**7})",
       timestamp: Timestamps.parse_timestamp(timestamp),
       accuracy: accuracy,
       motion_data: Points::MotionDataExtractor.from_google_semantic_history(raw_data)
     }
-  end
-
-  def duration_timestamp(record)
-    record.dig('duration', 'startTimestamp') || record.dig('duration', 'startTimestampMs')
   end
 end

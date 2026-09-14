@@ -56,7 +56,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     if @user&.persisted?
       # from_omniauth both finds and creates, so only a record born in this
-      # request is a signup - otherwise a returning customer arriving through a
+      # request is a signup — otherwise a returning customer arriving through a
       # different affiliate link would be re-credited to the wrong partner.
       attribute_partnero_signup(@user) if @user.oauth_newly_created
       flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: provider
@@ -84,6 +84,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   rescue Auth::FindOrCreateOauthUser::UnverifiedEmail
     redirect_to new_user_session_path,
                 alert: I18n.t('controllers.users.omniauth_callbacks.email_not_verified', provider:)
+  rescue Auth::FindOrCreateOauthUser::AccountPendingDeletion
+    redirect_to new_user_session_path,
+                alert: I18n.t('controllers.users.omniauth_callbacks.account_pending_deletion')
   end
 
   def oidc_auto_register_enabled?

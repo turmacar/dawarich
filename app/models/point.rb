@@ -4,6 +4,7 @@ class Point < ApplicationRecord
   include Nearable
   include Distanceable
   include Archivable
+  include PointDimensionReads
 
   self.ignored_columns += %w[latitude longitude]
 
@@ -74,7 +75,7 @@ class Point < ApplicationRecord
   # points that collapse to the same geography(Point, 4326) double, so a
   # plain string `uniq` keeps both variants and the subsequent
   # `Point.upsert_all` fails with `PG::CardinalityViolation: ON CONFLICT DO
-  # UPDATE command cannot affect row a second time` - losing the entire
+  # UPDATE command cannot affect row a second time` — losing the entire
   # 1000-point slice. Parsing to Float matches PG's IEEE 754 normalization.
   def self.dedup_key(attrs)
     raw = attrs[:lonlat].to_s
@@ -93,8 +94,9 @@ class Point < ApplicationRecord
     "geocode:enq:Point:#{id}"
   end
 
-  def async_reverse_geocode(force: false)
-    return unless DawarichSettings.reverse_geocoding_enabled?
+  def async_reverse_geocode(force: false, config: nil)
+    config ||= Geocoding::Config.for(user_id)
+    return unless config.enabled?
 
     if force
       Sidekiq.redis { |r| r.del(self.class.geocode_dedup_key(id)) }

@@ -41,6 +41,75 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#safe_settings read/write gate alignment' do
+    let(:gated_settings) do
+      {
+        'globe_projection' => true,
+        'enabled_map_layers' => ['Tracks', 'Heatmap', 'Fog of War', 'Scratch map'],
+        'maps' => { 'distance_unit' => 'km', 'hidden_tile_categories' => ['roads'],
+                    'disabled_poi_groups' => ['shopping'] }
+      }
+    end
+
+    def stripped?(user)
+      ss = user.safe_settings
+      ss.globe_projection == false || !ss.enabled_map_layers.include?('Heatmap') ||
+        !ss.maps.key?('hidden_tile_categories')
+    end
+
+    context 'when cloud :lite user is not in a family' do
+      let(:user) do
+        create(:user, plan: :lite, status: :active, active_until: 1.year.from_now,
+                      subscription_source: :paddle, skip_auto_trial: true, settings: gated_settings)
+      end
+
+      before { allow(DawarichSettings).to receive(:self_hosted?).and_return(false) }
+
+      it 'gates gated map settings on read, matching plan_restricted?' do
+        expect(user.plan_restricted?).to be true
+        expect(stripped?(user)).to be true
+      end
+    end
+
+    context 'when cloud :lite user joins a paid :family and keeps their own subscription' do
+      let(:owner) do
+        create(:user, plan: :family, status: :active, active_until: 1.year.from_now,
+                      subscription_source: :paddle, skip_auto_trial: true)
+      end
+      let(:family) { create(:family, creator: owner) }
+      let(:invitation) { create(:family_invitation, family: family, invited_by: owner, email: member.email) }
+      let(:member) do
+        create(:user, plan: :lite, status: :active, active_until: 1.year.from_now,
+                      subscription_source: :paddle, skip_auto_trial: true,
+                      email: 'member@example.com', settings: gated_settings)
+      end
+
+      before do
+        allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
+        create(:family_membership, :owner, family: family, user: owner)
+        Families::AcceptInvitation.new(invitation: invitation, user: member).call
+        member.reload
+      end
+
+      it 'keeps the :lite plan column but treats the member as non-restricted on read' do
+        expect(member.plan).to eq('lite')
+        expect(member.plan_restricted?).to be false
+        expect(stripped?(member)).to be false
+      end
+    end
+
+    context 'when self-hosted, regardless of plan column' do
+      let(:user) { create(:user, plan: :lite, skip_auto_trial: true, settings: gated_settings) }
+
+      before { allow(DawarichSettings).to receive(:self_hosted?).and_return(true) }
+
+      it 'does not gate gated map settings on read, matching plan_restricted?' do
+        expect(user.plan_restricted?).to be false
+        expect(stripped?(user)).to be false
+      end
+    end
+  end
+
   describe 'visit detection v3 stamp' do
     it 'marks new accounts as v3-native so confidence gating applies from day one' do
       expect(create(:user).reload.visits_redetected_at).to be_present
@@ -147,32 +216,6 @@ RSpec.describe User, type: :model do
 
       expect { user.update!(email: 'new-address@example.com') }
         .not_to(change { user.reload.settings['archival_warnings'] })
-    end
-  end
-
-  describe '#flights_layer_available?' do
-    let(:user) { create(:user) }
-
-    it 'is false without AirTrail URL or flights' do
-      expect(user.flights_layer_available?).to be(false)
-    end
-
-    it 'is true when AirTrail URL is configured' do
-      user.update!(settings: user.settings.merge('airtrail_url' => 'https://airtrail.example'))
-
-      expect(user.flights_layer_available?).to be(true)
-    end
-
-    it 'is true when mappable flights exist without AirTrail URL' do
-      create(:flight, user: user)
-
-      expect(user.flights_layer_available?).to be(true)
-    end
-
-    it 'ignores flights missing coordinates' do
-      create(:flight, user: user, from_lat: nil, from_lon: nil, to_lat: nil, to_lon: nil)
-
-      expect(user.flights_layer_available?).to be(false)
     end
   end
 
@@ -436,14 +479,14 @@ RSpec.describe User, type: :model do
         expect { create(:user, :inactive) }.to have_enqueued_job(Users::CreationWebhookJob)
       end
 
-      it 'does not enqueue the welcome email (Manager owns onboarding email)' do
+      it 'enqueues the welcome email immediately' do
         expect { create(:user, :inactive) }
-          .not_to have_enqueued_job(Users::MailerSendingJob).with(an_instance_of(Integer), 'welcome')
+          .to have_enqueued_job(Users::MailerSendingJob).with(an_instance_of(Integer), 'welcome')
       end
 
-      it 'does not enqueue the explore_features email (Manager owns onboarding email)' do
+      it 'enqueues the explore_features email with a 2-day delay' do
         expect { create(:user, :inactive) }
-          .not_to have_enqueued_job(Users::MailerSendingJob).with(an_instance_of(Integer), 'explore_features')
+          .to have_enqueued_job(Users::MailerSendingJob).with(an_instance_of(Integer), 'explore_features')
       end
 
       it 'does not enqueue any billing-related emails (Manager service owns billing emails)' do
@@ -613,6 +656,20 @@ RSpec.describe User, type: :model do
       it 'excludes drive-through countries with no qualifying cities' do
         expect(subject).not_to include('Belgium')
       end
+
+      it 'selects only fields required for toponym aggregation' do
+        queries = []
+        callback = ->(_name, _start, _finish, _id, payload) { queries << payload[:sql] }
+
+        ActiveSupport::Notifications.subscribed(callback, 'sql.active_record') do
+          user.countries_visited
+        end
+
+        row_query = queries.find { |sql| sql.include?('FROM "stats"') }
+        expect(row_query).to include('"stats"."id", "stats"."toponyms"')
+        expect(row_query).not_to include('"stats".*')
+        expect(row_query).not_to include('h3_hex_ids')
+      end
     end
 
     describe '#cities_visited' do
@@ -636,6 +693,20 @@ RSpec.describe User, type: :model do
 
       it 'excludes nil and empty city names' do
         expect(subject).not_to include(nil, '')
+      end
+
+      it 'selects only fields required for toponym aggregation' do
+        queries = []
+        callback = ->(_name, _start, _finish, _id, payload) { queries << payload[:sql] }
+
+        ActiveSupport::Notifications.subscribed(callback, 'sql.active_record') do
+          user.cities_visited
+        end
+
+        row_query = queries.find { |sql| sql.include?('FROM "stats"') }
+        expect(row_query).to include('"stats"."id", "stats"."toponyms"')
+        expect(row_query).not_to include('"stats".*')
+        expect(row_query).not_to include('h3_hex_ids')
       end
     end
 
@@ -696,17 +767,6 @@ RSpec.describe User, type: :model do
       let!(:not_reverse_geocoded_point) { create(:point, user:, reverse_geocoded_at: nil) }
 
       it 'returns number of reverse geocoded points' do
-        expect(subject).to eq(1)
-      end
-    end
-
-    describe '#total_reverse_geocoded_points_without_data' do
-      subject { user.total_reverse_geocoded_points_without_data }
-
-      let!(:reverse_geocoded_point) { create(:point, :reverse_geocoded, :with_geodata, user:) }
-      let!(:reverse_geocoded_point_without_data) { create(:point, :reverse_geocoded, user:, geodata: {}) }
-
-      it 'returns number of reverse geocoded points without data' do
         expect(subject).to eq(1)
       end
     end
@@ -1206,12 +1266,12 @@ subscription_source: :none)
 
     after { clear_enqueued_jobs }
 
-    it 'does not enqueue welcome or explore_features (Manager owns onboarding email)' do
+    it 'enqueues welcome and explore_features (product emails only; billing is owned by Manager)' do
       user = build(:user)
       user.save!
 
-      expect(Users::MailerSendingJob).not_to have_been_enqueued.with(user.id, 'welcome')
-      expect(Users::MailerSendingJob).not_to have_been_enqueued.with(user.id, 'explore_features')
+      expect(Users::MailerSendingJob).to have_been_enqueued.with(user.id, 'welcome')
+      expect(Users::MailerSendingJob).to have_been_enqueued.with(user.id, 'explore_features')
     end
 
     it 'enqueues the creation webhook job so Manager can sync billing state' do

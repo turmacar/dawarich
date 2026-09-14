@@ -37,7 +37,7 @@ class Imports::Create
     import.update!(status: :failed, error_message: e.message)
     broadcast_status_update
 
-    ExceptionReporter.call(e, 'Import failed') unless expected_import_failure?(e)
+    ExceptionReporter.call(e, 'Import failed')
 
     create_import_failed_notification(import, user, e)
   ensure
@@ -51,13 +51,6 @@ class Imports::Create
   end
 
   private
-
-  def expected_import_failure?(error)
-    error.is_a?(Imports::SourceDetector::UnknownSourceError) ||
-      error.is_a?(Imports::SecureFileDownloader::EmptyFileError) ||
-      error.is_a?(Archive::Unzipper::ArchiveTooLarge) ||
-      error.is_a?(Csv::Detector::DetectionError)
-  end
 
   def post_import_processing
     run_post_import_step('points_count') { User.where(id: user.id).update_all(points_count: user.points.count) }
@@ -108,6 +101,7 @@ class Imports::Create
     when 'google_phone_takeout'         then GoogleMaps::PhoneTakeoutImporter
     when 'google_records'               then GoogleMaps::RecordsStorageImporter
     when 'google_photos'                then GooglePhotos::Importer
+    when 'mobile_photo_library'         then MobilePhotoLibrary::Importer
     when 'owntracks'                    then OwnTracks::Importer
     when 'gpx'                          then Gpx::TrackImporter
     when 'kml'                          then Kml::Importer
@@ -155,7 +149,24 @@ class Imports::Create
   end
 
   def zero_points_content(import)
-    if import.gpx? || import.kml?
+    trackless_gpx_content(import) || generic_zero_points_content(import)
+  end
+
+  def trackless_gpx_content(import)
+    data = import.raw_data || {}
+    return if data['trackpoints_seen'].to_i.positive?
+
+    if data['waypoints_seen'].to_i.positive?
+      I18n.t('services.imports.create.zero_points_waypoints_only',
+             name: import.name, count: data['waypoints_seen'].to_i)
+    elsif data['route_points_seen'].to_i.positive?
+      I18n.t('services.imports.create.zero_points_route_only',
+             name: import.name, count: data['route_points_seen'].to_i)
+    end
+  end
+
+  def generic_zero_points_content(import)
+    if import.gpx? || import.kml? || import.geojson?
       I18n.t('services.imports.create.zero_points_with_timestamps', name: import.name)
     else
       I18n.t('services.imports.create.zero_points', name: import.name)
@@ -174,8 +185,6 @@ class Imports::Create
     import.years_and_months_tracked.each do |year, month|
       Stats::CalculatingJob.perform_later(user_id, year, month)
     end
-
-    Achievements::CheckJob.perform_later(user_id, oldest_timestamp: import.points.minimum(:timestamp))
   end
 
   def schedule_visit_suggesting(user_id, import)

@@ -52,7 +52,7 @@ RSpec.describe TrackSegments::TimeAnchorBackfillJob do
 
   it 'deletes a segment whose point slice is incomplete (points deleted since) instead of anchoring it wrongly' do
     track = build_track_with_points(legs: [{ mode: :walking, duration_s: 120, dt_s: 10 }])
-    # Index range reaches past the surviving points - a truncated slice would
+    # Index range reaches past the surviving points — a truncated slice would
     # otherwise anchor to the wrong end timestamp.
     seg = create(:track_segment, track: track, transportation_mode: :walking,
                                  start_index: 8, end_index: 30, start_at: nil, end_at: nil)
@@ -73,10 +73,13 @@ RSpec.describe TrackSegments::TimeAnchorBackfillJob do
     survivor = create(:track_segment, track: track, transportation_mode: :walking,
                       start_index: 6, end_index: 9, start_at: nil, end_at: nil)
 
+    allow(ExceptionReporter).to receive(:call)
+
     expect { described_class.perform_now }.not_to raise_error
 
     expect(TrackSegment.exists?(colliding.id)).to be false
     expect(survivor.reload.start_at).to be_present
+    expect(ExceptionReporter).not_to have_received(:call)
   end
 
   it 'preserves manually-corrected segments even when their slice cannot be anchored' do

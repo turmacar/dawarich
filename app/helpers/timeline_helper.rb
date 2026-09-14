@@ -2,7 +2,7 @@
 
 module TimelineHelper
   # Interior holes shorter than this are the ordinary seams between a visit
-  # ending and the next track starting - real days are full of them, and
+  # ending and the next track starting — real days are full of them, and
   # marking each one costs the marker its meaning. Detection v3 snaps visit
   # boundaries to movement edges, so the ragged 30–60 minute seams the old
   # detector produced are gone; what remains at 45+ minutes is genuinely
@@ -10,7 +10,7 @@ module TimelineHelper
   TIMELINE_GAP_MIN_MINUTES = 45
 
   # Until a user's history has been re-detected, their visits still carry the
-  # old detector's ragged 30–60 minute seams - the marker keeps the old bar so
+  # old detector's ragged 30–60 minute seams — the marker keeps the old bar so
   # those seams don't flood the day with false "untracked" rows.
   LEGACY_TIMELINE_GAP_MIN_MINUTES = 90
 
@@ -56,15 +56,6 @@ module TimelineHelper
     ].flatten.compact.join(' ').downcase
   end
 
-  # visit.duration is MINUTES.
-  # Returns true when the visit covers (effectively) a whole day.
-  def timeline_all_day?(visit)
-    return false unless visit
-    return true if visit.duration.to_i >= 23 * 60
-
-    visit.started_at.hour.zero? && (visit.ended_at - visit.started_at) >= 23.hours
-  end
-
   # minutes -> "Xh Ym" (or "Xm" when < 1h)
   def format_dwell_minutes(minutes)
     minutes = minutes.to_i
@@ -93,8 +84,8 @@ module TimelineHelper
   end
 
   # Hash-entry helpers (Timeline::DayAssembler returns hash-shaped entries).
-  # These intentionally mirror the Visit-object helpers above but operate on
-  # the serialized hash payload, avoiding per-row Visit.find (N+1).
+  # Each operates directly on the serialized hash payload to avoid per-row
+  # Visit.find (N+1).
 
   def visit_entry_display_name(entry)
     entry[:name].presence ||
@@ -103,8 +94,8 @@ module TimelineHelper
       I18n.t('helpers.timeline.unnamed')
   end
 
-  # Geocoders hand back one flat string - "Good Lood, Tadeusza Romanowicza, 4,
-  # Krakow, Lesser Poland Voivodeship" - in which the only token a person
+  # Geocoders hand back one flat string — "Good Lood, Tadeusza Romanowicza, 4,
+  # Krakow, Lesser Poland Voivodeship" — in which the only token a person
   # recognizes is the first. Split it so the row can print the recognizable
   # part loud and the rest as a quiet address line.
   def visit_entry_name_parts(entry)
@@ -113,7 +104,7 @@ module TimelineHelper
 
     tokens = merge_house_numbers(tokens)
     primary = tokens.shift
-    # The last token is the province / voivodeship / state - always the widest
+    # The last token is the province / voivodeship / state — always the widest
     # and least useful unit. Drop it, unless it is the only context we have.
     tokens = tokens[0...-1] if tokens.length > 1
 
@@ -122,7 +113,7 @@ module TimelineHelper
 
   # Walks the day's rows and calls out interior stretches nothing was recorded
   # for. Journeys overlap the visits that sort between their endpoints, so the
-  # hole is measured against the furthest point already covered - diffing
+  # hole is measured against the furthest point already covered — diffing
   # consecutive rows would invent gaps inside a tracked drive.
   def timeline_entries_with_gaps(entries)
     covered_until = nil
@@ -137,7 +128,7 @@ module TimelineHelper
 
       next [entry] if gap_minutes < threshold
 
-      # Stamped with where the record stops rather than where it resumes -
+      # Stamped with where the record stops rather than where it resumes —
       # that is the moment the user is being told about.
       [{ type: 'gap', minutes: gap_minutes, started_at: gap_start.iso8601 }, entry]
     end
@@ -195,7 +186,7 @@ module TimelineHelper
     entry[:status].presence || 'confirmed'
   end
 
-  # Confidence gating applies only to machine suggestions - a visit the user
+  # Confidence gating applies only to machine suggestions — a visit the user
   # confirmed renders at full strength whatever the detector thought of it.
   # Rows without a score (legacy, pre-backfill) also render normally, and the
   # gate stays off entirely until the history has been re-detected: old
@@ -212,10 +203,6 @@ module TimelineHelper
 
   def confidence_gating_active?
     current_user&.visits_redetected_at.present?
-  end
-
-  def day_label(day)
-    I18n.l(Date.parse(day[:date].to_s), format: :weekday_month_day)
   end
 
   def day_total_visits_count(day)

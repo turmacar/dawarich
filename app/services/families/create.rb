@@ -14,9 +14,10 @@ module Families
       message: ->(*) { I18n.t('services.families.create.family_name_must_be_50_characters_or_less') }
     }
 
-    def initialize(user:, name:)
+    def initialize(user:, name:, notify: true)
       @user = user
       @name = name&.strip
+      @notify = notify
       @error_message = nil
     end
 
@@ -65,7 +66,7 @@ module Families
     def validate_feature_access
       return true if can_create_family?
 
-      # Only reachable on cloud - self-hosted short-circuits in can_create_family?
+      # Only reachable on cloud — self-hosted short-circuits in can_create_family?
       @error_message = I18n.t('services.families.create.family_feature_requires_an_active_subscription')
 
       false
@@ -90,6 +91,8 @@ module Families
     end
 
     def send_notification
+      return unless @notify
+
       I18n.with_locale(user.locale) do
         Notification.create!(
           user: user,

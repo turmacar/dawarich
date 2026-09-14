@@ -31,8 +31,7 @@ class Photos::Importer
     return nil unless valid?(point)
 
     {
-      # Build lonlat from the validated lat/lon; a separate unchecked key could be nil/malformed.
-      lonlat: "SRID=4326;POINT(#{point['longitude']} #{point['latitude']})",
+      lonlat: point['lonlat'],
       timestamp: point['timestamp'].to_i,
       import_id: import.id,
       user_id: user_id,

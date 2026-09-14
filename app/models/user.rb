@@ -12,9 +12,11 @@ class User < ApplicationRecord
   # until their subscription source confirms a purchase.
   attr_accessor :skip_auto_trial
 
+  attr_accessor :skip_family_sync
+
   # Set by Omniauthable.from_omniauth. Post-create callbacks re-save the record,
   # which clears `previously_new_record?`, so signup-vs-login can't be read off
-  # the record afterwards - the lookup has to tell us.
+  # the record afterwards — the lookup has to tell us.
   attr_accessor :oauth_newly_created
 
   devise :two_factor_authenticatable, :registerable,
@@ -28,12 +30,14 @@ class User < ApplicationRecord
   has_many :stats,          dependent: :destroy
   has_many :exports,        dependent: :destroy
   has_many :posters,        dependent: :destroy
+  has_many :route_videos,   dependent: :destroy
   has_many :notifications,  dependent: :destroy
   has_many :areas,          dependent: :destroy
   has_many :visits,         dependent: :destroy
   has_many :visited_places, through: :visits, source: :place
   has_many :places,         dependent: :destroy
   has_many :tags,           dependent: :destroy
+  has_many :service_settings, dependent: :destroy
   has_many :trips,  dependent: :destroy
   has_many :tracks, dependent: :destroy
   has_many :flights, dependent: :destroy
@@ -41,19 +45,19 @@ class User < ApplicationRecord
   has_many :digests, class_name: 'Users::Digest', dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :shared_links, dependent: :destroy
-  has_many :achievement_progresses, class_name: 'Achievements::Progress', dependent: :destroy
-  has_many :user_achievements, dependent: :destroy
-  has_many :geofence_events, dependent: :destroy
-  has_many :webhooks, dependent: :destroy
-  has_many :user_devices, dependent: :destroy
 
   after_create :create_api_key
+  after_create :seed_geocoding_settings_from_env, if: -> { DawarichSettings.self_hosted? }
   after_commit :activate, on: :create, if: -> { DawarichSettings.self_hosted? && !skip_auto_trial }
   after_commit :start_trial, on: :create, if: -> { !DawarichSettings.self_hosted? && !skip_auto_trial }
   after_commit :trigger_creation_webhook, on: :create,
                                             if: -> { !DawarichSettings.self_hosted? && skip_auto_trial }
   after_update :invalidate_plan_rate_limit_cache, if: :saved_change_to_plan?
+  after_update_commit :enqueue_family_auto_creation, if: :saved_change_to_plan?
+  after_update_commit :enqueue_family_member_sync, if: :saved_change_to_subscription_state?
   after_update :reset_archival_warnings, if: :saved_change_to_plan?
+  after_update :mark_stats_for_rebucketing, if: :saved_change_to_timezone_setting?
+  after_update_commit :enqueue_stats_rebuild, if: :saved_change_to_timezone_setting?
 
   before_save :sanitize_input
 
@@ -66,7 +70,7 @@ class User < ApplicationRecord
   scope :active_or_trial, -> { where(status: %i[active trial]) }
 
   enum :status, { inactive: 0, active: 1, trial: 2, pending_payment: 3 }
-  # prefix: :sub_source - the `none` value would otherwise generate a
+  # prefix: :sub_source — the `none` value would otherwise generate a
   # `User#none?` predicate that collides with NilClass semantics in
   # conditional chains. Callers use `user.sub_source_none?` etc.
   enum :subscription_source, { none: 0, paddle: 1, apple_iap: 2, google_play: 3 }, default: :none, prefix: :sub_source
@@ -125,7 +129,7 @@ class User < ApplicationRecord
   end
 
   def safe_settings
-    Users::SafeSettings.new(settings, plan: plan)
+    Users::SafeSettings.new(settings, plan: entitlements.full_access? ? :pro : :lite)
   end
 
   # Old rows can carry a settings container that is not an object at all, so the
@@ -146,7 +150,7 @@ class User < ApplicationRecord
   end
 
   # `update_all` keeps the write clear of whatever else the request is saving on
-  # this user. The CASE covers rows whose settings are null or not an object -
+  # this user. The CASE covers rows whose settings are null or not an object —
   # `'[]'::jsonb || '{...}'::jsonb` appends an element instead of merging a key.
   def persist_locale!(locale)
     self.class.where(id: id).update_all(
@@ -161,7 +165,7 @@ class User < ApplicationRecord
     )
 
     # `update_all` leaves this instance holding the old settings, and Devise
-    # keeps one instance for the whole session - without this, every later read
+    # keeps one instance for the whole session — without this, every later read
     # of `preferred_locale` would report the language the user just replaced.
     # The change is cleared so a subsequent `save` still writes only what the
     # request itself touched.
@@ -173,7 +177,7 @@ class User < ApplicationRecord
 
   # Only accounts the migration actually handed to a rebuild are waiting on one.
   # Deriving this from live state instead would report a permanent "pending" for
-  # anyone the dispatcher never picked up - no points at the time, filtering off
+  # anyone the dispatcher never picked up — no points at the time, filtering off
   # at the time, or created after the migration ran.
   def gps_noise_recheck_pending?
     job = DataMigrations::RecalculateAnomaliesUserJob
@@ -218,22 +222,12 @@ class User < ApplicationRecord
     StatsQuery.new(self).points_stats[:geocoded]
   end
 
-  def total_reverse_geocoded_points_without_data
-    points.where(geodata: {}).count
-  end
-
   def immich_integration_configured?
     settings['immich_url'].present? && settings['immich_api_key'].present?
   end
 
   def photoprism_integration_configured?
     settings['photoprism_url'].present? && settings['photoprism_api_key'].present?
-  end
-
-  # Show the Flights map layer when AirTrail sync is configured or when flights
-  # already exist (e.g. imported from an AirTrail JSON export without API URL).
-  def flights_layer_available?
-    safe_settings.airtrail_url.present? || flights.mappable.exists?
   end
 
   def years_tracked
@@ -278,6 +272,13 @@ class User < ApplicationRecord
         .transform_values { |year_data| year_data.map { |_, month| month } }
         .map { |year, months| { year: year, months: months } }
     end
+  end
+
+  def own_subscription_live?
+    return false if sub_source_none?
+    return false unless active? || trial?
+
+    active_until&.future? || false
   end
 
   def can_subscribe?
@@ -329,7 +330,7 @@ class User < ApplicationRecord
   def countries_visited_uncached
     countries = Set.new
 
-    stats.find_each do |stat|
+    stats.select(:id, :toponyms).find_each do |stat|
       toponyms = stat.toponyms
       next unless toponyms.is_a?(Array)
 
@@ -350,7 +351,7 @@ class User < ApplicationRecord
   def cities_visited_uncached
     cities = Set.new
 
-    stats.find_each do |stat|
+    stats.select(:id, :toponyms).find_each do |stat|
       toponyms = stat.toponyms
       next unless toponyms.is_a?(Array)
 
@@ -403,10 +404,47 @@ class User < ApplicationRecord
 
   private
 
+  def saved_change_to_timezone_setting?
+    return false unless saved_change_to_settings?
+
+    before, after = saved_change_to_settings
+
+    before_timezone = before['timezone'] if before.is_a?(Hash)
+    after_timezone = after['timezone'] if after.is_a?(Hash)
+
+    before_timezone != after_timezone
+  end
+
+  def mark_stats_for_rebucketing
+    @stats_months_to_rebuild = stats.pluck(:year, :month)
+    return if @stats_months_to_rebuild.empty?
+
+    stats.update_all(calculation_version: 0, repair_deferred_at: Time.current)
+  end
+
+  def enqueue_stats_rebuild
+    months = @stats_months_to_rebuild
+    @stats_months_to_rebuild = nil
+    return if months.blank?
+
+    months.each do |year, month|
+      Stats::CalculatingJob
+        .set(wait: rand(0..Stats::BulkCalculator::REPAIR_JITTER.to_i).seconds)
+        .perform_later(id, year, month, notify_on_failure: false)
+    end
+  end
+
   def create_api_key
     self.api_key = SecureRandom.hex(32)
 
     save
+  end
+
+  def seed_geocoding_settings_from_env
+    Geocoding::SeedFromEnv.call(self)
+  rescue StandardError => e
+    Rails.logger.error("Failed to seed geocoding settings from ENV for user #{id}: #{e.class}: #{e.message}")
+    ExceptionReporter.call(e, 'Failed to seed geocoding settings from ENV')
   end
 
   def activate
@@ -424,11 +462,36 @@ class User < ApplicationRecord
   def start_trial
     update(status: :trial, active_until: 7.days.from_now)
 
+    Users::MailerSendingJob.perform_later(id, 'welcome')
+    Users::MailerSendingJob.set(wait: 2.days).perform_later(id, 'explore_features')
+
     Users::CreationWebhookJob.perform_later(id)
   end
 
   def trigger_creation_webhook
     Users::CreationWebhookJob.perform_later(id)
+  end
+
+  def saved_change_to_subscription_state?
+    saved_change_to_plan? || saved_change_to_status? || saved_change_to_active_until?
+  end
+
+  def enqueue_family_member_sync
+    return if DawarichSettings.self_hosted?
+    return if skip_family_sync
+
+    family_id = Family::Membership.where(user_id: id).pick(:family_id)
+    return if family_id.blank?
+
+    Families::MemberSyncJob.perform_later(family_id)
+  end
+
+  def enqueue_family_auto_creation
+    return if DawarichSettings.self_hosted?
+    return unless family?
+    return if Family::Membership.exists?(user_id: id)
+
+    Families::AutoCreationJob.perform_later(id)
   end
 
   def invalidate_plan_rate_limit_cache

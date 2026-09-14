@@ -13,7 +13,10 @@ class DataMigrations::BackfillMotionDataJob < ApplicationJob
     Point.where(motion_data: {}).where.not(raw_data: {}).find_in_batches(batch_size: batch_size) do |points|
       updates = points.filter_map { |point| build_update(point) }
 
-      Points::BulkUpdater.call(updates, [:motion_data]) if updates.any?
+      if updates.any?
+        Point.upsert_all(updates, unique_by: :id, update_only: [:motion_data])
+        # rubocop:enable Rails/SkipsModelValidations
+      end
 
       processed += points.size
       Rails.logger.info("Backfilled motion_data for #{processed} points")

@@ -8,7 +8,6 @@ ruby File.read('.ruby-version').strip
 gem 'activerecord-postgis-adapter', '11.1.1'
 # https://meta.discourse.org/t/cant-rebuild-due-to-aws-sdk-gem-bump-and-new-aws-data-integrity-protections/354217/40
 gem 'addressable', '>= 2.9.0'
-gem 'airports', '~> 1.13'
 gem 'apple_id', '~> 1.2'
 gem 'aws-sdk-core', '~> 3.254', require: false
 gem 'aws-sdk-kms', '~> 1.130', require: false
@@ -28,8 +27,6 @@ gem 'flipper-ui', '~> 1.4'
 gem 'foreman'
 gem 'geocoder', github: 'Freika/geocoder', branch: 'master'
 gem 'google-id-token', '~> 1.4'
-gem 'gpx'
-gem 'groupdate'
 gem 'h3', '~> 3.7'
 gem 'httparty', '>= 0.24.0'
 gem 'importmap-rails'
@@ -37,7 +34,6 @@ gem 'json', '>= 2.19.2'
 gem 'jwt', '~> 3.2.0'
 gem 'kaminari'
 gem 'lograge'
-gem 'mcp', '~> 0.25.0'
 gem 'net-imap', '>= 0.5.14'
 gem 'oj'
 gem 'omniauth-github', '~> 2.0.0'
@@ -56,7 +52,6 @@ gem 'rack-session', '>= 2.1.2'
 gem 'rails', '~> 8.1.3'
 gem 'rails_icons'
 gem 'redis'
-gem 'resolv', '>= 0.7.2' # CVE-2026-80212, CVE-2026-80213
 gem 'resolv-replace', '~> 0.2.0'
 gem 'rexml'
 gem 'rgeo'
@@ -65,14 +60,13 @@ gem 'rgeo-geojson'
 gem 'rqrcode', '~> 3.2'
 gem 'rswag-api'
 gem 'rswag-ui'
-gem 'rubyzip', '~> 3.4'
+gem 'rubyzip', '~> 3.6'
 gem 'sentry-rails', '>= 5.27.0'
 gem 'sentry-ruby'
-gem 'sidekiq', '8.1.6' # Pin to 8.0.x - sidekiq 8.1+ requires connection_pool 3.0+ breaking Rails
+gem 'sidekiq', '8.1.7' # Pin to 8.0.x - sidekiq 8.1+ requires connection_pool 3.0+ breaking Rails
 gem 'sidekiq-cron', '>= 2.4.0'
 gem 'sidekiq-limit_fetch'
 gem 'sprockets-rails'
-gem 'stackprof'
 gem 'stimulus-rails'
 gem 'tailwindcss-rails', '= 3.3.2'
 gem 'turbo-rails', '>= 2.0.17'
@@ -110,6 +104,5 @@ group :test do
 end
 
 group :development do
-  gem 'database_consistency', '>= 2.0.5', require: false
   gem 'rubocop-rails', '>= 2.33.4', require: false
 end

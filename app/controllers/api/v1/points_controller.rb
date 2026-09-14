@@ -4,13 +4,10 @@ class Api::V1::PointsController < ApiController
   include SafeTimestampParser
 
   BULK_DESTROY_MAX = 5_000
+  MAX_PER_PAGE = 10_000
 
-  before_action :authenticate_active_api_user!, only: %i[
-    create update destroy bulk_destroy reapply_anomaly_filter create_transition
-  ]
-  before_action :require_write_api!, only: %i[
-    update destroy bulk_destroy reapply_anomaly_filter create_transition
-  ]
+  before_action :authenticate_active_api_user!, only: %i[create update destroy bulk_destroy reapply_anomaly_filter]
+  before_action :require_write_api!, only: %i[update destroy bulk_destroy reapply_anomaly_filter]
   before_action :validate_points_limit, only: %i[create]
 
   def index
@@ -57,9 +54,9 @@ class Api::V1::PointsController < ApiController
     )
     return if performed?
 
-    per_page = params[:per_page].presence&.to_i || 100
+    per_page = params[:per_page].to_i
     per_page = 100 unless per_page.positive?
-    per_page = [per_page, 1000].min
+    per_page = [per_page, MAX_PER_PAGE].min
     points = points
              .order(timestamp: order)
              .page(params[:page])
@@ -68,7 +65,9 @@ class Api::V1::PointsController < ApiController
     serialized_points = if slim_points?
                           Points::SlimCollectionQuery.new(points).call
                         else
-                          points.map { |point| point_serializer.new(point).call }
+                          # The serializer reads the device combo through each
+                          # point's source; preloading keeps that one query.
+                          points.preload(:source).map { |point| point_serializer.new(point).call }
                         end
 
     total_count = cache_count.to_i
@@ -167,41 +166,6 @@ class Api::V1::PointsController < ApiController
     render json: {
       message: I18n.t('controllers.api.v1.points.re_evaluation_queued_existing_anomaly_flags_will_be_cleared_and')
     }, status: :accepted
-  end
-
-  TRANSITION_FUTURE_TOLERANCE = 5.minutes
-  TRANSITION_PAST_HORIZON = 24.hours
-
-  def create_transition
-    event_type = params.require(:event_type)
-    return head :unprocessable_entity unless %w[enter leave].include?(event_type)
-
-    occurred_at = Time.iso8601(params.require(:occurred_at))
-    # Reject implausibly future events (anti-replay / clock-skew abuse)
-    return head :unprocessable_entity if occurred_at > Time.current + TRANSITION_FUTURE_TOLERANCE
-    # Accept past timestamps up to TRANSITION_PAST_HORIZON (offline self-hosters can
-    # queue transitions for hours before their phone reconnects)
-    return head :unprocessable_entity if occurred_at < Time.current - TRANSITION_PAST_HORIZON
-
-    area = current_api_user.areas.find_by(id: params[:area_id])
-    return head :no_content unless area
-
-    lonlat_arr = params.require(:lonlat)
-    GeofenceEvents::Record.call(
-      user: current_api_user,
-      area: area,
-      event_type: event_type.to_sym,
-      source: :native_app,
-      occurred_at: occurred_at,
-      lonlat: "POINT(#{lonlat_arr[0]} #{lonlat_arr[1]})",
-      accuracy_m: params[:accuracy_m],
-      device_id: params[:device_id],
-      metadata: params[:metadata] || {}
-    )
-
-    head :created
-  rescue ArgumentError, ActionController::ParameterMissing
-    head :unprocessable_entity
   end
 
   private

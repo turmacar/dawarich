@@ -50,14 +50,19 @@ module Tracks::TrackBuilder
   extend ActiveSupport::Concern
 
   # Sane upper bound for a single track's distance, in meters.
-  # 100,000 km is roughly 2.5x Earth's circumference - anything beyond that points
+  # 100,000 km is roughly 2.5x Earth's circumference — anything beyond that points
   # to corrupt input rather than a real journey, so we cap and warn instead of
   # blindly storing it. The underlying column is bigint and could hold more,
   # but bad data is rarely useful.
   MAX_DISTANCE_METERS = 100_000_000
 
   def create_track_from_points(points, pre_calculated_distance, tracker_id: nil,
-                               skip_segment_detection: false)
+                               skip_segment_detection: false, orphan_only: false)
+    if orphan_only
+      return create_track_from_orphan_points(points, tracker_id: tracker_id,
+                                            skip_segment_detection: skip_segment_detection)
+    end
+
     return nil if points.size < 2
 
     resolved_tracker_id = tracker_id || points.first.tracker_id
@@ -103,13 +108,43 @@ module Tracks::TrackBuilder
     reuse_existing_track(track, points, e)
   end
 
+  # Buffered chunks can load the same points before either chunk commits.
+  # Lock in ID order, then re-read ownership under the lock before calculating
+  # metadata. Filtering only the final UPDATE would leave a phantom path/track.
+  # Boundary merges deliberately use the default path to move owned points.
+  def create_track_from_orphan_points(points, tracker_id:, skip_segment_detection:)
+    singleton = nil
+    track = Point.transaction do
+      orphans = Point.where(user_id: user.id, id: points.map(&:id), track_id: nil)
+                     .order(:id).lock.to_a.sort_by { |point| [point.timestamp, point.id] }
+      if orphans.one?
+        singleton = orphans.first
+        next
+      end
+      next if orphans.empty?
+
+      distance = Point.calculate_distance_for_array_geocoder(orphans, :m)
+      create_track_from_points(orphans, distance, tracker_id: tracker_id,
+                               skip_segment_detection: skip_segment_detection)
+    end
+
+    return track unless singleton
+
+    Tracks::OrphanPointAttacher.new(user, singleton, points).call
+  end
+
   def reuse_existing_track(track, points, original_error)
-    existing = Track.find_by(user_id: user.id, start_at: track.start_at, end_at: track.end_at)
+    existing = Track.find_by(
+      user_id: user.id,
+      tracker_id: track.tracker_id,
+      start_at: track.start_at,
+      end_at: track.end_at
+    )
 
     unless existing
       # Under READ COMMITTED the conflicting row should be visible immediately
       # after RecordNotUnique. If we still can't find it, something is wrong
-      # (replication lag, snapshot weirdness) - let the caller retry rather
+      # (replication lag, snapshot weirdness) — let the caller retry rather
       # than silently dropping the points from the user's timeline.
       Rails.logger.warn(
         "event=tracks.race_winner_not_visible user_id=#{user.id} " \
@@ -119,7 +154,7 @@ module Tracks::TrackBuilder
     end
 
     # Constrain reassignment to the winner's time window so we don't attach
-    # points outside the existing track's start_at..end_at - the winner's
+    # points outside the existing track's start_at..end_at — the winner's
     # path/distance were computed from its own point set, and stretching it
     # silently corrupts the track's metadata. Points outside the window stay
     # orphaned (track_id: nil) and get picked up by the next generation pass.
@@ -227,7 +262,12 @@ module Tracks::TrackBuilder
       )
     end
     mode = Track.pick_dominant_mode(segments)
-    track.update_column(:dominant_mode, mode) if mode
+    return unless mode
+
+    # update_column skips after_commit, and dominant_mode is a tile property —
+    # bump the epoch explicitly or reclassified tracks 304 with the old mode.
+    track.update_column(:dominant_mode, mode)
+    Tracks::TileEpoch.bump_range(track.user_id, track.start_at.to_i, track.end_at.to_i)
   end
 
   private

@@ -60,12 +60,12 @@ RSpec.describe Points::Create do
       end
 
       it 'upserts the processed data' do
-        expect(Point).to receive(:archival_safe_upsert_all)
-          .with(
-            processed_data,
-            returning: Arel.sql(Point::UPSERT_RETURNING_COLUMNS)
-          )
-          .and_return(upsert_result)
+        expect(Point).to receive(:archival_safe_upsert_all) do |rows, options|
+          expect(rows.map { |row| row.slice(:lonlat, :timestamp, :user_id) })
+            .to eq(processed_data.map { |row| row.slice(:lonlat, :timestamp, :user_id) })
+          expect(options[:returning]).to eq(Arel.sql(Point::UPSERT_RETURNING_COLUMNS))
+          upsert_result
+        end
 
         described_class.new(user, point_params).call
       end
@@ -210,7 +210,7 @@ RSpec.describe Points::Create do
       # Regression: clients (e.g. Overland on iOS) occasionally emit the same
       # location in two different WKT-string forms inside a single batch. Ruby
       # string equality would keep both, but the PostgreSQL UNIQUE index on
-      # (lonlat, timestamp, user_id) treats them as equal - so `upsert_all`
+      # (lonlat, timestamp, user_id) treats them as equal — so `upsert_all`
       # fails with PG::CardinalityViolation and the whole 1000-point slice is
       # lost.
       let(:collapsed_processed_data) do
@@ -367,36 +367,6 @@ RSpec.describe Points::Create do
       end
     end
 
-    context 'with geofence evaluation' do
-      let(:area) { create(:area, user: user, latitude: 52.5, longitude: 13.4, radius: 100) }
-
-      before do
-        area
-        GeofenceEvents::Evaluator::StateStore.reset!(user)
-      end
-
-      it 'records a geofence enter event for a point inside an area' do
-        data = [
-          {
-            lonlat: 'POINT(13.4 52.5)',
-            timestamp: Time.current,
-            user_id: user.id,
-            created_at: Time.current,
-            updated_at: Time.current
-          }
-        ]
-
-        allow_any_instance_of(Points::Params).to receive(:call).and_return(data)
-
-        expect do
-          described_class.new(user, { locations: [] }).call
-        end.to change(GeofenceEvent, :count).by(1)
-
-        expect(GeofenceEvent.last.event_type).to eq('enter')
-        expect(GeofenceEvent.last.source).to eq('server_inferred')
-      end
-    end
-
     context 'with GeoJSON example data' do
       let(:geojson_file) { file_fixture('points/geojson_example.json') }
       let(:geojson_data) { JSON.parse(File.read(geojson_file)) }
@@ -450,12 +420,11 @@ RSpec.describe Points::Create do
       before do
         allow(Points::Params).to receive(:new).with(geojson_data, user.id).and_return(params_service)
         allow(params_service).to receive(:call).and_return(all_processed_data)
-        allow(Point).to receive(:archival_safe_upsert_all)
-          .with(
-            all_processed_data,
-            returning: Arel.sql(Point::UPSERT_RETURNING_COLUMNS)
-          )
-          .and_return(expected_results)
+        allow(Point).to receive(:archival_safe_upsert_all) do |rows, options|
+          expect(rows.map { |row| row[:lonlat] }).to eq(all_processed_data.map { |row| row[:lonlat] })
+          expect(options[:returning]).to eq(Arel.sql(Point::UPSERT_RETURNING_COLUMNS))
+          expected_results
+        end
       end
 
       it 'correctly processes real GeoJSON example data' do

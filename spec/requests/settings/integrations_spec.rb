@@ -23,6 +23,12 @@ RSpec.describe 'Settings::Integrations', type: :request do
       expect(user.settings['photoprism_skip_ssl_verification']).to eq(true)
     end
 
+    it 'redirects back to the pane that was saved' do
+      patch '/settings/integrations', params: params.merge(service: 'photoprism')
+
+      expect(response).to redirect_to(settings_integrations_path(service: 'photoprism'))
+    end
+
     it 'refreshes cached photos when requested' do
       Rails.cache.write("photos_#{user.id}_test", ['cached'])
       Rails.cache.write("photo_thumbnail_#{user.id}_immich_test", 'thumb')
@@ -85,16 +91,32 @@ RSpec.describe 'Settings::Integrations', type: :request do
       end
     end
 
+    context 'when the airtrail host is unreachable' do
+      before do
+        stub_request(:get, 'https://airtrail.test/api/flight/list?scope=mine').to_raise(Errno::ECONNREFUSED)
+      end
+
+      it 'saves the settings and reports the failure instead of crashing' do
+        patch '/settings/integrations', params: {
+          settings: { 'airtrail_url' => 'https://airtrail.test', 'airtrail_api_key' => 'k' },
+          service: 'airtrail'
+        }
+
+        expect(response).to redirect_to(settings_integrations_path(service: 'airtrail'))
+        follow_redirect!
+        expect(flash[:alert]).to include('AirTrail')
+        expect(user.reload.settings['airtrail_connection_status']).to eq('failed')
+      end
+    end
+
     context 'when airtrail settings change' do
       let(:airtrail_url) { 'https://airtrail.test' }
 
-      before do
+      it 'persists settings and verifies the airtrail connection' do
         stub_request(:get, "#{airtrail_url}/api/flight/list?scope=mine")
           .to_return(status: 200, body: { success: true, flights: [] }.to_json,
                      headers: { 'Content-Type' => 'application/json' })
-      end
 
-      it 'persists settings and verifies the airtrail connection' do
         patch '/settings/integrations', params: {
           settings: { 'airtrail_url' => airtrail_url, 'airtrail_api_key' => 'k' }
         }
@@ -103,6 +125,56 @@ RSpec.describe 'Settings::Integrations', type: :request do
         follow_redirect!
         expect(flash[:notice]).to include('AirTrail connection verified')
         expect(user.reload.settings['airtrail_url']).to eq(airtrail_url)
+      end
+
+      it 'keeps malformed upstream responses within the flash cookie limit' do
+        stub_request(:get, "#{airtrail_url}/api/flight/list?scope=mine")
+          .to_return(status: 200, body: "<html>#{'x' * 12_000}")
+
+        patch '/settings/integrations', params: {
+          settings: { 'airtrail_url' => airtrail_url, 'airtrail_api_key' => 'k' }
+        }
+
+        expect(response).to redirect_to(settings_integrations_path)
+        expect(flash[:alert]).to start_with('AirTrail connection failed:')
+        expect(flash[:alert].bytesize).to be <= 512
+      end
+    end
+
+    context 'when TeslaMateApi settings change' do
+      let(:teslamate_url) { 'https://teslamate.test' }
+
+      before do
+        allow(Resolv).to receive(:getaddress).with('teslamate.test').and_return('93.184.216.34')
+      end
+
+      it 'persists settings and verifies the cars endpoint' do
+        stub_request(:get, "#{teslamate_url}/api/v1/cars")
+          .to_return(status: 200, body: { data: { cars: [] } }.to_json,
+                     headers: { 'Content-Type' => 'application/json' })
+
+        patch '/settings/integrations', params: {
+          settings: {
+            'teslamate_url' => teslamate_url,
+            'teslamate_username' => 'proxy-user',
+            'teslamate_password' => 'proxy-password',
+            'teslamate_api_token' => 'proxy-token',
+            'teslamate_skip_ssl_verification' => '1'
+          },
+          service: 'teslamate'
+        }
+
+        expect(response).to redirect_to(settings_integrations_path(service: 'teslamate'))
+        follow_redirect!
+        expect(flash[:notice]).to include('TeslaMateApi connection verified')
+        expect(user.reload.settings).to include(
+          'teslamate_url' => teslamate_url,
+          'teslamate_username' => 'proxy-user',
+          'teslamate_password' => 'proxy-password',
+          'teslamate_api_token' => 'proxy-token',
+          'teslamate_skip_ssl_verification' => true,
+          'teslamate_connection_status' => 'ok'
+        )
       end
     end
 
@@ -154,118 +226,79 @@ RSpec.describe 'Settings::Integrations', type: :request do
     end
   end
 
-  describe 'POST /settings/integrations/import_flights' do
+  describe 'GET /settings/integrations' do
     let(:user) { create(:user) }
-    let(:json_body) { file_fixture('air_trail/export_v3.json').read }
 
     before { sign_in user }
 
-    it 'enqueues a flight import job for a valid JSON file' do
-      file = Rack::Test::UploadedFile.new(
-        StringIO.new(json_body),
-        'application/json',
-        original_filename: 'airtrail.json'
-      )
-
-      expect do
-        post settings_import_flights_integrations_path, params: { file: file, format: 'auto' }
-      end.to change(ActiveStorage::Blob, :count).by(1)
-         .and have_enqueued_job(Flights::ImportFromFileJob).with(user.id, kind_of(Integer), nil)
-
-      blob = ActiveStorage::Blob.last
-      expect(blob.download).to eq(json_body)
-      expect(blob.filename.to_s).to eq('airtrail.json')
-
-      expect(response).to redirect_to(settings_integrations_path)
-      follow_redirect!
-      expect(flash[:notice]).to include('Flight import started')
+    def sidebar_link(body, service)
+      body[/<a[^>]*data-testid="integration-#{service}"[^>]*>/]
     end
 
-    it 'passes an explicit format to the job' do
-      file = Rack::Test::UploadedFile.new(
-        StringIO.new(json_body),
-        'application/json',
-        original_filename: 'airtrail.json'
-      )
-
-      expect do
-        post settings_import_flights_integrations_path, params: { file: file, format: 'airtrail_json' }
-      end.to have_enqueued_job(Flights::ImportFromFileJob).with(user.id, kind_of(Integer), 'airtrail_json')
-    end
-
-    it 'rejects a missing file' do
-      post settings_import_flights_integrations_path
-
-      expect(response).to redirect_to(settings_integrations_path)
-      follow_redirect!
-      expect(flash[:alert]).to include('Please select')
-    end
-
-    it 'rejects unsupported files' do
-      file = Rack::Test::UploadedFile.new(
-        StringIO.new('not a flight export'),
-        'application/pdf',
-        original_filename: 'flights.pdf'
-      )
-
-      post settings_import_flights_integrations_path, params: { file: file }
-
-      expect(response).to redirect_to(settings_integrations_path)
-      follow_redirect!
-      expect(flash[:alert]).to include('Invalid file')
-    end
-
-    it 'requires authentication' do
-      sign_out user
-
-      post settings_import_flights_integrations_path
-
-      expect(response).to redirect_to(new_user_session_path)
-    end
-
-    it 'renders a generic Import flights from file section' do
+    it 'lists every service in the sidebar on self-hosted instances' do
       get settings_integrations_path
 
-      expect(response.body).to include('Import flights from file')
-      expect(response.body).to include('Auto-detect')
-      expect(response.body).to include('AirTrail JSON')
-      expect(response.body).to include('FlightDiary CSV')
+      %w[geocoding immich photoprism airtrail].each do |service|
+        expect(response.body).to include(%(data-testid="integration-#{service}"))
+      end
     end
 
-    it 'enqueues a flight import job for a FlightDiary CSV file' do
-      csv_body = file_fixture('flight_diary/export.csv').read
-      file = Rack::Test::UploadedFile.new(
-        StringIO.new(csv_body),
-        'text/csv',
-        original_filename: 'flightdiary.csv'
-      )
+    it 'hides geocoding from the sidebar on non-self-hosted instances' do
+      allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
 
-      expect do
-        post settings_import_flights_integrations_path, params: { file: file, format: 'auto' }
-      end.to change(ActiveStorage::Blob, :count).by(1)
-         .and have_enqueued_job(Flights::ImportFromFileJob).with(user.id, kind_of(Integer), nil)
+      get settings_integrations_path
 
-      expect(ActiveStorage::Blob.last.download).to eq(csv_body)
+      expect(response.body).not_to include('data-testid="integration-geocoding"')
+      expect(response.body).to include('data-testid="integration-immich"')
     end
 
-    context 'when user is on Lite plan (Cloud)' do
-      before do
-        allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
-        user.update_column(:plan, User.plans[:lite])
-      end
+    it 'marks a service as connected after a successful connection' do
+      user.update!(settings: user.settings.merge('immich_url' => 'https://immich.test',
+                                                 'immich_api_key' => 'key',
+                                                 'immich_connection_status' => 'ok'))
 
-      it 'redirects with pro required alert' do
-        file = Rack::Test::UploadedFile.new(
-          StringIO.new(json_body),
-          'application/json',
-          original_filename: 'airtrail.json'
-        )
+      get settings_integrations_path
 
-        post settings_import_flights_integrations_path, params: { file: file }
+      expect(sidebar_link(response.body, 'immich')).to include('data-status="connected"')
+    end
 
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to include('Pro plan')
-      end
+    it 'marks a configured service as failed after a failed connection' do
+      user.update!(settings: user.settings.merge('airtrail_url' => 'https://airtrail.test',
+                                                 'airtrail_api_key' => 'key',
+                                                 'airtrail_connection_status' => 'failed'))
+
+      get settings_integrations_path
+
+      expect(sidebar_link(response.body, 'airtrail')).to include('data-status="failed"')
+    end
+
+    it 'shows no status for an unconfigured service' do
+      get settings_integrations_path
+
+      expect(sidebar_link(response.body, 'photoprism')).not_to include('data-status')
+    end
+
+    it 'renders the pane for the selected service' do
+      get settings_integrations_path(service: 'photoprism')
+
+      expect(response.body).to include('name="settings[photoprism_url]"')
+      expect(response.body).not_to include('name="settings[immich_url]"')
+    end
+
+    it 'renders the TeslaMateApi settings pane' do
+      get settings_integrations_path(service: 'teslamate')
+
+      expect(response.body).to include('name="settings[teslamate_url]"')
+      expect(response.body).to include('TeslaMateApi Integration')
+      expect(response.body).to include('https://github.com/tobiasehlert/teslamateapi#how-to-run-it')
+      expect(response.body).to include('man-in-the-middle attacks')
+    end
+
+    it 'falls back to the first available service for unknown service params' do
+      get settings_integrations_path(service: 'bogus')
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(I18n.t('settings.geocoding.show.provider'))
     end
   end
 end

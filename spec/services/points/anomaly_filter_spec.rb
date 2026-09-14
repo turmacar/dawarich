@@ -23,8 +23,8 @@ RSpec.describe Points::AnomalyFilter do
     # A reported accuracy radius is a confidence estimate, not evidence that the
     # position is wrong. Google Timeline routinely reports 1-4km while the point
     # still sits on the road, and deleting those points replaces real route
-    # geometry with a straight line across the gap. Only absurd radii - larger
-    # than any plausible positioning error - are treated as anomalies.
+    # geometry with a straight line across the gap. Only absurd radii — larger
+    # than any plausible positioning error — are treated as anomalies.
     context 'Pass 1: absurd accuracy filter' do
       # Use nearby coordinates so Pass 2 speed filter does not interfere
       let(:base_lat) { 52.52 }
@@ -195,7 +195,7 @@ RSpec.describe Points::AnomalyFilter do
       # The spike is declared first so it takes the LOWER id of the tied pair:
       # under (timestamp, id) it precedes the good point, the opposite tie
       # order from the cross-device context above. Both orders must resolve
-      # the same way - only the spike is convicted.
+      # the same way — only the spike is convicted.
       let!(:spike) do
         create(:point, user: user, tracker_id: 'phone', accuracy: 10,
                        timestamp: base_time + 120,
@@ -317,9 +317,207 @@ RSpec.describe Points::AnomalyFilter do
       end
     end
 
+    context 'Pass 2: a frozen cached fix replayed for longer than a displaced run' do
+      let(:start_time) { 2.hours.ago.to_i }
+      let(:end_time) { Time.current.to_i }
+      let(:base_time) { 1.hour.ago.to_i }
+      def lax(idx) = "POINT(#{-118.4103 + (idx * 0.0001)} #{33.9429 + (idx * 0.0001)})"
+      let(:frozen) { 'POINT(-0.4803 51.4693)' }
+
+      let!(:live_before) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + (i * 15), lonlat: lax(i))
+        end
+      end
+      let!(:stale_burst) do
+        (0..7).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 45 + (i * 15), lonlat: frozen)
+        end
+      end
+      let!(:live_after) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 180 + (i * 15), lonlat: lax(i + 3))
+        end
+      end
+
+      before { described_class.new(user.id, start_time, end_time).call }
+
+      it 'flags the whole frozen burst' do
+        stale_burst.each { |point| expect(point.reload.anomaly).to be true }
+      end
+
+      it 'leaves the live fixes either side alone' do
+        (live_before + live_after).each { |point| expect(point.reload.anomaly).not_to be true }
+      end
+    end
+
+    context 'Pass 2: a stationary run whose accuracy keeps being re-measured' do
+      let(:start_time) { 2.hours.ago.to_i }
+      let(:end_time) { Time.current.to_i }
+      let(:base_time) { 1.hour.ago.to_i }
+      def lax(idx) = "POINT(#{-118.4103 + (idx * 0.0001)} #{33.9429 + (idx * 0.0001)})"
+
+      let!(:live_before) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + (i * 15), lonlat: lax(i))
+        end
+      end
+      let!(:indoor_stay) do
+        (0..7).map do |i|
+          create(:point, user: user, accuracy: 10 + i, timestamp: base_time + 45 + (i * 15),
+                         lonlat: 'POINT(-0.4803 51.4693)')
+        end
+      end
+      let!(:live_after) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 180 + (i * 15), lonlat: lax(i + 3))
+        end
+      end
+
+      before { described_class.new(user.id, start_time, end_time).call }
+
+      it 'keeps a run that is re-measured rather than replayed' do
+        indoor_stay.each { |point| expect(point.reload.anomaly).not_to be true }
+      end
+    end
+
+    context 'Pass 2: a frozen run no longer than a displaced run' do
+      let(:start_time) { 2.hours.ago.to_i }
+      let(:end_time) { Time.current.to_i }
+      let(:base_time) { 1.hour.ago.to_i }
+      def lax(idx) = "POINT(#{-118.4103 + (idx * 0.0001)} #{33.9429 + (idx * 0.0001)})"
+
+      let!(:live_before) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + (i * 15), lonlat: lax(i))
+        end
+      end
+      let!(:stale_burst) do
+        (0..4).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 45 + (i * 15),
+                         lonlat: 'POINT(-0.4803 51.4693)')
+        end
+      end
+      let!(:live_after) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 150 + (i * 15), lonlat: lax(i + 3))
+        end
+      end
+
+      before { described_class.new(user.id, start_time, end_time).call }
+
+      it 'is still caught by the displaced-run pass' do
+        stale_burst.each { |point| expect(point.reload.anomaly).to be true }
+      end
+
+      it 'leaves the live fixes alone' do
+        (live_before + live_after).each { |point| expect(point.reload.anomaly).not_to be true }
+      end
+    end
+
+    context 'Pass 2: a frozen burst delivered as single-point live batches' do
+      let(:start_time) { 3.hours.ago.to_i }
+      let(:end_time) { Time.current.to_i }
+      let(:base_time) { 2.hours.ago.to_i }
+      def lax(idx) = "POINT(#{-118.4103 + (idx * 0.0001)} #{33.9429 + (idx * 0.0001)})"
+      let(:frozen) { 'POINT(-0.4803 51.4693)' }
+
+      let!(:live_before) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + (i * 15), lonlat: lax(i))
+        end
+      end
+      let!(:stale_burst) do
+        (0..7).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 45 + (i * 15), lonlat: frozen)
+        end
+      end
+      let!(:live_after) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 180 + (i * 15), lonlat: lax(i + 3))
+        end
+      end
+
+      before do
+        newest = live_after.last
+        described_class.new(user.id, newest.timestamp, newest.timestamp).call
+      end
+
+      it 'flags the burst that arrived in earlier batches' do
+        stale_burst.each { |point| expect(point.reload.anomaly).to be true }
+      end
+
+      it 'leaves the live fixes alone' do
+        (live_before + live_after).each { |point| expect(point.reload.anomaly).not_to be true }
+      end
+    end
+
+    context 'Pass 2: a frozen burst older than the re-judged window' do
+      let(:start_time) { 8.hours.ago.to_i }
+      let(:end_time) { Time.current.to_i }
+      let(:base_time) { 6.hours.ago.to_i }
+      def lax(idx) = "POINT(#{-118.4103 + (idx * 0.0001)} #{33.9429 + (idx * 0.0001)})"
+
+      let!(:live_before) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + (i * 15), lonlat: lax(i))
+        end
+      end
+      let!(:stale_burst) do
+        (0..7).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 45 + (i * 15),
+                         lonlat: 'POINT(-0.4803 51.4693)')
+        end
+      end
+      let!(:live_after) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 180 + (i * 15), lonlat: lax(i + 3))
+        end
+      end
+      let!(:much_later) do
+        create(:point, user: user, accuracy: 10, timestamp: base_time + 20_000, lonlat: lax(9))
+      end
+
+      before { described_class.new(user.id, much_later.timestamp, much_later.timestamp).call }
+
+      it 'leaves a burst beyond the lookback untouched' do
+        stale_burst.each { |point| expect(point.reload.anomaly).not_to be true }
+      end
+    end
+
+    context 'Pass 2: a long run that moves is not treated as a frozen fix' do
+      let(:start_time) { 2.hours.ago.to_i }
+      let(:end_time) { Time.current.to_i }
+      let(:base_time) { 1.hour.ago.to_i }
+      def lax(idx) = "POINT(#{-118.4103 + (idx * 0.0001)} #{33.9429 + (idx * 0.0001)})"
+
+      let!(:live_before) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + (i * 15), lonlat: lax(i))
+        end
+      end
+      let!(:moving_stay) do
+        (0..7).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 45 + (i * 15),
+                         lonlat: "POINT(#{-0.4803 + (i * 0.0009)} #{51.4693 + (i * 0.0009)})")
+        end
+      end
+      let!(:live_after) do
+        (0..2).map do |i|
+          create(:point, user: user, accuracy: 10, timestamp: base_time + 180 + (i * 15), lonlat: lax(i + 3))
+        end
+      end
+
+      before { described_class.new(user.id, start_time, end_time).call }
+
+      it 'keeps the run that moves' do
+        moving_stay.each { |point| expect(point.reload.anomaly).not_to be true }
+      end
+    end
+
     # The real shape of a stale cached position: it jumps hundreds of km away
-    # and comes straight back. Only the arrival is impossibly fast - the return
-    # leg looks merely plane-like - so a test requiring both sides to be extreme
+    # and comes straight back. Only the arrival is impossibly fast — the return
+    # leg looks merely plane-like — so a test requiring both sides to be extreme
     # lets it through, and the round trip lands in the track as a phantom flight.
     context 'Pass 2: an out-and-back excursion with only one impossible leg' do
       let(:base_time) { 40.minutes.ago.to_i }
@@ -362,7 +560,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # Google splices a stale fix from another device into a phone's timelinePath.
     # Each leg on its own looks like air travel, so nothing exceeds the raw speed
-    # floor - but the round trip demands hundreds of km of travel that never
+    # floor — but the round trip demands hundreds of km of travel that never
     # happened, which is what the detour test is for.
     context 'Pass 2: a detour no ground travel could cover' do
       let(:base_time) { 40.minutes.ago.to_i }
@@ -399,7 +597,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # A stale fix can land in the middle of a stay somewhere else, hours from any
     # other reading. Over a long enough gap the round trip is physically possible,
-    # so no speed test can condemn it - but spending zero time at the far end and
+    # so no speed test can condemn it — but spending zero time at the far end and
     # returning to the same stay is not travel.
     context 'Pass 2: a fix that contradicts a stay' do
       let(:evening) { Time.zone.parse('2022-12-03 20:16').to_i }
@@ -642,7 +840,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # iOS visit monitoring (Overland `action: visit`) reports a stay after it
     # ended: the payload carries the visit centroid plus arrival and departure
-    # dates, but the point is stamped with its delivery time - minutes after
+    # dates, but the point is stamped with its delivery time — minutes after
     # departure, while the device is already moving away. The coordinate is
     # right, its place in the timeline is not, so the track leaps to the
     # centroid and back. No accuracy or speed gate can catch that.
@@ -745,7 +943,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # After a tracking gap the first fix often comes from cell towers with
     # every CoreLocation sentinel set: speed -1, vertical accuracy -1 and a
-    # kilometre-scale radius. It lands wherever the tower is - far below the
+    # kilometre-scale radius. It lands wherever the tower is — far below the
     # absurd-accuracy gate, yet nowhere near the route.
     context 'Pass 5: cold-start sentinel fixes' do
       let(:base_time) { 1.hour.ago.to_i }
@@ -870,7 +1068,7 @@ RSpec.describe Points::AnomalyFilter do
 
     # A second device on reduced-accuracy permission is coarse all the way
     # through even when the account's other device tracks precisely. Each
-    # device is its own stream - the same rule the speed pass applies.
+    # device is its own stream — the same rule the speed pass applies.
     context 'Pass 5: a coarse-only device next to a precise one' do
       let(:base_time) { 1.hour.ago.to_i }
 
@@ -1132,7 +1330,7 @@ RSpec.describe Points::AnomalyFilter do
     end
 
     # At ingest each batch is filtered alone, and a wake-up tower fix often
-    # arrives in a batch of one - its precise context only exists a few
+    # arrives in a batch of one — its precise context only exists a few
     # minutes later, in the next batch, whose window starts after it.
     context 'Pass 5: a cold start that arrived in an earlier batch' do
       let(:base_time) { 1.hour.ago.to_i }

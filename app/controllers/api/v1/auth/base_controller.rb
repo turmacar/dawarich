@@ -4,8 +4,8 @@
 # sessions#create hands out) and apply to users in any status (including
 # pending_payment who need to complete login to reach /trial/resume).
 #
-# We still want the shared middleware from ApiController - version header,
-# rate-limit headers, and generic record-not-found handling - so we inherit
+# We still want the shared middleware from ApiController — version header,
+# rate-limit headers, and generic record-not-found handling — so we inherit
 # from it and skip just the auth/status gates.
 class Api::V1::Auth::BaseController < ApiController
   skip_before_action :authenticate_api_key, raise: false
@@ -22,6 +22,7 @@ class Api::V1::Auth::BaseController < ApiController
       api_key: user.api_key,
       status: user.status,
       plan: user.plan,
+      effective_plan: user.entitlements.effective_plan,
       subscription_source: user.subscription_source,
       active_until: user.active_until&.iso8601
     }, status: status

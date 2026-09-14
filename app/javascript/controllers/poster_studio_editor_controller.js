@@ -56,7 +56,7 @@ function toLocalInput(date) {
 
 // Full-screen WYSIWYG poster editor: a live MapLibre map inside a
 // poster-shaped frame, restyled by the same buildPosterStyle the export
-// renders, with typography drawn by the same overlay pass - so what the
+// renders, with typography drawn by the same overlay pass — so what the
 // preview shows is what the download produces.
 export default class extends Controller {
   static targets = [
@@ -105,6 +105,7 @@ export default class extends Controller {
     "loadButton",
     "loadSpinner",
     "loadLabel",
+    "switchButton",
     "orderSection",
     "orderCta",
     "orderButton",
@@ -125,7 +126,7 @@ export default class extends Controller {
 
   connect() {
     // The map page wraps content in a z-index:20 stacking context that would
-    // trap the overlay under the navbar - portal to <body>. Moving the node
+    // trap the overlay under the navbar — portal to <body>. Moving the node
     // re-runs connect (Stimulus disconnect/reconnect), hence the guard.
     if (this.element.parentElement !== document.body) {
       document.body.appendChild(this.element)
@@ -162,6 +163,7 @@ export default class extends Controller {
       if (!this.subtitleInputTarget.value)
         this.subtitleInputTarget.value = this.dateRangeLabel()
       this.seedDateInputs()
+      await this.provider.ensureTrackLoaded()
 
       this.resizeFrame()
       await this.loadFonts()
@@ -182,6 +184,17 @@ export default class extends Controller {
     this.teardown()
     this.releaseBackdrop()
     this.element.classList.add("hidden")
+  }
+
+  // Alternate view of the same track and date range; carry the provider so a
+  // trip-locked studio stays locked to that trip.
+  switchToVideo() {
+    if (this.rangeLoading) return
+    const provider = this.provider
+    this.close()
+    document.dispatchEvent(
+      new CustomEvent("video-studio:open", { detail: { provider } }),
+    )
   }
 
   teardown() {
@@ -495,7 +508,7 @@ export default class extends Controller {
     this.dateEndTarget.value = toLocalInput(new Date(endAt))
   }
 
-  // SPA date change delegated to the provider - the studio never closes.
+  // SPA date change delegated to the provider — the studio never closes.
   async applyDates() {
     if (!this.provider?.supportsDateNavigation) return
     const start = this.dateStartTarget.value
@@ -508,6 +521,7 @@ export default class extends Controller {
     this.setStatus(translate("poster.loading_tracks"))
     try {
       await this.provider.applyDates(start, end)
+      await this.provider.ensureTrackLoaded()
 
       if (subtitleWasAuto)
         this.subtitleInputTarget.value = this.dateRangeLabel()
@@ -521,12 +535,15 @@ export default class extends Controller {
   }
 
   setLoadBusy(value) {
-    if (!this.hasLoadButtonTarget) return
-    this.loadButtonTarget.disabled = value
-    this.loadSpinnerTarget.classList.toggle("hidden", !value)
-    this.loadLabelTarget.textContent = translate(
-      value ? "poster.loading" : "poster.load",
-    )
+    this.rangeLoading = value
+    if (this.hasLoadButtonTarget) {
+      this.loadButtonTarget.disabled = value
+      this.loadSpinnerTarget.classList.toggle("hidden", !value)
+      this.loadLabelTarget.textContent = translate(
+        value ? "poster.loading" : "poster.load",
+      )
+    }
+    if (this.hasSwitchButtonTarget) this.switchButtonTarget.disabled = value
   }
 
   presetRange(event) {
@@ -831,20 +848,30 @@ export default class extends Controller {
     return this.framedDistance() > max
   }
 
-  // The server refuses renders without track data in the frame - mirror
+  // The server refuses renders without track data in the frame — mirror
   // both guards here so Save to gallery can't queue a doomed poster.
   syncSaveAvailability() {
     if (!this.hasSaveButtonTarget || !this.previewMap) return
-    const coords = collectCoords(this.trackGeojson)
+    // Gallery renders are rebuilt server-side from GPS, without flight overlays.
+    const coords = collectCoords(this.provider?.trackGeojson())
     let reason = null
     if (coords.length === 0) {
       reason = translate("poster.no_location_data")
     } else if (!this.frameCoversTrack(coords)) {
       reason = translate("poster.no_tracks_in_frame")
     }
-    const message =
+    const posterGeometry = this.provider?.posterGeojson?.()
+    const overlayNotice =
+      posterGeometry && posterGeometry !== this.provider.trackGeojson()
+        ? translate("poster.gallery_without_flights")
+        : null
+    const message = [
       reason ||
-      (this.frameIsClamped() ? translate("poster.frame_too_wide") : null)
+        (this.frameIsClamped() ? translate("poster.frame_too_wide") : null),
+      overlayNotice,
+    ]
+      .filter(Boolean)
+      .join(" ")
     this.saveButtonTarget.disabled = Boolean(reason)
     this.saveNoticeTarget.textContent = message || ""
     this.saveNoticeTarget.classList.toggle("hidden", !message)
@@ -862,8 +889,8 @@ export default class extends Controller {
     const dpi = Number.parseInt(this.dpiTarget.value, 10)
     const geometry = resolveLayoutGeometry(layout, dpi)
     const lines = [
-      `${translate(`poster.layouts.${layout.id}`)} - ${layout.dimensionsLabel}`,
-      `Theme: ${this.themeName || "-"}`,
+      `${translate(`poster.layouts.${layout.id}`)} — ${layout.dimensionsLabel}`,
+      `Theme: ${this.themeName || "—"}`,
       `Export: ${geometry.width} × ${geometry.height}px${
         layout.kind === "paper" ? ` @ ${geometry.effectiveDpi} dpi` : ""
       }`,
@@ -875,6 +902,7 @@ export default class extends Controller {
 
   get trackGeojson() {
     return (
+      this.provider?.posterGeojson?.() ??
       this.provider?.trackGeojson() ?? {
         type: "FeatureCollection",
         features: [],

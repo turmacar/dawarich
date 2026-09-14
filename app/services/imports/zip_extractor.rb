@@ -66,9 +66,7 @@ module Imports
 
           FileUtils.mkdir_p(File.dirname(dest))
           total_size += extract_entry(entry, dest)
-          if total_size > @max_size
-            raise Archive::Unzipper::ArchiveTooLarge, "Archive too large (max #{@max_size} bytes)"
-          end
+          raise "Archive too large (max #{@max_size} bytes)" if total_size > @max_size
         end
       end
     end

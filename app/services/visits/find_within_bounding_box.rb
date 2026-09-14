@@ -32,7 +32,7 @@ module Visits
                        sw_lng, sw_lat, ne_lng, ne_lat
                      )
 
-      # Filter by started_at only - mirrors Visits::FindInTime; adding an
+      # Filter by started_at only — mirrors Visits::FindInTime; adding an
       # ended_at predicate silently drops boundary-crossing visits.
       relation = relation.where(started_at: start_at..end_at) if start_at && end_at
 
@@ -46,9 +46,9 @@ module Visits
     def parse_time(time_string)
       return nil if time_string.blank?
 
-      Time.zone.parse(time_string) || raise(Visits::InvalidTimeRange)
-    rescue ArgumentError, TypeError
-      raise Visits::InvalidTimeRange
+      Time.zone.parse(time_string.to_s)
+    rescue ArgumentError
+      nil
     end
   end
 end

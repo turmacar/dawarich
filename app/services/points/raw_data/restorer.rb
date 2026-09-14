@@ -112,31 +112,33 @@ module Points
       end
 
       def restore_batch(batch, archive_id)
-        Point.transaction do
-          point_ids = batch.map(&:first)
-          existing_ids = Point.where(id: point_ids).pluck(:id).to_set
-          linked_ids = Point.raw_data_lock_order.where(
-            id: point_ids,
-            raw_data_archived: true,
-            raw_data_archive_id: archive_id
-          ).lock.pluck(:id)
+        Point.with_write_contention_retry do
+          Point.transaction do
+            point_ids = batch.map(&:first)
+            existing_ids = Point.where(id: point_ids).pluck(:id).to_set
+            linked_ids = Point.raw_data_lock_order.where(
+              id: point_ids,
+              raw_data_archived: true,
+              raw_data_archive_id: archive_id
+            ).lock.pluck(:id)
 
-          missing_ids = point_ids.reject { |id| existing_ids.include?(id) }
-          if missing_ids.any?
-            Rails.logger.warn(
-              "Points no longer in database (skipping restore): #{missing_ids.join(', ')}"
-            )
+            missing_ids = point_ids.reject { |id| existing_ids.include?(id) }
+            if missing_ids.any?
+              Rails.logger.warn(
+                "Points no longer in database (skipping restore): #{missing_ids.join(', ')}"
+              )
+            end
+
+            data_by_id = batch.to_h
+            restorable = linked_ids.filter_map { |id| [id, data_by_id[id]] if data_by_id.key?(id) }
+            batch_update_points(restorable) if restorable.any?
+
+            {
+              restored: restorable.size,
+              missing: missing_ids.size,
+              skipped: (existing_ids - linked_ids.to_set).size
+            }
           end
-
-          data_by_id = batch.to_h
-          restorable = linked_ids.filter_map { |id| [id, data_by_id[id]] if data_by_id.key?(id) }
-          batch_update_points(restorable) if restorable.any?
-
-          {
-            restored: restorable.size,
-            missing: missing_ids.size,
-            skipped: (existing_ids - linked_ids.to_set).size
-          }
         end
       end
 
@@ -145,7 +147,9 @@ module Points
           { id: id, raw_data: raw_data, raw_data_archived: false, raw_data_archive_id: nil }
         end
 
-        Points::BulkUpdater.call(updates, %i[raw_data raw_data_archived raw_data_archive_id])
+        Point.upsert_all(updates, unique_by: :id,
+                          update_only: %i[raw_data raw_data_archived raw_data_archive_id])
+        # rubocop:enable Rails/SkipsModelValidations
       end
 
       def restore_archive_to_cache(archive, cache_key_prefix)

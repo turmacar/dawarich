@@ -43,6 +43,29 @@ RSpec.describe DataMigrations::BackfillPointCountryIdJob, type: :job do
       expect(blank_point.reload.country_id).to be_nil
     end
 
+    # Geocoders write OSM English names; the table is seeded with Natural
+    # Earth names. Without the alias bridge a third of a real-world points
+    # table stays unresolved ("United States" alone).
+    it 'resolves geocoder names that differ from the seeded Natural Earth ones' do
+      usa = create(:country, name: 'United States of America')
+      geocoder_named = unresolved_point(country_name: 'United States')
+
+      described_class.perform_now
+
+      expect(geocoder_named.reload.country_id).to eq(usa.id)
+    end
+
+    it 'resolves every alias of a country with several' do
+      palestine = create(:country, name: 'Palestine')
+      variants = ['Palestinian Territory', 'Palestinian Territories'].map do |name|
+        unresolved_point(country_name: name)
+      end
+
+      described_class.perform_now
+
+      expect(variants.map { |p| p.reload.country_id }).to all(eq(palestine.id))
+    end
+
     it 'does not overwrite an existing country_id' do
       other = create(:country, name: 'France')
       stamped = create(:point, user: user, country_name: 'Germany')
@@ -53,12 +76,45 @@ RSpec.describe DataMigrations::BackfillPointCountryIdJob, type: :job do
       expect(stamped.reload.country_id).to eq(other.id)
     end
 
+    it 'repairs a country link when the name resolves within the same ISO code' do
+      naval_base = create(:country, name: 'US Naval Base Guantanamo Bay', iso_a2: 'US', iso_a3: 'USA')
+      united_states = create(:country, name: 'United States of America', iso_a2: 'US', iso_a3: 'USA')
+      stamped = create(:point, user: user)
+      stamped.update_columns(country_name: 'United States', country_id: naval_base.id)
+
+      described_class.perform_now(nil, described_class::BATCH_SIZE, repair_collisions: true)
+
+      expect(stamped.reload.country_id).to eq(united_states.id)
+    end
+
+    it 'keeps a country link when the name resolves to a different ISO code' do
+      united_states = create(:country, name: 'United States of America', iso_a2: 'US', iso_a3: 'USA')
+      france = create(:country, name: 'France', iso_a2: 'FR', iso_a3: 'FRA')
+      stamped = create(:point, user: user)
+      stamped.update_columns(country_name: 'United States', country_id: france.id)
+
+      described_class.perform_now(nil, described_class::BATCH_SIZE, repair_collisions: true)
+
+      expect(stamped.reload.country_id).to eq(france.id)
+      expect(stamped.reload.country_id).not_to eq(united_states.id)
+    end
+
     it 'walks the id range in batches by re-enqueueing itself' do
       stub_const("#{described_class}::BATCH_SIZE", 1)
       first_id = Point.minimum(:id)
 
       expect { described_class.perform_now(first_id) }.to \
         have_enqueued_job(described_class).with(first_id + 1)
+    end
+
+    it 'keeps collision repair enabled across batches' do
+      stub_const("#{described_class}::BATCH_SIZE", 1)
+      first_id = Point.minimum(:id)
+
+      expect do
+        described_class.perform_now(first_id, described_class::BATCH_SIZE, repair_collisions: true)
+      end.to have_enqueued_job(described_class)
+        .with(first_id + 1, described_class::BATCH_SIZE, repair_collisions: true)
     end
 
     it 'does not fall through to the legacy column when country_name is set but unmatched' do
@@ -83,6 +139,42 @@ RSpec.describe DataMigrations::BackfillPointCountryIdJob, type: :job do
       expect(named_point.reload.country_id).to eq(germany.id)
       expect(legacy_point.reload.country_id).to eq(germany.id)
       expect(unknown_point.reload.country_id).to be_nil
+    end
+
+    it 'halves the batch and retries the same cursor when a batch is aborted' do
+      allow_any_instance_of(described_class).to receive(:resolve_countries)
+        .and_raise(ActiveRecord::QueryCanceled)
+      start_id = Point.minimum(:id)
+
+      expect { described_class.perform_now(start_id) }.to \
+        have_enqueued_job(described_class).with(start_id, described_class::BATCH_SIZE / 2)
+    end
+
+    it 'hands the smallest batch to the retry machinery instead of shrinking forever' do
+      allow_any_instance_of(described_class).to receive(:resolve_countries)
+        .and_raise(ActiveRecord::QueryCanceled)
+      start_id = Point.minimum(:id)
+
+      expect { described_class.perform_now(start_id, described_class::MIN_BATCH_SIZE) }.to \
+        have_enqueued_job(described_class).with(start_id, described_class::MIN_BATCH_SIZE)
+    end
+
+    it 'reports batch position so operators can tell running from stalled' do
+      allow(Rails.logger).to receive(:info).and_call_original
+
+      described_class.perform_now
+
+      expect(Rails.logger).to have_received(:info).with(/of id range/)
+    end
+
+    it 'tells the operator to resume a halved batch at its halved size' do
+      allow(Rails.logger).to receive(:error)
+      job = described_class.new(42, described_class::MIN_BATCH_SIZE)
+
+      described_class.log_exhaustion(job, ActiveRecord::QueryCanceled.new('canceled'))
+
+      expect(Rails.logger).to have_received(:error)
+        .with(/perform_later\(42, #{described_class::MIN_BATCH_SIZE}\)/)
     end
   end
 end

@@ -115,10 +115,12 @@ class Users::ImportData
 
         FileUtils.mkdir_p(File.dirname(extraction_path))
 
-        # Manual extraction to bypass size validation for large files
+        # The directory size is untrusted. Bound decompressed output too;
+        # checking one extra byte detects overflow without writing past the cap.
         entry.get_input_stream do |input|
           File.open(extraction_path, 'wb') do |output|
-            IO.copy_stream(input, output)
+            IO.copy_stream(input, output, MAX_ENTRY_SIZE)
+            raise "Archive entry #{entry.name} exceeds maximum allowed size" if input.read(1)
           end
         end
       end
@@ -161,8 +163,8 @@ class Users::ImportData
   # gps_filtering_enabled setting, which was restored moments ago.
   #
   # Runs AFTER the import transaction commits. Inside it, a database error here
-  # would leave the transaction aborted, and the next statement - the success
-  # notification - would fail with PG::InFailedSqlTransaction, discarding an
+  # would leave the transaction aborted, and the next statement — the success
+  # notification — would fail with PG::InFailedSqlTransaction, discarding an
   # otherwise complete restore over a filtering problem.
   def filter_restored_anomalies
     min_timestamp, max_timestamp = user.points.pick(
@@ -170,7 +172,7 @@ class Users::ImportData
     )
     return if min_timestamp.nil?
 
-    # Leading :: is required - Users::ImportData::Points is the points handler
+    # Leading :: is required — Users::ImportData::Points is the points handler
     # and would otherwise shadow the top-level Points namespace.
     flagged = ::Points::AnomalyFilter.new(user.id, min_timestamp, max_timestamp).call
     Rails.logger.info "Flagged #{flagged} anomalous points after restore for user: #{user.email}"

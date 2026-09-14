@@ -213,8 +213,8 @@ RSpec.describe Visits::FindWithinBoundingBox do
           }
         end
 
-        it 'rejects the malformed range' do
-          expect { result }.to raise_error(Visits::InvalidTimeRange)
+        it 'ignores the malformed range and returns bbox matches' do
+          expect(result).to include(visit_inside_1, visit_inside_2, old_visit_inside)
         end
       end
     end

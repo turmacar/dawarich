@@ -18,6 +18,7 @@ export const LAYER_COLOR_DEFAULTS = {
 const DEFAULT_SETTINGS = {
   mapStyle: "light",
   vectorTilesUrl: null,
+  tilesFallback: false,
   ...LAYER_COLOR_DEFAULTS,
   customTheme: {
     base: "noir",
@@ -49,7 +50,6 @@ const DEFAULT_SETTINGS = {
   speedColorScale: "0:#00ff00|15:#00ffff|30:#ff00ff|50:#ffff00|100:#ff3300",
   globeProjection: false,
   minMinutesSpentInCity: 60,
-  maxGapMinutesInCity: 120,
   gpsFilteringEnabled: true,
   pointDraggingEnabled: false,
   pointsTiledRendering: false,
@@ -89,6 +89,7 @@ const BACKEND_SETTINGS_MAP = {
   mapStyle: "maps_maplibre_style",
   customTheme: "maps_maplibre_custom_theme",
   vectorTilesUrl: "maps_maplibre_tiles_url",
+  tilesFallback: "maps_maplibre_tiles_fallback",
   routeColor: "route_color",
   trackColor: "track_color",
   enabledMapLayers: "enabled_map_layers",
@@ -104,7 +105,6 @@ const BACKEND_SETTINGS_MAP = {
   speedColorScale: "speed_color_scale",
   globeProjection: "globe_projection",
   minMinutesSpentInCity: "min_minutes_spent_in_city",
-  maxGapMinutesInCity: "max_gap_minutes_in_city",
   gpsFilteringEnabled: "gps_filtering_enabled",
   pointDraggingEnabled: "point_dragging_enabled",
   pointsTiledRendering: "points_tiled_rendering",
@@ -113,15 +113,20 @@ const BACKEND_SETTINGS_MAP = {
   liveMapEnabled: "live_map_enabled",
 }
 
-// Layers that can only be drawn from the full point set. Heatmap is absent
-// when tiles are requested because it can read the tiled source instead.
+// Layers that can only be drawn from the full point set. With tiles requested,
+// routes ride the tracks tile source, fog reads the points tile source, and
+// heatmap reads the tiled source — only Scratch map still needs everything.
 export function bulkPointsRequired(settings = {}) {
   const tiledRequested = settings.pointsTiledRendering === true
 
   return (
-    settings.routesVisible !== false ||
+    Boolean(settings.routesVisible !== false && !tiledRequested) ||
     Boolean(settings.heatmapEnabled && !tiledRequested) ||
-    Boolean(settings.fogEnabled && settings.fogOfWarMode !== "hexagons") ||
+    Boolean(
+      settings.fogEnabled &&
+        settings.fogOfWarMode !== "hexagons" &&
+        !tiledRequested,
+    ) ||
     Boolean(settings.scratchEnabled)
   )
 }
@@ -129,6 +134,29 @@ export function bulkPointsRequired(settings = {}) {
 // Tiles only save anything when nothing else already needs the full set
 export function tiledPointsActive(settings = {}) {
   return settings.pointsTiledRendering === true && !bulkPointsRequired(settings)
+}
+
+// The renderer each tiled-aware layer must use for the CURRENT settings.
+// Layers read tiledPointsActive once at construction; flipping the beta
+// toggle (or the fog mode) mid-session re-derives everything through this
+// single truth table so no layer is left on the wrong renderer.
+export function tiledLayerModes(settings = {}) {
+  const tiled = tiledPointsActive(settings)
+  const routesOn = settings.routesVisible !== false
+  const tracksOn = settings.tracksEnabled === true
+  const fogTiled = tiled && (settings.fogOfWarMode || "points") !== "hexagons"
+
+  return {
+    tiled,
+    tracksMvt: {
+      tracksEnabled: tiled && tracksOn,
+      routesVisible: tiled && routesOn,
+    },
+    classicRoutes: routesOn && !tiled,
+    classicTracks: tracksOn && !tiled,
+    fogTiled,
+    pointsSourceKeepAlive: fogTiled && Boolean(settings.fogEnabled),
+  }
 }
 
 export class SettingsManager {
@@ -265,11 +293,6 @@ export class SettingsManager {
                 value,
                 DEFAULT_SETTINGS.minMinutesSpentInCity,
               )
-            } else if (frontendKey === "maxGapMinutesInCity") {
-              value = SettingsManager._parseIntOr(
-                value,
-                DEFAULT_SETTINGS.maxGapMinutesInCity,
-              )
             } else if (frontendKey === "gpsFilteringEnabled") {
               value = value === true || value === "true"
             } else if (frontendKey === "pointDraggingEnabled") {
@@ -281,6 +304,8 @@ export class SettingsManager {
             } else if (frontendKey === "globeProjection") {
               value = value === true || value === "true"
             } else if (frontendKey === "liveMapEnabled") {
+              value = value === true || value === "true"
+            } else if (frontendKey === "tilesFallback") {
               value = value === true || value === "true"
             }
 
@@ -354,8 +379,7 @@ export class SettingsManager {
               frontendKey === "fogOfWarThreshold" ||
               frontendKey === "metersBetweenRoutes" ||
               frontendKey === "minutesBetweenRoutes" ||
-              frontendKey === "minMinutesSpentInCity" ||
-              frontendKey === "maxGapMinutesInCity"
+              frontendKey === "minMinutesSpentInCity"
             ) {
               value = parseInt(value, 10).toString()
             } else if (frontendKey === "speedColoredRoutes") {

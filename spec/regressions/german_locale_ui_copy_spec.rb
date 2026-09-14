@@ -79,12 +79,12 @@ RSpec.describe 'German interface copy', type: :helper do
     expect(otp_text).to include('Wenn du das warst, musst du nichts unternehmen')
   end
 
-  it 'keeps the request locale for mail sent before the preference is persisted' do
+  it 'keeps the request locale for signup mail before the preference is persisted' do
     user = create(:user)
 
-    subject = I18n.with_locale(:de) { UsersMailer.with(user: user).otp_account_locked.subject }
+    subject = I18n.with_locale(:de) { UsersMailer.with(user: user).welcome.subject }
 
-    expect(subject).to eq('Dawarich-Konto vorübergehend gesperrt')
+    expect(subject).to eq('Willkommen bei Dawarich!')
   end
 
   it 'renders grammatical German family emails in HTML and text' do
@@ -131,7 +131,7 @@ RSpec.describe 'German interface copy', type: :helper do
       [mail.subject, mail.html_part.body.decoded]
     end
 
-    expect(subject).to eq('Dein August 2026 im Rückblick - Dawarich')
+    expect(subject).to eq('Dein August 2026 im Rückblick — Dawarich')
     expect(html).to include('ÜBERBLICK')
   end
 end

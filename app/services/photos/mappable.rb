@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Photos::Mappable
-  MAX_PHOTOS = 2000
+  MAX_PHOTOS = 100
 
   def initialize(photos, privacy_zones: [], max: MAX_PHOTOS)
     @photos = photos
@@ -10,9 +10,10 @@ class Photos::Mappable
   end
 
   def call
-    @photos.select { |p| p[:latitude].present? && p[:longitude].present? }
-           .reject { |p| within_privacy_zone?(p[:latitude], p[:longitude]) }
-           .first(@max)
+    photos = @photos.select { |p| p[:latitude].present? && p[:longitude].present? }
+                    .reject { |p| within_privacy_zone?(p[:latitude], p[:longitude]) }
+
+    @max ? photos.first(@max) : photos
   end
 
   private

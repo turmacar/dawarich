@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class OwnTracks::PointCreator
-  RETURNING_COLUMNS = Point::UPSERT_RETURNING_COLUMNS
-
   attr_reader :params, :user_id
 
   def initialize(params, user_id)
@@ -14,51 +12,6 @@ class OwnTracks::PointCreator
     parsed_params = OwnTracks::Params.new(params).call
     return [] if parsed_params.blank?
 
-    payload = parsed_params.merge(user_id:)
-    return [] if payload[:timestamp].nil? || payload[:lonlat].nil?
-    return [] if Points::NullIsland.lonlat?(payload[:lonlat])
-
-    result = upsert_points([payload])
-    if result.any?
-      inserted_count = result.count { |row| row['xmax'].to_i.zero? }
-      User.update_counters(user_id, points_count: inserted_count) if inserted_count.positive?
-      timestamps = [payload].filter_map { |p| p[:timestamp]&.to_i }
-      Points::AnomalyFilterJob.perform_later(user_id, timestamps.min, timestamps.max) if timestamps.any?
-      Tracks::RealtimeDebouncer.new(user_id).trigger
-      Tracks::BackfillScheduler.new(user_id, timestamps).call
-      Visits::RealtimeDebouncer.new(user_id).trigger
-      Points::LiveBroadcaster.new(user_id, result, [payload]).call
-      evaluate_geofences(result)
-    end
-
-    result
-  end
-
-  private
-
-  def evaluate_geofences(result)
-    point_ids = result.map { |row| row['id'] }.compact
-    return if point_ids.empty?
-
-    user = User.find_by(id: user_id)
-    return unless user
-
-    Point.where(id: point_ids).find_each do |point|
-      GeofenceEvents::Evaluator::ForPoint.call(user, point)
-    end
-  end
-
-  def upsert_points(locations)
-    created_points = []
-
-    locations.each_slice(1000) do |batch|
-      result = Point.archival_safe_upsert_all(
-        batch,
-        returning: Arel.sql(RETURNING_COLUMNS)
-      )
-      created_points.concat(result) if result
-    end
-
-    created_points
+    Points::Intake.call(user_id: user_id, payloads: [parsed_params])
   end
 end

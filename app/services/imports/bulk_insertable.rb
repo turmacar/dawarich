@@ -10,14 +10,14 @@ module Imports
       return 0 if batch.empty?
 
       compacted = batch.compact
-      # Nil timestamp/lonlat bypass model validations via upsert_all and later break read paths.
-      usable = compacted.reject do |record|
-        record[:timestamp].nil? || record[:lonlat].blank? || Points::NullIsland.lonlat?(record[:lonlat])
-      end
-      unique_batch = usable.uniq { |record| [record[:lonlat], record[:timestamp], record[:user_id]] }
-      zero_skipped = compacted.size - usable.size
-      Rails.logger.info("[#{importer_name}] skipped #{zero_skipped} invalid points") if zero_skipped.positive?
+      unique_batch = compacted
+                     .reject { |record| Points::NullIsland.lonlat?(record[:lonlat]) }
+                     .uniq { |record| [record[:lonlat], record[:timestamp], record[:user_id]] }
+      zero_skipped = compacted.size - compacted.count { |r| !Points::NullIsland.lonlat?(r[:lonlat]) }
+      Rails.logger.info("[#{importer_name}] skipped #{zero_skipped} Null Island (0,0) points") if zero_skipped.positive?
       return 0 if unique_batch.empty?
+
+      dimension_resolver.stamp(unique_batch)
 
       result = Point.upsert_all(
         unique_batch,
@@ -41,6 +41,13 @@ module Imports
       on_bulk_insert_error(e)
       create_import_error_notification("Failed to process #{importer_name} data: #{e.message}")
       0
+    end
+
+    # Memoised across batches: one import usually carries a single
+    # device/importer combo, so the resolver's cache turns the whole run into
+    # one lookup instead of one per batch.
+    def dimension_resolver
+      @dimension_resolver ||= Points::DimensionResolver.new
     end
 
     # Importers that wrap the whole import in a transaction override this to true, so an

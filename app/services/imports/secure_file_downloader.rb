@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Imports::SecureFileDownloader
-  class EmptyFileError < StandardError; end
-
   DOWNLOAD_TIMEOUT = 300 # 5 minutes timeout
   MAX_RETRIES = 3
 
@@ -54,9 +52,7 @@ class Imports::SecureFileDownloader
       raise
     end
 
-    if temp_file.size.zero? # rubocop:disable Style/ZeroLengthPredicate -- Tempfile has no .empty?
-      raise_empty_download_error
-    end
+    raise 'Download completed but no content was received' if temp_file.size.zero? # rubocop:disable Style/ZeroLengthPredicate -- Tempfile has no .empty?
 
     verify_temp_file_integrity(temp_file)
     temp_file.path
@@ -110,7 +106,7 @@ class Imports::SecureFileDownloader
       raise
     end
 
-    raise_empty_download_error if file_content.blank?
+    raise 'Download completed but no content was received' if file_content.blank?
 
     file_content
   end
@@ -119,11 +115,6 @@ class Imports::SecureFileDownloader
     extension = File.extname(storage_attachment.filename.to_s)
     basename = File.basename(storage_attachment.filename.to_s, extension)
     Tempfile.create(["#{basename}_#{Time.now.to_i}_", extension], binmode: true)
-  end
-
-  def raise_empty_download_error
-    error_class = storage_attachment.blob.byte_size.zero? ? EmptyFileError : RuntimeError
-    raise error_class, 'Download completed but no content was received'
   end
 
   def cleanup_temp_file(temp_file)
@@ -168,8 +159,7 @@ class Imports::SecureFileDownloader
 
     # Verify checksum
     expected_checksum = storage_attachment.blob.checksum
-    temp_file.rewind
-    actual_checksum = Base64.strict_encode64(Digest::MD5.digest(temp_file.read))
+    actual_checksum = Base64.strict_encode64(Digest::MD5.file(temp_file.path).digest)
     temp_file.rewind
 
     return unless expected_checksum != actual_checksum

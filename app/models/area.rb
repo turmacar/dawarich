@@ -7,7 +7,6 @@ class Area < ApplicationRecord
 
   belongs_to :user
   has_many :visits, dependent: :destroy
-  has_many :geofence_events, dependent: :destroy
 
   validates :name, :latitude, :longitude, :radius, presence: true
   validates :radius, numericality: { greater_than: 0 }
@@ -17,7 +16,7 @@ class Area < ApplicationRecord
   alias_attribute :lon, :longitude
   alias_attribute :lat, :latitude
 
-  # A new or reshaped area labels its historical visits right away - the
+  # A new or reshaped area labels its historical visits right away — the
   # detection pipeline only attributes areas at detection time. One combined
   # registration: same-method after_create_commit/after_update_commit pairs
   # silently override each other.

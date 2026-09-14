@@ -26,10 +26,28 @@ export class TracksLayer extends BaseLayer {
     this.animationActive = false
     this.segmentsActive = false
     this.selectedTrackLength = 0 // meters
+    this.selectedFeature = null
+    this.selectionRevision = 0
     this.flowTrackColor = "#ff0000"
 
     this.onSegmentHover = null // Callback for segment hover events
     this.onSegmentLeave = null // Callback for segment leave events
+  }
+
+  // Under tiled mode the MAIN track lines come from the tile layer, but the
+  // selection/flow/segment sub-layers still render the click->highlight flow —
+  // hide only the data layers, never the selection stack (a full toggle(false)
+  // would silently kill setSelectedTrack/showSegments).
+  setMainVisibility(visible) {
+    this.visible = visible
+    for (const layerId of [this.id]) {
+      if (!this.map.getLayer(layerId)) continue
+      this.map.setLayoutProperty(
+        layerId,
+        "visibility",
+        visible ? "visible" : "none",
+      )
+    }
   }
 
   getSourceConfig() {
@@ -130,15 +148,18 @@ export class TracksLayer extends BaseLayer {
    * Set selected track for highlighting
    * @param {Object|null} feature - Track feature or null to clear
    */
-  setSelectedTrack(feature) {
+  setSelectedTrack(feature, { preserveSegments = false } = {}) {
     if (!this.map) return
 
     const selectionSource = this.map.getSource(this.selectionSourceId)
     if (!selectionSource) return
 
+    this.selectedFeature = feature || null
+    this.selectionRevision += 1
+
     if (feature) {
       this.flowTrackColor = feature.properties?.color || "#ff0000"
-      this.segmentsActive = false
+      if (!preserveSegments) this.segmentsActive = false
       this.selectedTrackLength = this._computeLineLength(
         feature.geometry?.coordinates || [],
       )
@@ -154,7 +175,7 @@ export class TracksLayer extends BaseLayer {
       }
     } else {
       this._stopFlowAnimation()
-      this.segmentsActive = false
+      if (!preserveSegments) this.segmentsActive = false
       this.selectedTrackLength = 0
       selectionSource.setData({ type: "FeatureCollection", features: [] })
 

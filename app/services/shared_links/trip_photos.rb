@@ -26,23 +26,18 @@ module SharedLinks
     private
 
     def mappable_photos
-      Photos::Mappable.new(search_photos, privacy_zones: Users::PrivacyZones.new(@link.user).call).call
+      Photos::Mappable.new(
+        search_photos,
+        privacy_zones: Users::PrivacyZones.new(@link.user).call,
+        max: nil
+      ).call
     end
 
     def search_photos
       trip = @link.resource
       return [] if trip.nil?
 
-      album = SharedLinks::PhotoAlbum.new(@link)
-      sources = SharedLinks::PhotoSources.new(@link).enabled
-
-      Photos::Search.cached(
-        @link.user,
-        start_date: trip.started_at.iso8601,
-        end_date: trip.ended_at.iso8601,
-        album_id: album.album_id,
-        sources: sources
-      )
+      Photos::Search.cached(@link.user, start_date: trip.started_at.iso8601, end_date: trip.ended_at.iso8601)
     end
 
     def parse_date(raw, zone)

@@ -186,6 +186,15 @@ RSpec.describe 'Users::Registrations', type: :request do
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to include('Registration is not available')
       end
+
+      it 'rejects a user param that is not a hash without erroring' do
+        expect do
+          post user_registration_path, params: { user: 'test@example.com' }
+        end.not_to change(User, :count)
+
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to include('Registration is not available')
+      end
     end
 
     context 'when email/password registration is enabled' do
@@ -237,6 +246,44 @@ RSpec.describe 'Users::Registrations', type: :request do
         end.to change(User, :count).by(1)
 
         expect(response).to redirect_to(family_path)
+      end
+
+      it 'allows account creation when the email differs only in case' do
+        expect do
+          post user_registration_path, params: {
+            user: {
+              email: invitation.email.upcase,
+              password: 'password123456',
+              password_confirmation: 'password123456'
+            },
+            invitation_token: invitation.token
+          }
+        end.to change(User, :count).by(1)
+
+        expect(response).to redirect_to(family_path)
+      end
+
+      it 'prevents account creation for a different email' do
+        expect do
+          post user_registration_path, params: {
+            user: {
+              email: 'someone.else@example.com',
+              password: 'password123456',
+              password_confirmation: 'password123456'
+            },
+            invitation_token: invitation.token
+          }
+        end.not_to change(User, :count)
+
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq('This invitation is not for your email address.')
+        expect(invitation.reload.status).to eq('pending')
+      end
+
+      it 'renders the registration page when the user param is not a hash' do
+        get new_user_registration_path(invitation_token: invitation.token, user: 'someone.else@example.com')
+
+        expect(response).to have_http_status(:ok)
       end
     end
 
@@ -559,8 +606,8 @@ RSpec.describe 'Users::Registrations', type: :request do
       allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
     end
 
-    context 'cloud (non-self-hosted) - email-confirmation flow' do
-      it 'does NOT delete immediately - sends a confirmation email instead' do
+    context 'cloud (non-self-hosted) — email-confirmation flow' do
+      it 'does NOT delete immediately — sends a confirmation email instead' do
         expect do
           delete user_registration_path
         end.not_to(change(User, :count))
@@ -617,7 +664,7 @@ RSpec.describe 'Users::Registrations', type: :request do
       end
     end
 
-    context 'self-hosted - password-confirmation flow' do
+    context 'self-hosted — password-confirmation flow' do
       before { allow(DawarichSettings).to receive(:self_hosted?).and_return(true) }
 
       it 'soft-deletes immediately when password is correct (no email)' do
@@ -799,7 +846,7 @@ RSpec.describe 'Users::Registrations', type: :request do
         create(:family_membership, user: user, family: user_family, role: :owner)
       end
 
-      it 'allows the deletion-request flow (cloud - email confirmation will perform the delete)' do
+      it 'allows the deletion-request flow (cloud — email confirmation will perform the delete)' do
         expect do
           delete user_registration_path
         end.to have_enqueued_job(Users::MailerSendingJob).with(

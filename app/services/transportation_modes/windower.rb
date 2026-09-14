@@ -5,13 +5,10 @@ module TransportationModes
   # the feature vector the Decoder scores. Long gaps split the sequence into
   # independent chains (gap_before: true on the first window after a gap).
   class Windower
-    def self.call(rows, spatial_hints: {})
+    def self.call(rows)
       chains(rows).flat_map.with_index do |chain, chain_index|
         chain_windows(chain[:rows]).map.with_index do |window, window_index|
           window[:gap_before] = chain_index.positive? && window_index.zero?
-          # Merge track-level spatial hints (aeroway/railway proximity) into every
-          # window so the Decoder treats them as consistent evidence throughout.
-          window[:hints].merge!(spatial_hints) { |_k, a, b| [a, b].max } unless spatial_hints.empty?
           window
         end
       end
@@ -36,7 +33,7 @@ module TransportationModes
     end
 
     # Two-pointer slicing: window starts are monotonic, so the left cursor
-    # only ever advances - O(points), not O(windows × points).
+    # only ever advances — O(points), not O(windows × points).
     def self.chain_windows(rows)
       return [] if rows.empty?
 

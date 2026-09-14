@@ -134,16 +134,23 @@ RSpec.describe Imports::SecureFileDownloader do
       File.unlink(path) if File.exist?(path)
     end
 
-    context 'when a non-empty blob returns no content' do
-      before do
-        allow(storage_attachment).to receive(:download)
-        allow(blob).to receive(:download).and_return('')
-      end
+    context 'with a file larger than the digest read buffer' do
+      let(:file_content) { 'x' * 1.megabyte }
 
-      it 'raises a reportable download error' do
-        expect { subject.download_to_temp_file }.to raise_error(
-          RuntimeError, 'Download completed but no content was received'
-        )
+      it 'never reads the complete tempfile into one Ruby String' do
+        read_sizes = []
+        trace = TracePoint.new(:c_return) do |event|
+          next unless event.method_id == :read
+          next unless event.return_value.is_a?(String)
+
+          read_sizes << event.return_value.bytesize
+        end
+
+        path = trace.enable { subject.download_to_temp_file }
+
+        expect(read_sizes).not_to include(file_content.bytesize)
+      ensure
+        File.unlink(path) if path && File.exist?(path)
       end
     end
   end

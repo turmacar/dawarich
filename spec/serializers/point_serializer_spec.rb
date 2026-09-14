@@ -7,6 +7,26 @@ RSpec.describe PointSerializer do
     subject(:serializer) { described_class.new(point).call }
 
     let(:point) { create(:point) }
+
+    context 'when the point is stamped with a dimension row' do
+      before do
+        source = PointSource.create!(digest: 'a' * 32, tracker_id: 'dimension-device',
+                                     topic: 'owntracks/dim', battery_status: 'unplugged')
+        point.update_columns(source_id: source.id, tracker_id: 'legacy-device',
+                             topic: 'owntracks/legacy', battery_status: 0)
+        point.reload
+      end
+
+      it 'emits the device combo from the dimension, under the same keys' do
+        expect(serializer['tracker_id']).to eq('dimension-device')
+        expect(serializer['topic']).to eq('owntracks/dim')
+        expect(serializer['battery_status']).to eq('unplugged')
+      end
+
+      it 'keeps the payload key order unchanged' do
+        expect(serializer.keys).to eq(described_class.new(create(:point)).call.keys)
+      end
+    end
     let(:expected_json) do
       {
         'battery_status' => point.battery_status,
@@ -39,9 +59,6 @@ RSpec.describe PointSerializer do
         'raw_data_archived' => point.raw_data_archived,
         'raw_data_archive_id' => point.raw_data_archive_id,
         'motion_data' => point.motion_data,
-        'motion_id' => point.motion_id,
-        'source_id' => point.source_id,
-        'visits_scanned_at' => point.visits_scanned_at,
         'anomaly' => point.anomaly
       }
     end

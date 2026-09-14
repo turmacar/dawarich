@@ -21,11 +21,10 @@ RSpec.describe DataMigrations::BackfillPointDimensionsJob, type: :job do
       expect { described_class.perform_now }.to change(PointSource, :count).by(2)
     end
 
-    it 'stamps every point with its source and motion dimension' do
+    it 'stamps every point with its source dimension' do
       described_class.perform_now
 
       expect(Point.where(source_id: nil).count).to eq(0)
-      expect(Point.where(motion_id: nil).count).to eq(0)
     end
 
     it 'points with identical combos share one source row' do
@@ -35,19 +34,12 @@ RSpec.describe DataMigrations::BackfillPointDimensionsJob, type: :job do
       expect(watch_point.reload.source_id).not_to eq(phone_points.first.reload.source_id)
     end
 
-    it 'deduplicates motion payloads through the digest' do
-      described_class.perform_now
-
-      expect(PointMotion.count).to eq(2)
-      expect(phone_points.map { |p| p.reload.motion_id }.uniq.size).to eq(1)
-    end
-
     it 'is idempotent on re-run' do
       described_class.perform_now
-      stamped = Point.order(:id).pluck(:source_id, :motion_id)
+      stamped = Point.order(:id).pluck(:source_id)
 
       expect { described_class.perform_now }.not_to change(PointSource, :count)
-      expect(Point.order(:id).pluck(:source_id, :motion_id)).to eq(stamped)
+      expect(Point.order(:id).pluck(:source_id)).to eq(stamped)
     end
 
     it 'walks the id range in batches by re-enqueueing itself' do
@@ -84,6 +76,50 @@ RSpec.describe DataMigrations::BackfillPointDimensionsJob, type: :job do
 
       expect(Point.where(source_id: nil)).to be_empty
       expect(tail.reload.source_id).to be_present
+    end
+
+    # A statement_timeout usually means the batch is too big, not unlucky;
+    # retrying it identically ten times churns rolled-back work for an hour.
+    it 'halves the batch and retries the same cursor when a batch is aborted' do
+      connection = ActiveRecord::Base.connection
+      allow(connection).to receive(:execute).and_call_original
+      allow(connection).to receive(:execute)
+        .with(/INSERT INTO point_sources/).and_raise(ActiveRecord::QueryCanceled)
+      start_id = Point.minimum(:id)
+
+      expect { described_class.perform_now(start_id) }.to \
+        have_enqueued_job(described_class).with(start_id, described_class::BATCH_SIZE / 2)
+    end
+
+    it 'hands the smallest batch to the retry machinery instead of shrinking forever' do
+      connection = ActiveRecord::Base.connection
+      allow(connection).to receive(:execute).and_call_original
+      allow(connection).to receive(:execute)
+        .with(/INSERT INTO point_sources/).and_raise(ActiveRecord::QueryCanceled)
+      start_id = Point.minimum(:id)
+
+      # retry_on re-enqueues with the arguments unchanged — same cursor, same
+      # floor size — rather than the rescue enqueueing a smaller batch.
+      expect { described_class.perform_now(start_id, described_class::MIN_BATCH_SIZE) }.to \
+        have_enqueued_job(described_class).with(start_id, described_class::MIN_BATCH_SIZE)
+    end
+
+    it 'tells the operator to resume a halved batch at its halved size' do
+      allow(Rails.logger).to receive(:error)
+      job = described_class.new(42, described_class::MIN_BATCH_SIZE)
+
+      described_class.log_exhaustion(job, ActiveRecord::QueryCanceled.new('canceled'))
+
+      expect(Rails.logger).to have_received(:error)
+        .with(/perform_later\(42, #{described_class::MIN_BATCH_SIZE}\)/)
+    end
+
+    it 'reports batch position so operators can tell running from stalled' do
+      allow(Rails.logger).to receive(:info).and_call_original
+
+      described_class.perform_now
+
+      expect(Rails.logger).to have_received(:info).with(/of id range/)
     end
 
     it 'keeps walking when points are appended while the chain runs' do

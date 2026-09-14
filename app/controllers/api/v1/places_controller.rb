@@ -107,6 +107,7 @@ module Api
         end
 
         results = Places::NearbySearch.new(
+          user: current_api_user,
           latitude: params[:latitude].to_f,
           longitude: params[:longitude].to_f,
           radius: params[:radius]&.to_f || 0.5,
@@ -134,9 +135,11 @@ module Api
 
         external_places =
           if query.length >= 2
-            Places::Search.new(query: query, latitude: lat, longitude: lon, radius: radius, limit: limit).call
+            Places::Search.new(user: current_api_user, query: query, latitude: lat, longitude: lon,
+                               radius: radius, limit: limit).call
           else
-            Places::NearbySearch.new(latitude: lat, longitude: lon, radius: radius, limit: limit, cache: true).call
+            Places::NearbySearch.new(user: current_api_user, latitude: lat, longitude: lon,
+                                     radius: radius, limit: limit, cache: true).call
           end
 
         user_places = Places::UserSearch.new(

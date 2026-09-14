@@ -50,6 +50,7 @@ RSpec.describe Users::SafeSettings do
             places_tag_filters: nil,
             maps_maplibre_style: 'light',
             maps_maplibre_tiles_url: nil,
+            maps_maplibre_tiles_fallback: false,
             maps_maplibre_custom_theme: {
               'base' => 'noir',
               'tokens' => {
@@ -63,7 +64,6 @@ RSpec.describe Users::SafeSettings do
             globe_projection: true,
             enabled_transportation_modes: Track::TRANSPORTATION_MODES.keys.map(&:to_s),
             min_minutes_spent_in_city: 60,
-            max_gap_minutes_in_city: 120,
             gps_filtering_enabled: true,
             timezone: 'UTC',
             visit_radius_meters: 100,
@@ -127,11 +127,21 @@ RSpec.describe Users::SafeSettings do
             'airtrail_api_key' => nil,
             'airtrail_skip_ssl_verification' => false,
             'airtrail_last_synced_at' => nil,
+            'teslamate_url' => nil,
+            'teslamate_username' => nil,
+            'teslamate_password' => nil,
+            'teslamate_api_token' => nil,
+            'teslamate_skip_ssl_verification' => false,
+            'teslamate_last_synced_at' => nil,
+            'teslamate_last_synced_url' => nil,
+            'teslamate_processing_pending' => false,
+            'teslamate_processing_pending_url' => nil,
             'maps' => { 'distance_unit' => 'km', 'name' => 'custom', 'url' => 'https://custom.example.com' },
             'visits_suggestions_enabled' => false,
             'enabled_map_layers' => %w[Points Routes Areas Photos],
             'maps_maplibre_style' => 'light',
             'maps_maplibre_tiles_url' => nil,
+            'maps_maplibre_tiles_fallback' => false,
             'maps_maplibre_custom_theme' => {
               'base' => 'noir',
               'tokens' => {
@@ -148,7 +158,6 @@ RSpec.describe Users::SafeSettings do
             'supporter_github_username' => nil,
             'show_supporter_badge' => true,
             'min_minutes_spent_in_city' => 60,
-            'max_gap_minutes_in_city' => 120,
             'gps_filtering_enabled' => true,
             'timezone' => 'UTC',
             'visit_radius_meters' => 100,
@@ -191,6 +200,7 @@ RSpec.describe Users::SafeSettings do
             places_tag_filters: nil,
             maps_maplibre_style: 'light',
             maps_maplibre_tiles_url: nil,
+            maps_maplibre_tiles_fallback: false,
             maps_maplibre_custom_theme: {
               'base' => 'noir',
               'tokens' => {
@@ -204,7 +214,6 @@ RSpec.describe Users::SafeSettings do
             globe_projection: true,
             enabled_transportation_modes: Track::TRANSPORTATION_MODES.keys.map(&:to_s),
             min_minutes_spent_in_city: 60,
-            max_gap_minutes_in_city: 120,
             gps_filtering_enabled: true,
             timezone: 'UTC',
             visit_radius_meters: 100,
@@ -850,6 +859,20 @@ RSpec.describe Users::SafeSettings do
 
     it 'is included in config' do
       expect(described_class.new.config[:maps_maplibre_custom_theme]['base']).to eq('noir')
+    end
+  end
+
+  describe '#maps_maplibre_tiles_fallback?' do
+    it 'defaults to false' do
+      expect(described_class.new.maps_maplibre_tiles_fallback?).to be false
+    end
+
+    it 'casts a stored string to a boolean' do
+      expect(described_class.new({ 'maps_maplibre_tiles_fallback' => 'true' }).maps_maplibre_tiles_fallback?).to be true
+    end
+
+    it 'is exposed in config' do
+      expect(described_class.new.config).to have_key(:maps_maplibre_tiles_fallback)
     end
   end
 

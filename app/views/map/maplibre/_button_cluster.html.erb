@@ -66,6 +66,15 @@
     <%= icon 'image' %>
   </button>
 
+  <button type="button"
+          class="map-button-cluster__btn"
+          data-action="click->map-panel#openVideoStudio"
+          data-testid="map-button-video"
+          aria-label="<%= t('.video_studio') %>"
+          title="<%= t('.video_studio') %>">
+    <%= icon 'video' %>
+  </button>
+
   <div class="map-button-cluster__divider" aria-hidden="true"></div>
 
   <button type="button"
@@ -80,7 +89,7 @@
     <%= icon 'settings' %>
   </button>
 
-  <%# Cloud-only - same gating as the previous in-panel `Links` tab so
+  <%# Cloud-only — same gating as the previous in-panel `Links` tab so
       self-hosted instances aren't pointed at marketing/help URLs. The Links
       tab content is still rendered in the side panel (just without its own
       tab button there); this cluster icon is the only entry point. %>

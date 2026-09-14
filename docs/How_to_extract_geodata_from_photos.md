@@ -1,5 +1,7 @@
 **User Guide: Importing GPS Coordinates from your photos into Dawarich**
 
+> [简体中文](zh-CN/How_to_extract_geodata_from_photos.md)
+
 Introduction:
 This user guide provides step-by-step instructions on how to extract GPS coordinates from photos and import it into the Dawarich service.
 This process is useful for adding points of interest from memorable locations into Dawarich, especially when Google Location History is unavailable or was not initially enabled.
@@ -63,5 +65,5 @@ exiftool -if '$gpsdatetime' -fileOrder gpsdatetime -p ./gpx.fmt -d %Y-%m-%dT%H:%
 Note: Ensure that exiftool is properly installed on your system, and the file 'gpx.fmt' is located in the same directory as the photos.
 
 6. GPX-track based on photo's GPS-coordinates and dates will be placed as `output.gpx` file into the same directory.
-7. Go to Dawarich webpage, select Imports, click "New Import" button, select source - gpx and choose `output.gpx` file.
+7. Go to Dawarich webpage, select Imports, click "New Import" button, select source — gpx and choose `output.gpx` file.
 8. After the import processed all GPX-points will be added to Dawarich map.

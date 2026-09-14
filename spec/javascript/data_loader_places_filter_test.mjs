@@ -16,16 +16,14 @@ const settingsManagerPath = path.join(
 )
 let dataLoaderSource = await readFile(dataLoaderPath, "utf8")
 dataLoaderSource = dataLoaderSource
-  .replace(/import\s*\{[\s\S]*?\}\s*from\s*['"][^'"]+['"]\s*;?/g, "")
-  .replace(/^import .+$/gm, "")
+  .replace(/^import[\s\S]*?from "[^"]+"\n/gm, "")
   .replace("export class DataLoader", "class DataLoader")
   .concat("\nglobalThis.DataLoader = DataLoader\n")
 let settingsManagerSource = await readFile(settingsManagerPath, "utf8")
 settingsManagerSource = settingsManagerSource
-  .replace(/import\s*\{[\s\S]*?\}\s*from\s*['"][^'"]+['"]\s*;?/g, "")
-  .replace(/^import .+$/gm, "")
+  .replace(/^import[\s\S]*?from "[^"]+"\n/gm, "")
+  .replaceAll("export function ", "function ")
   .replaceAll("export const ", "const ")
-  .replace(/^export function /gm, "function ")
   .replace("export class SettingsManager", "class SettingsManager")
   .concat("\nglobalThis.SettingsManager = SettingsManager\n")
 
@@ -53,6 +51,14 @@ const context = {
   applySpeedColors: (value) => value,
 }
 vm.createContext(context)
+const basemapSource = await readFile(
+  path.join(repoRoot, "app/javascript/maps_maplibre/utils/basemap_url.js"),
+  "utf8",
+)
+vm.runInContext(
+  basemapSource.replaceAll("export function ", "function "),
+  context,
+)
 vm.runInContext(settingsManagerSource, context)
 vm.runInContext(dataLoaderSource, context)
 
@@ -74,6 +80,8 @@ const api = {
     return []
   },
 }
+await context.SettingsManager.updateSetting("pointsVisible", false)
+await context.SettingsManager.updateSetting("routesVisible", false)
 settings.pointsVisible = false
 settings.routesVisible = false
 settings.placesEnabled = true

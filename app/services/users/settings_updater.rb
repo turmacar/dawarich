@@ -3,17 +3,19 @@
 module Users
   # Applies user settings updates from the API: plan-gated sanitization,
   # allowlist validation, and reclassification when the transportation mode
-  # allowlist changes (the former threshold settings are gone - the detection
+  # allowlist changes (the former threshold settings are gone — the detection
   # pipeline tunes itself).
   class SettingsUpdater
     Result = Struct.new(:success?, :error, :recalculation_triggered?, keyword_init: true)
 
     MODES_KEY = 'enabled_transportation_modes'
+    CITY_THRESHOLD_KEY = 'min_minutes_spent_in_city'
 
     def initialize(user, settings_params)
       @user = user
       @settings_params = settings_params
       @old_enabled_modes = user.settings[MODES_KEY]&.dup
+      @old_city_threshold = normalized_city_threshold(user.settings[CITY_THRESHOLD_KEY])
     end
 
     def call
@@ -71,7 +73,7 @@ module Users
     end
 
     # The `maps` hash may still carry legacy Map v1 keys (name, url,
-    # preferred_version) on existing accounts - merge instead of replacing
+    # preferred_version) on existing accounts — merge instead of replacing
     # so an API update from the map panel can't clobber other keys.
     def merge_maps_settings(value)
       incoming = value.to_h
@@ -88,11 +90,31 @@ module Users
     end
 
     def trigger_recalculation_if_needed
+      trigger_mode_reclassification
+      trigger_city_stats_recalculation
+    end
+
+    def trigger_mode_reclassification
       return unless modes_param_present?
       return if @old_enabled_modes == @user.settings[MODES_KEY]
 
       TransportationModes::UserReclassifyJob.perform_later(@user.id)
       @recalculation_triggered = true
+    end
+
+    def trigger_city_stats_recalculation
+      return unless city_threshold_param_present?
+      return if @old_city_threshold == normalized_city_threshold(@user.settings[CITY_THRESHOLD_KEY])
+
+      Stats::RecalculationDebouncer.new(@user.id).trigger
+    end
+
+    def city_threshold_param_present?
+      @settings_params.key?(CITY_THRESHOLD_KEY) || @settings_params.key?(CITY_THRESHOLD_KEY.to_sym)
+    end
+
+    def normalized_city_threshold(value)
+      (value || Users::SafeSettings::DEFAULT_VALUES[CITY_THRESHOLD_KEY]).to_i
     end
 
     def status_manager

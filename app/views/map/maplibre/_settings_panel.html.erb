@@ -1,9 +1,9 @@
 <%# Server-render the open + timeline-expanded classes when the URL asks for
-    the timeline panel - avoids the JS-driven `.open` toggle animating the
+    the timeline panel — avoids the JS-driven `.open` toggle animating the
     panel in from off-screen on every Turbo navigation.
 
     `data-turbo-permanent` (with the matching #id) tells Turbo to keep the
-    existing panel DOM across navigations - calendar turbo-frame, filter
+    existing panel DOM across navigations — calendar turbo-frame, filter
     counts, tab state, and Stimulus controller instances are all preserved,
     so clicking a day refetches the map layers without resetting the panel
     (no "Loading calendar…" flash). Turbo only swaps content outside the
@@ -14,7 +14,7 @@
      class="map-control-panel<%= ' open timeline-expanded' if timeline_panel_open %>"
      data-maps--maplibre-target="settingsPanel"
      data-controller="map-panel">
-  <%# The in-panel tab strip is gone - the floating button cluster on the
+  <%# The in-panel tab strip is gone — the floating button cluster on the
       map's left edge (`_button_cluster.html.erb`) doubles as the tab strip
       both when the panel is closed and when it's open (it slides to sit at
       the panel's right edge while open). Single source of truth. %>
@@ -174,7 +174,7 @@
           </div>
 
           <!-- Flights Layer -->
-          <% if current_user.flights_layer_available? %>
+          <% if current_user.safe_settings.airtrail_url.present? %>
             <div class="form-control">
               <label class="label cursor-pointer justify-start gap-3">
                 <input type="checkbox"
@@ -610,6 +610,15 @@
                    class="input input-bordered input-sm w-full"
                    data-action="change->maps--maplibre#updateVectorTilesUrl" />
             <p class="text-xs text-base-content/60 mt-1"><%= t('.serve_the_base_map_from_your_own_source_accepts_protomaps') %></p>
+
+            <label class="label cursor-pointer justify-start gap-2 mt-2 py-0">
+              <input type="checkbox"
+                     name="tilesFallback"
+                     class="checkbox checkbox-sm checkbox-primary"
+                     data-action="change->maps--maplibre#updateTilesFallback" />
+              <span class="label-text text-sm"><%= t('.fill_gaps_with_the_default_basemap') %></span>
+            </label>
+            <p class="text-xs text-base-content/60 mt-1"><%= t('.uncovered_areas_are_drawn_from_dawarich_s_default_tile_server') %></p>
           </div>
             </div>
           </details>
@@ -712,6 +721,7 @@
             </summary>
             <div class="collapse-content space-y-4">
           <!-- Route Generation Settings -->
+          <p class="text-xs text-warning hidden" data-maps--maplibre-target="routeSplittingUnavailableNote"></p>
           <div class="form-control w-full">
             <label class="label">
               <span class="label-text font-medium"><%= t('.meters_between_routes') %></span>
@@ -917,26 +927,6 @@
             <p class="text-xs text-base-content/60 mt-1"><%= t('.how_long_you_must_stay_for_a_city_to_count') %></p>
           </div>
 
-          <div class="form-control w-full">
-            <label class="label">
-              <span class="label-text font-medium"><%= t('.max_gap_between_points') %></span>
-              <span class="label-text-alt" data-maps--maplibre-target="maxGapMinutesValue"><%= t('.min_8') %></span>
-            </label>
-            <input type="range"
-                   name="maxGapMinutesInCity"
-                   min="30"
-                   max="360"
-                   step="15"
-                   value="120"
-                   class="range range-sm"
-                   data-action="input->maps--maplibre#updateMaxGapMinutesDisplay" />
-            <div class="w-full flex justify-between text-xs px-2 mt-1">
-              <span><%= t('.min_9') %></span>
-              <span><%= t('.min_10') %></span>
-              <span><%= t('.min_11') %></span>
-            </div>
-            <p class="text-xs text-base-content/60 mt-1"><%= t('.max_gap_between_points_before_assuming_you_left_the_city') %></p>
-          </div>
 
             </div>
           </details>
@@ -1096,7 +1086,7 @@
               <span><%= t('.more') %></span>
             </div>
 
-            <%# Search - filters the currently loaded day's visit rows by
+            <%# Search — filters the currently loaded day's visit rows by
                 name / place / tag (substring match on data-search-tokens).
                 DaisyUI `input` styles target the <input> element directly;
                 the magnifier overlays via absolute positioning so we get a
@@ -1113,7 +1103,7 @@
                      data-action="input->timeline-feed#search" />
             </div>
 
-            <%# Tag chips - click to toggle as an active filter. Multi-select ANDs
+            <%# Tag chips — click to toggle as an active filter. Multi-select ANDs
                 the chips; clicking an active chip clears it. Pure Stimulus; the
                 visibility is unified with status filters and search in
                 timeline_feed_controller#applyVisibility. %>

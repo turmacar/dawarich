@@ -92,7 +92,7 @@ RSpec.describe Visits::FindInTime do
     end
 
     context 'with visits at the boundaries of the time range' do
-      let(:boundary_place) { create(:place, user: user) }
+      let(:boundary_place) { create(:place) }
 
       let!(:visit_at_start) do
         create(
@@ -136,8 +136,8 @@ RSpec.describe Visits::FindInTime do
         }
       end
 
-      it 'raises Visits::InvalidTimeRange' do
-        expect { described_class.new(user, params).call }.to raise_error(Visits::InvalidTimeRange)
+      it 'raises an ArgumentError' do
+        expect { described_class.new(user, params).call }.to raise_error(ArgumentError)
       end
     end
   end

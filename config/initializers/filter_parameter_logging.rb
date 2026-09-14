@@ -10,7 +10,9 @@ Rails.application.config.filter_parameters += %i[
   email name first_name last_name phone
 ]
 
-SENSITIVE_SETTINGS_KEYS = %w[immich_api_key photoprism_api_key].freeze
+SENSITIVE_SETTINGS_KEYS = %w[
+  immich_api_key photoprism_api_key teslamate_password teslamate_api_token
+].freeze
 
 Rails.application.config.filter_parameters += [
   lambda do |key, value|
@@ -22,6 +24,6 @@ Rails.application.config.filter_parameters += [
     end
     value.replace(parsed.to_json)
   rescue JSON::ParserError, TypeError
-    # Not valid JSON - leave the value untouched
+    # Not valid JSON — leave the value untouched
   end
 ]

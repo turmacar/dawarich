@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { formatNumber, translate } from "i18n"
 import { Toast } from "maps_maplibre/components/toast"
 import { ReplayPanel } from "maps_maplibre/managers/replay_panel"
+import { TimelineSegmentHover } from "maps_maplibre/managers/timeline_segment_hover"
 import { ApiClient } from "maps_maplibre/services/api_client"
 import { CleanupHelper } from "maps_maplibre/utils/cleanup_helper"
 import { featureToPhoto } from "maps_maplibre/utils/feature_to_photo"
@@ -55,7 +56,6 @@ export default class extends Controller {
     "metersBetweenValue",
     "minutesBetweenValue",
     "minMinutesInCityValue",
-    "maxGapMinutesValue",
     "gpsFilteringToggle",
     // Search
     "searchInput",
@@ -66,6 +66,7 @@ export default class extends Controller {
     "pointsTiledToggle",
     "pointsTiledInactiveNote",
     "pointsEditUnavailableNote",
+    "routeSplittingUnavailableNote",
     "routesToggle",
     "heatmapToggle",
     "hexagonsToggle",
@@ -168,7 +169,7 @@ export default class extends Controller {
     this.settings.timezone = this.timezoneValue
 
     // When the page loads with the Timeline panel open (deep link or
-    // SPA-style nav from elsewhere), the visits layer is always relevant -
+    // SPA-style nav from elsewhere), the visits layer is always relevant —
     // it's the on-map counterpart of the rail. Force it on for this session
     // even if the user's saved layer toggle is off, without persisting back
     // to the server.
@@ -264,7 +265,11 @@ export default class extends Controller {
       this.boundHandleEntryDeselect,
     )
 
-    // SPA date-range change from the Timeline calendar - refetch all enabled
+    this.timelineSegmentHover = new TimelineSegmentHover(this, () =>
+      SettingsManager.getSetting("tracksEnabled"),
+    )
+
+    // SPA date-range change from the Timeline calendar — refetch all enabled
     // layers for the new start/end without tearing down the map instance.
     this.boundHandleDateNavigated = this.handleTimelineDateNavigated.bind(this)
     this.cleanup.addEventListener(
@@ -320,7 +325,7 @@ export default class extends Controller {
       this.boundHandleAreaCreated,
     )
 
-    // Re-use the same refresh path for area edits - both create and update
+    // Re-use the same refresh path for area edits — both create and update
     // need the areas layer rebuilt from the API.
     this.cleanup.addEventListener(
       document,
@@ -374,6 +379,7 @@ export default class extends Controller {
     this.settingsController?.stopRecalculationPolling()
     this.searchManager?.destroy()
     this.visitsManager?.destroy()
+    this.timelineSegmentHover?.destroy()
     this.eventHandlers?.destroy()
     cancelAllPreviews()
     if (this._persistView) this.map?.off("moveend", this._persistView)
@@ -414,6 +420,7 @@ export default class extends Controller {
         disabledPoiGroups: this.settings.disabledPoiGroups || [],
         customTheme: this.settings.customTheme,
         vectorTilesUrl: this.settings.vectorTilesUrl,
+        tilesFallback: this.settings.tilesFallback === true,
         ...(lastView ? { center: lastView.center, zoom: lastView.zoom } : {}),
       },
       this.apiKeyValue,
@@ -485,14 +492,22 @@ export default class extends Controller {
   }
 
   /**
-   * Timeline panel requested a new day (SPA navigation - no page reload).
+   * Timeline panel requested a new day (SPA navigation — no page reload).
    * Mirrors `monthChanged` exactly, including the date format: the Points/Tracks
    * API expects `DateManager.formatDateForAPI`'s local `YYYY-MM-DDTHH:MM+OFFSET`
    * shape. Using `Date#toISOString()` (UTC `Z` suffix) here was causing Tracks
    * to come back empty because the server parsed the dates differently.
    */
   handleTimelineDateNavigated(event) {
-    const { startAt, endAt } = event.detail || {}
+    const navigation = this.navigateTimelineDateRange(event.detail || {})
+    if (typeof event.detail?.waitUntil === "function") {
+      event.detail.waitUntil(navigation)
+    } else {
+      navigation.catch((error) => console.error(error))
+    }
+  }
+
+  async navigateTimelineDateRange({ startAt, endAt }) {
     if (!startAt || !endAt) return
 
     const toApiDate = (local) => {
@@ -508,11 +523,10 @@ export default class extends Controller {
     this.endDateValue = end
 
     this._clearDayHighlight?.()
-    this.loadMapData().then(() => {
-      if (this.settings?.anomaliesEnabled) {
-        this.routesManager.refreshAnomalies({ enabled: true })
-      }
-    })
+    await this.loadMapData()
+    if (this.settings?.anomaliesEnabled) {
+      this.routesManager.refreshAnomalies({ enabled: true })
+    }
     this.refreshTimelineFeedIfActive?.()
     this.debouncedLoadFamilyHistory?.()
   }
@@ -655,13 +669,13 @@ export default class extends Controller {
         this.containerTarget.classList.toggle("panel-open", isOpening)
         // The Timeline tab puts the map container in `panel-timeline-expanded`
         // (720px-wide panel + matching margin-left). When the user closes the
-        // panel we have to clear that too - otherwise the panel slides
+        // panel we have to clear that too — otherwise the panel slides
         // off-screen but the map keeps its 720px left margin and the user
         // sees an empty dark column where the panel used to be.
         if (!isOpening) {
           this.containerTarget.classList.remove("panel-timeline-expanded")
           this.settingsPanelTarget.classList.remove("timeline-expanded")
-          // Cluster doubles as the panel's tab strip - clear its active
+          // Cluster doubles as the panel's tab strip — clear its active
           // state when the panel is dismissed (e.g. via the header X) so
           // users don't see a button still highlighted with no panel open.
           document.dispatchEvent(new CustomEvent("map-panel:closed"))
@@ -680,18 +694,18 @@ export default class extends Controller {
     if (tab === "timeline-feed") {
       this.loadTimelineFeed()
       // The timeline rail is the on-panel counterpart of the visits map
-      // layer - keep them in sync. If the visits layer is currently off,
+      // layer — keep them in sync. If the visits layer is currently off,
       // turn it on (session-only, no persistence) so the dots appear next
       // to the day's entries.
       this._ensureVisitsLayerEnabled()
     } else if (this._highlightedDay) {
-      // Leaving timeline-feed tab - restore full opacity
+      // Leaving timeline-feed tab — restore full opacity
       this._clearDayHighlight()
     }
   }
 
   // Force-enables the visits layer for this session without persisting the
-  // change to the server - the user's saved Layers preference shouldn't be
+  // change to the server — the user's saved Layers preference shouldn't be
   // flipped just because they opened Timeline once.
   //
   // We DO update the in-memory `settings.visitsEnabled` so subsequent
@@ -702,7 +716,7 @@ export default class extends Controller {
   async _ensureVisitsLayerEnabled() {
     if (!this.hasVisitsToggleTarget) return
 
-    // In-memory only - don't go through SettingsManager.updateSetting,
+    // In-memory only — don't go through SettingsManager.updateSetting,
     // which would persist back to the server.
     if (this.settings) this.settings.visitsEnabled = true
     if (this.dataLoader?.settings) this.dataLoader.settings.visitsEnabled = true
@@ -794,7 +808,7 @@ export default class extends Controller {
   }
 
   /**
-   * Handle day-collapsed events - restore full opacity on all layers.
+   * Handle day-collapsed events — restore full opacity on all layers.
    */
   handleDayCollapsed() {
     this._clearDayHighlight()
@@ -924,7 +938,7 @@ export default class extends Controller {
     //   - Journey hover → no visit is the focus, so all visits fade nearly out;
     //     the eye lands on the highlighted track instead.
     if (entryType === "visit") {
-      // Match by visit id rather than by ISO `started_at` range - the
+      // Match by visit id rather than by ISO `started_at` range — the
       // API returns timestamps with milliseconds (`...:00.000Z`) while
       // DayAssembler renders the row attribute with second precision
       // (`...:00Z`). Lexicographic comparison fails the equality check
@@ -989,7 +1003,7 @@ export default class extends Controller {
   }
 
   /**
-   * Handle entry-unhover events - restore to day highlight or default opacity.
+   * Handle entry-unhover events — restore to day highlight or default opacity.
    */
   handleEntryUnhover() {
     if (!this.map) return
@@ -1250,6 +1264,9 @@ export default class extends Controller {
   updateVectorTilesUrl(event) {
     return this.settingsController.updateVectorTilesUrl(event)
   }
+  updateTilesFallback(event) {
+    return this.settingsController.updateTilesFallback(event)
+  }
   updateRouteColor(event) {
     return this.settingsController.updateRouteColor(event)
   }
@@ -1279,9 +1296,6 @@ export default class extends Controller {
   }
   updateMinMinutesInCityDisplay(event) {
     return this.settingsController.updateMinMinutesInCityDisplay(event)
-  }
-  updateMaxGapMinutesDisplay(event) {
-    return this.settingsController.updateMaxGapMinutesDisplay(event)
   }
   reapplyAnomalyFilter() {
     return this.settingsController.reapplyAnomalyFilter()
@@ -1925,7 +1939,7 @@ export default class extends Controller {
     const canReconcile = Boolean(data?.features && removedFeature)
 
     // The cached full point set feeds route rebuilds and the scratch layer
-    // in simplified rendering mode - keep it in sync with the layer data.
+    // in simplified rendering mode — keep it in sync with the layer data.
     const cachedPoints = this.mapDataManager?.lastLoadedData?.points
     const removedCacheIndex =
       cachedPoints?.findIndex((p) => Number(p.id) === numericId) ?? -1

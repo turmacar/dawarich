@@ -46,13 +46,7 @@ status: :see_other
   end
 
   def update_all
-    current_user.years_tracked.each do |year|
-      year[:months].each do |month|
-        Stats::CalculatingJob.perform_later(
-          current_user.id, year[:year], Date::ABBR_MONTHNAMES.index(month)
-        )
-      end
-    end
+    Stats::EnqueueFullRecalculation.new(current_user).call
 
     redirect_to stats_path, notice: I18n.t('controllers.stats.stats_are_being_updated'), status: :see_other
   end
@@ -72,6 +66,7 @@ status: :see_other
 
     @points_total = points_stats[:total]
     @points_reverse_geocoded = points_stats[:geocoded]
+    @points_reverse_geocoded_percentage = points_stats[:geocoded_percentage]
     @points_reverse_geocoded_without_data = points_stats[:without_data]
   end
 
@@ -102,7 +97,7 @@ status: :see_other
 
   def build_stats
     columns = %i[id year month distance updated_at user_id]
-    columns << :toponyms if DawarichSettings.reverse_geocoding_enabled?
+    columns << :toponyms if Geocoding::Config.for(current_user).enabled?
 
     current_user.scoped_stats
                 .select(columns)

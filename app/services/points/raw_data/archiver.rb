@@ -10,28 +10,24 @@ module Points
       SAFE_ARCHIVE_LAG = 2.months
       CHUNK_SIZE = 50_000
       FLAG_BATCH_SIZE = 5_000
-      FLAG_MAX_RETRIES = 3
-      FLAG_CONTENTION_ERRORS = [
-        ActiveRecord::Deadlocked,
-        ActiveRecord::LockWaitTimeout,
-        ActiveRecord::QueryCanceled
-      ].freeze
 
       def initialize
         @stats = { processed: 0, archived: 0, failed: 0 }
       end
 
-      # Called by ArchiveUserJob - archives all eligible points for a user.
+      # Called by ArchiveUserJob — archives all eligible points for a user.
       # Walks forward by PK, never scans the whole table.
       # Each fetched batch is partitioned by the points' own UTC month so that
       # archive year/month labels stay truthful for month-scoped restore/verify/clear.
       def archive_user(user_id)
         cutoff = SAFE_ARCHIVE_LAG.ago.to_i
+        cursor = 0
 
         loop do
           rows = Point
                  .where(user_id: user_id, raw_data_archived: false)
                  .where('timestamp < ?', cutoff)
+                 .where('id > ?', cursor)
                  .where.not(raw_data: [nil, {}])
                  .order(:id)
                  .limit(CHUNK_SIZE)
@@ -39,7 +35,20 @@ module Points
 
           break if rows.empty?
 
+          linked_before = @stats[:archived]
+
           break unless archive_month_groups(user_id, rows)
+
+          next unless @stats[:archived] == linked_before
+
+          # Nothing in this batch could be linked, so re-reading it would spin
+          # forever. Step past it and keep draining the rest of the backlog.
+          cursor = rows.last.first
+
+          Rails.logger.warn(
+            "Skipping #{rows.size} unlinkable points for user #{user_id} (up to id #{cursor})"
+          )
+          Yabeda.dawarich_archive.operations_total.increment({ operation: 'archive', status: 'skipped' })
         end
 
         @stats
@@ -55,12 +64,15 @@ module Points
 
           # Process in chunks for large months
           point_ids.each_slice(CHUNK_SIZE) do |chunk_ids|
-            archive_chunk(user_id, chunk_ids, year, month)
+            @stats[:processed] += 1
+            @stats[:archived] += archive_chunk(user_id, chunk_ids, year, month)
           end
           true
         end
 
-        raise "Could not acquire lock for #{lock_key} - archival already in progress" unless lock_acquired
+        raise "Could not acquire lock for #{lock_key} — archival already in progress" unless lock_acquired
+
+        @stats
       end
 
       private
@@ -118,6 +130,19 @@ module Points
         # Only flag points after verification succeeds, and only while their
         # raw_data still matches the snapshot stored in this archive.
         archived_count = flag_points_batched(point_ids, archive.id, compressed[:raw_data_checksums])
+
+        if archived_count.zero?
+          Rails.logger.warn("Discarding archive #{archive.id}: no points still matched the snapshot")
+          cleanup_failed_archive!(archive)
+
+          # cleanup_failed_archive! swallows its own errors, so confirm the
+          # discard happened rather than leaking an archive nothing links to.
+          if Points::RawDataArchive.exists?(archive.id)
+            raise StandardError, "Archive #{archive.id} linked no points and could not be discarded"
+          end
+
+          return 0
+        end
 
         report_metrics(archive, archived_count, compressed)
 
@@ -222,7 +247,9 @@ module Points
         total_flagged = 0
 
         point_ids.each_slice(FLAG_BATCH_SIZE) do |batch|
-          with_flag_contention_retry do
+          # Counted from the retry's return value: a batch that rolls back and
+          # replays must not add its flagged rows twice.
+          total_flagged += Point.with_write_contention_retry do
             Point.transaction do
               unchanged_ids = Point.raw_data_lock_order
                                    .where(id: batch, raw_data_archived: false, raw_data_archive_id: nil)
@@ -233,29 +260,15 @@ module Points
                 id if checksum == raw_data_checksums[id]
               end
 
-              next if unchanged_ids.empty?
+              next 0 if unchanged_ids.empty?
 
-              total_flagged += Point.where(id: unchanged_ids, raw_data_archived: false, raw_data_archive_id: nil)
-                                    .update_all(raw_data_archived: true, raw_data_archive_id: archive_id)
+              Point.where(id: unchanged_ids, raw_data_archived: false, raw_data_archive_id: nil)
+                   .update_all(raw_data_archived: true, raw_data_archive_id: archive_id)
             end
           end
         end
 
         total_flagged
-      end
-
-      def with_flag_contention_retry
-        retries = 0
-
-        begin
-          yield
-        rescue *FLAG_CONTENTION_ERRORS => e
-          retries += 1
-          raise e if retries > FLAG_MAX_RETRIES
-
-          sleep(0.05 * retries)
-          retry
-        end
       end
 
       def create_archive_record(user_id, year, month, point_ids, encrypted, compressed)

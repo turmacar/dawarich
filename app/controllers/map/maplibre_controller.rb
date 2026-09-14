@@ -4,7 +4,7 @@ module Map
   class MaplibreController < ApplicationController
     include SafeTimestampParser
     include ImportTimeWindow
-    include PosterStudioContext
+    include VideoStudioContext
 
     before_action :authenticate_user!
     layout 'map'
@@ -19,7 +19,7 @@ module Map
 
       # Theme tokens power both the poster studio and the Appearance section's
       # custom map colors.
-      load_poster_studio_context
+      load_video_studio_context
     end
 
     private
@@ -41,8 +41,8 @@ module Map
     end
 
     # When the URL carries only `?date=` (deep-links, the unified-timeline
-    # redirect, the Timeline panel's own day navigation) - but no explicit
-    # start_at/end_at - derive the map's data window from that day so the
+    # redirect, the Timeline panel's own day navigation) — but no explicit
+    # start_at/end_at — derive the map's data window from that day so the
     # map, the top date-range form, and the Timeline panel all agree.
     # Without this the map silently stays on "today" while the panel shows
     # the requested day (the C1 desync).

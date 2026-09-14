@@ -26,6 +26,23 @@ RSpec.describe 'Map v2 (maplibre)', type: :request do
       expect(response.body).to include('data-poster-studio-editor-target="dateStart"')
     end
 
+    it 'renders date and time controls for the video studio' do
+      get map_v2_path
+
+      expect(response.body).to include('data-video-studio-target="dateStart"')
+      expect(response.body).to include('data-video-studio-target="dateEnd"')
+      expect(response.body).to include('video-studio#applyDateTimeRange')
+    end
+
+    it 'exposes the user timezone as an IANA identifier' do
+      user.update!(settings: user.settings.merge('timezone' => 'Eastern Time (US & Canada)'))
+
+      get map_v2_path
+
+      expect(response.body).to include('data-maps--maplibre-timezone-value="America/New_York"')
+      expect(response.body).to include('data-map-controls-timezone-value="America/New_York"')
+    end
+
     it 'defaults the track opacity slider to 100%' do
       get map_v2_path
 
@@ -121,31 +138,6 @@ RSpec.describe 'Map v2 (maplibre)', type: :request do
       expect(response.body).to include(share_links_hub_path)
       expect(response.body).to include('timeline-share-button')
       expect(response.body).to include('share-link-modal')
-    end
-  end
-
-  describe 'Flights layer toggle' do
-    it 'hides the Flights toggle without AirTrail URL or flights' do
-      get map_v2_path
-
-      expect(response.body).not_to include('data-maps--maplibre-target="flightsToggle"')
-    end
-
-    it 'shows the Flights toggle when the user has mappable flights' do
-      create(:flight, user: user)
-
-      get map_v2_path
-
-      expect(response.body).to include('data-maps--maplibre-target="flightsToggle"')
-      expect(response.body).to include('Flights')
-    end
-
-    it 'shows the Flights toggle when AirTrail URL is configured' do
-      user.update!(settings: user.settings.merge('airtrail_url' => 'https://airtrail.example'))
-
-      get map_v2_path
-
-      expect(response.body).to include('data-maps--maplibre-target="flightsToggle"')
     end
   end
 end

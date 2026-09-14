@@ -2,7 +2,7 @@
 
 module Visits
   module Detection
-    # Labels a detected stay - attribution, not detection. Evidence order:
+    # Labels a detected stay — attribution, not detection. Evidence order:
     # containing user area > nearby known place (manual-first, history-boosted)
     # > POI voted from the stay's own reverse-geocoded points > bare address.
     # Below the POI gate no Place row is minted and no business name is
@@ -14,7 +14,7 @@ module Visits
         @policy = policy
       end
 
-      # OSM keys that describe ways and land, not venues - a stay may be ON
+      # OSM keys that describe ways and land, not venues — a stay may be ON
       # them but never AT them.
       STREETISH_OSM_KEYS = %w[highway place boundary landuse natural waterway railway].freeze
 
@@ -82,25 +82,20 @@ module Visits
       end
 
       def reverse_lookup(stay)
-        return nil unless DawarichSettings.reverse_geocoding_enabled?
+        return nil unless Geocoding::Config.for(user).enabled?
 
-        result = Geocoder.search([stay[:center_lat], stay[:center_lon]],
-                                 limit: 1, distance_sort: true, units: :km).first
-        data = result&.data
-        return nil if data.blank?
+        result = Geocoding::Search.call(user: user, query: [stay[:center_lat], stay[:center_lon]],
+                                        limit: 1, distance_sort: true, units: :km).first
+        return nil if result.blank?
 
-        data = data.deep_stringify_keys if data.is_a?(Hash)
-        {
-          properties: data['properties'] || data.dig('features', 0, 'properties'),
-          coords: data.dig('geometry', 'coordinates') || data.dig('features', 0, 'geometry', 'coordinates')
-        }
+        Geocoding::ResultNormalizer.call(result)
       rescue StandardError => e
         Rails.logger.warn("[Visits::Detection::PlaceAttributor] reverse lookup failed: #{e.class}: #{e.message}")
         nil
       end
 
       # A reverse-geocoded feature counts as a venue only when it is an actual
-      # named non-street thing that verifiably sits inside the stay - the
+      # named non-street thing that verifiably sits inside the stay — the
       # nearest-POI guess that named road clusters after restaurants does not
       # clear this bar.
       def venue_name(stay, lookup)

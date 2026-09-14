@@ -4,6 +4,10 @@ import { translate } from "i18n"
  * Loads and configures local map styles with dynamic tile source
  */
 
+import {
+  composeRasterFallback,
+  composeVectorFallback,
+} from "maps_maplibre/utils/basemap_fallback"
 import { classifyBasemapUrl } from "maps_maplibre/utils/basemap_url"
 import { resolveTheme } from "poster_studio/data/theme_loader"
 import { buildBasemapStyle } from "poster_studio/render/style_builder"
@@ -82,7 +86,7 @@ async function buildRasterStyle(url) {
 
 /**
  * Map from category keys to the style layer IDs they control.
- * Shared with map_v2_preview_controller.js - keep in sync.
+ * Shared with map_v2_preview_controller.js — keep in sync.
  */
 export const TILE_LAYER_CATEGORIES = {
   roads: [
@@ -158,7 +162,7 @@ export const TILE_LAYER_CATEGORIES = {
 }
 
 /**
- * POI kind groups - controls which POI kinds appear on the map.
+ * POI kind groups — controls which POI kinds appear on the map.
  * Keys are group identifiers stored in user settings.
  * Values contain the label, description, and array of Protomaps `kind` strings.
  */
@@ -367,25 +371,42 @@ export async function getMapStyle(styleName = "light", options = {}) {
     // setStyle/new Map, which fetch it; app layers are re-added on style.load.
     if (basemapType === "style") return customUrl
 
-    // Raster XYZ tiles need their own source and layer - the vendored vector
-    // layers cannot draw against a raster source.
-    if (basemapType === "raster") return await buildRasterStyle(customUrl)
+    // With the fallback on, the default basemap stays as the lower stack and
+    // the user's tiles are drawn over it, so a tileset covering one country
+    // no longer leaves the rest of the world blank.
+    const fallback = Boolean(options.tilesFallback) && basemapType !== null
 
-    const tilesUrl = customUrl || TILE_SOURCE_URL
+    // Raster XYZ tiles need their own source and layer — the vendored vector
+    // layers cannot draw against a raster source.
+    if (basemapType === "raster" && !fallback) {
+      return await buildRasterStyle(customUrl)
+    }
+
+    const tilesUrl = fallback ? TILE_SOURCE_URL : customUrl || TILE_SOURCE_URL
+
+    const composeFallback = (style) => {
+      if (!fallback) return style
+
+      return basemapType === "raster"
+        ? composeRasterFallback(style, customUrl)
+        : composeVectorFallback(style, customUrl)
+    }
 
     // Custom themes are built client-side from the user's stored color
-    // tokens (poster-minimal basemap) - no vendored JSON to fetch. Base-map
+    // tokens (poster-minimal basemap) — no vendored JSON to fetch. Base-map
     // categories map onto the minimal layer set; label/POI options have no
     // counterpart there and are ignored.
     if (styleName === "custom") {
       const tokens = options.customTheme?.tokens
       if (!tokens) throw new Error("Custom map style has no theme tokens")
-      return buildBasemapStyle({
-        theme: resolveTheme(tokens),
-        tileUrl: tilesUrl,
-        extras: true,
-        hiddenCategories: options.hiddenTileCategories || [],
-      })
+      return composeFallback(
+        buildBasemapStyle({
+          theme: resolveTheme(tokens),
+          tileUrl: tilesUrl,
+          extras: true,
+          hiddenCategories: options.hiddenTileCategories || [],
+        }),
+      )
     }
 
     // Load the style file
@@ -418,14 +439,14 @@ export async function getMapStyle(styleName = "light", options = {}) {
       }
     }
 
-    // Apply POI group filter - rewrite the pois layer to show only enabled groups
+    // Apply POI group filter — rewrite the pois layer to show only enabled groups
     const disabledPoi = options.disabledPoiGroups
     if (disabledPoi?.length > 0) {
       const kinds = enabledPoiKinds(disabledPoi)
       applyPoiFilter(clonedStyle, kinds)
     }
 
-    return clonedStyle
+    return composeFallback(clonedStyle)
   } catch (error) {
     console.error(`Error loading style '${styleName}':`, error)
     // Fall back to light style if the requested style fails

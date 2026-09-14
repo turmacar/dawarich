@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user_safe_settings, :poster_ordering_enabled?, :family_feature_available?,
                 :current_user_features, :family_home_path, :locale_native_name, :locale_flag,
-                :suggested_locale, :locale_path, :morph_page_refreshes?
+                :suggested_locale, :locale_path, :morph_page_refreshes?, :reverse_geocoding_enabled_for?
 
   def morph_page_refreshes?
     self.class.page_refresh_morphing
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 
   # Memoized per-request SafeSettings for the current user. Use this instead of
   # `current_user.safe_settings` in partials/helpers that may render many rows
-  # - User#safe_settings allocates a fresh deep_dup'd hash on every call.
+  # — User#safe_settings allocates a fresh deep_dup'd hash on every call.
   def current_user_safe_settings
     @current_user_safe_settings ||= current_user&.safe_settings
   end
@@ -39,15 +39,24 @@ class ApplicationController < ActionController::Base
     current_user_features[:family]
   end
 
+  # Memoized per request: the points list gates a toponym cell per rendered row;
+  # one resolver lookup serves the whole page.
+  def reverse_geocoding_enabled_for?(user)
+    @reverse_geocoding_enabled_for ||= {}
+    return @reverse_geocoding_enabled_for[user&.id] if @reverse_geocoding_enabled_for.key?(user&.id)
+
+    @reverse_geocoding_enabled_for[user&.id] = Geocoding::Config.for(user).enabled?
+  end
+
   # Where "back to the family" should land: the family page while the plan is
-  # active, the lapsed/upgrade panel when it is not - going through the gated
+  # active, the lapsed/upgrade panel when it is not — going through the gated
   # #show would bounce and overwrite the flash.
   def family_home_path
     family_feature_available? ? family_path : new_family_path
   end
 
   # Ordering is on unless this instance turned the flag off, so an install
-  # that never registered the flag - or lost it - still offers prints rather
+  # that never registered the flag — or lost it — still offers prints rather
   # than silently hiding a shipped feature.
   def poster_ordering_enabled?
     return true unless Flipper.exist?(:poster_ordering)
@@ -95,14 +104,13 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    return trial_resume_path if resource.respond_to?(:pending_payment?) && resource.pending_payment?
-
-    # Check for family invitation first
     invitation_token = params[:invitation_token] || session[:invitation_token]
     if invitation_token.present?
       invitation = Family::Invitation.find_by(token: invitation_token)
       return family_invitation_path(invitation.token) if invitation&.can_be_accepted?
     end
+
+    return trial_resume_path if resource.respond_to?(:pending_payment?) && resource.pending_payment?
 
     # Handle mobile client flow (iOS and Android)
     client_type = request.headers['X-Dawarich-Client'] || session[:dawarich_client]
@@ -248,7 +256,7 @@ status: :see_other
 
   # Each locale names its own flag, so adding a language stays a one-file
   # change. A language is not a country, so this is a label, not a claim about
-  # where it is spoken - the native name next to it is what identifies it.
+  # where it is spoken — the native name next to it is what identifies it.
   def locale_flag(locale)
     I18n.t('language_flag', locale: locale, default: nil, fallback: false)
   end

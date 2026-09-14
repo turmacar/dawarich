@@ -31,8 +31,12 @@ Rails.application.routes.draw do
     mount Flipper::UI.app(Flipper) => '/admin/flipper'
   end
 
-  # We want to return a nice error message if the user is not authorized to access Sidekiq
-  match '/sidekiq' => redirect { |_, request|
+  # We want to return a nice error message if the user is not authorized to access Sidekiq.
+  # A temporary (302) redirect is intentional: the auth/role/env state that gates
+  # /sidekiq can change between requests, so the outcome must be re-evaluated on
+  # every visit. A 301 would be permanently cached by browsers with no reference
+  # to the current user, locking out visitors who later become authorized.
+  match '/sidekiq' => redirect(status: 302) { |_, request|
                         request.flash[:error] = 'You are not authorized to perform this action.'
                         '/'
                       }, via: :get
@@ -44,10 +48,12 @@ Rails.application.routes.draw do
 
     resources :integrations, only: [:index]
     patch 'integrations', to: 'integrations#update'
-    post 'integrations/import_flights', to: 'integrations#import_flights', as: :import_flights_integrations
 
     resources :background_jobs, only: %i[index create]
     patch 'background_jobs', to: 'background_jobs#update'
+    resource :geocoding, only: %i[show update], controller: 'geocoding' do
+      post :test
+    end
     resource :visits, only: %i[show update]
     resources :users, only: %i[index show create destroy edit update] do
       member do
@@ -83,9 +89,6 @@ Rails.application.routes.draw do
   post 'settings/generate_api_key', to: 'settings#generate_api_key', as: :generate_api_key
   patch 'settings/changelog_consent', to: 'settings#changelog_consent', as: :changelog_consent
 
-  resources :geofence_events, only: [:index]
-  resources :user_devices, only: [:destroy]
-
   get  'auth/account_link', to: 'auth/account_links#show', as: :auth_account_link
   get  'auth/account_link/challenge', to: 'auth/account_links#challenge', as: :auth_account_link_challenge
   post 'auth/account_link/challenge', to: 'auth/account_links#confirm', as: :confirm_auth_account_link
@@ -98,6 +101,7 @@ Rails.application.routes.draw do
   get 'trial/welcome', to: 'trial/welcome#show', as: :trial_welcome
 
   resources :imports do
+    get :download, on: :member
     resource :extraction, only: %i[create destroy], controller: 'imports/extractions'
   end
   resources :tracks, only: [] do
@@ -131,6 +135,7 @@ Rails.application.routes.draw do
   end
   resources :exports, only: %i[index create destroy]
   resources :posters, only: %i[create destroy]
+  resources :route_videos, only: %i[create destroy]
   resources :trips do
     member do
       post :recalculate
@@ -162,18 +167,12 @@ Rails.application.routes.draw do
     end
   end
   resources :tags, except: [:show]
-  resources :webhooks do
-    member do
-      post :test
-      post :regenerate_secret
-    end
-  end
 
   # Public shared-link viewer
   get  '/s/:id',         to: 'shared/links#show',     as: :public_shared_link
   post '/s/:id/unlock',  to: 'shared/links#unlock',   as: :unlock_public_shared_link
 
-  # Family management routes. Always defined - per-user access is enforced by
+  # Family management routes. Always defined — per-user access is enforced by
   # ApplicationController#ensure_family_feature_available!, since the routes are
   # built at boot and cannot depend on the current user's plan.
   resource :family, only: %i[show new create edit update destroy] do
@@ -208,11 +207,6 @@ Rails.application.routes.draw do
       put :update_all
     end
   end
-  resources :achievements, only: %i[index show], param: :key do
-    member do
-      patch :toggle_sharing
-    end
-  end
   resources :insights, only: :index do
     collection do
       get :details
@@ -225,7 +219,6 @@ Rails.application.routes.draw do
       as: :update_year_month_stats,
       constraints: { year: /\d{4}/, month: /\d{1,2}|all/ }
   get 'shared/month/:uuid', to: 'shared/stats#show', as: :shared_stat
-  get 'shared/achievements/:uuid', to: 'shared/achievements#show', as: :shared_achievement
 
   # Sharing management endpoint (requires auth)
   patch 'stats/:year/:month/sharing',
@@ -295,7 +288,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      match 'mcp', to: 'mcp#handle', via: %i[get post delete]
       get   'photos', to: 'photos#index'
       get   'health', to: 'health#index'
       patch 'settings', to: 'settings#update'
@@ -336,7 +328,6 @@ Rails.application.routes.draw do
         collection do
           delete :bulk_destroy
           post :reapply_anomaly_filter
-          post 'transitions', to: 'points#create_transition'
         end
       end
       resources :visits, only: %i[index show create update destroy] do
@@ -345,6 +336,7 @@ Rails.application.routes.draw do
         collection do
           post 'merge', to: 'visits#merge'
           post 'bulk_update', to: 'visits#bulk_update'
+          post 'batch', to: 'visits#batch'
         end
       end
       resource :plan, only: [:show], controller: 'plan'
@@ -388,6 +380,7 @@ Rails.application.routes.draw do
 
       namespace :tiles do
         get 'points/:z/:x/:y.mvt', to: 'points#show', defaults: { format: :mvt }
+        get 'tracks/:z/:x/:y.mvt', to: 'tracks#show', defaults: { format: :mvt }
       end
 
       resources :photos, only: %i[index] do
@@ -419,9 +412,17 @@ Rails.application.routes.draw do
       end
 
       namespace :families do
+        resource :mine, only: [:show], controller: 'mine'
+        resource :sharing, only: [:update], controller: 'sharing'
         resources :locations, only: [:index] do
           collection do
             get :history
+          end
+        end
+        resources :location_requests, only: [:create] do
+          member do
+            post :accept
+            post :decline
           end
         end
       end
@@ -445,17 +446,6 @@ Rails.application.routes.draw do
         post 'google',   to: 'google#create'
         post 'otp_challenge', to: 'otp_challenges#create'
       end
-
-      resources :webhooks do
-        member do
-          post :test
-          post :regenerate_secret
-        end
-      end
-
-      resources :geofence_events, only: [:index]
-
-      resources :user_devices, only: %i[index create destroy]
     end
   end
 end

@@ -54,18 +54,21 @@ class Tracks::BoundaryResolverJob < ApplicationJob
 
   def resolve_boundary_tracks
     Tracks::PerUserLock.with_user_lock(user.id) do
-      Tracks::BoundaryDetector.new(user).resolve_cross_chunk_tracks
+      resolved = Tracks::BoundaryDetector.new(user).resolve_cross_chunk_tracks
+      result = Tracks::MetadataRefresher.new(user).call
+      data = session_manager.get_session_data
+      if data
+        session_manager.update_session(metadata: (data['metadata'] || {}).merge('track_metadata_refresh' => result))
+      end
+      resolved
     end
   end
 
   def finalize_session(_boundary_tracks_resolved)
-    session_data = session_manager.get_session_data
-    session_data['tracks_created']
-
     session_manager.mark_completed
   end
 
-  # Chunks that are still completing mean the fan-out is working, just slowly -
+  # Chunks that are still completing mean the fan-out is working, just slowly —
   # on a low-priority queue that can take far longer than the retry budget. Only
   # a session that made no progress since the last look burns an attempt.
   def reschedule_boundary_resolution

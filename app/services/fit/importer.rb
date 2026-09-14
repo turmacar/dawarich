@@ -37,8 +37,7 @@ class Fit::Importer
     points_data = []
 
     each_record(activity) do |record, activity_type|
-      # timestamp guard: build_point coerces it via .to_i, hiding nil as epoch 0
-      next if record.position_lat.nil? || record.position_long.nil? || record.timestamp.nil?
+      next if record.position_lat.nil? || record.position_long.nil?
 
       points_data << build_point(record, activity_type)
 

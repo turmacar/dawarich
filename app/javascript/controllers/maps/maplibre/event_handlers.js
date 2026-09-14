@@ -1,5 +1,6 @@
 import { translate } from "i18n"
 import maplibregl from "maplibre-gl"
+import { Toast } from "maps_maplibre/components/toast"
 import {
   formatDistance,
   formatSpeed,
@@ -19,7 +20,7 @@ import {
  * `Number("")` is 0 and finite, so a plain isFinite check is not enough.
  */
 // A tiled feature can represent many merged points but carries ONE arbitrary
-// member's id/coords - aggregates (no id) and merged cells (count > 1) get no popup.
+// member's id/coords — aggregates (no id) and merged cells (count > 1) get no popup.
 export function shouldShowPointPopup(properties = {}) {
   if (properties.id == null) return false
   return (properties.count ?? 1) <= 1
@@ -47,7 +48,7 @@ export class EventHandlers {
     this.trackMarkers = [] // Store segment markers for tracks
     this._infoPanelDelegationSetup = false // Track if delegation is setup
 
-    // Bound handler for track point clicks - stored so the same reference can be
+    // Bound handler for track point clicks — stored so the same reference can be
     // used for both map.on() and map.off() during toggle cleanup
     this._handleTrackPointClick = this.handleTrackPointClick.bind(this)
 
@@ -76,7 +77,7 @@ export class EventHandlers {
   }
 
   /**
-   * Handle point click - shows instant info from GeoJSON, address loaded via Turbo Frame
+   * Handle point click — shows instant info from GeoJSON, address loaded via Turbo Frame
    */
   handlePointClick(e) {
     // Check if the click is a follow-on event from a drag operation
@@ -107,7 +108,7 @@ export class EventHandlers {
   }
 
   /**
-   * Handle anomaly point click - shows reason and timestamp in the info panel.
+   * Handle anomaly point click — shows reason and timestamp in the info panel.
    */
   handleAnomalyClick(e) {
     const feature = e.features[0]
@@ -119,7 +120,7 @@ export class EventHandlers {
   }
 
   /**
-   * Handle track point click - injects point info into the existing track info panel.
+   * Handle track point click — injects point info into the existing track info panel.
    * Suppresses the event if the user just finished dragging (justDragged flag).
    */
   handleTrackPointClick(e) {
@@ -177,7 +178,7 @@ export class EventHandlers {
   }
 
   /**
-   * Handle visit click - opens the Timeline tab, selects the visit's day, and
+   * Handle visit click — opens the Timeline tab, selects the visit's day, and
    * queues the visit for halo highlighting. Replaces the old Tools-tab flow
    * (info panel + Edit button) which is gone with the unified timeline.
    */
@@ -527,7 +528,7 @@ export class EventHandlers {
    * Handle route click
    */
   handleRouteClick(e) {
-    // Points take priority - if a point exists at this location, let handlePointClick handle it
+    // Points take priority — if a point exists at this location, let handlePointClick handle it
     if (this.map.getLayer("points")) {
       const pointFeatures = this.map.queryRenderedFeatures(e.point, {
         layers: ["points"],
@@ -554,7 +555,7 @@ export class EventHandlers {
     // Create markers for selected route
     this._createRouteMarkers(fullFeature)
 
-    // Open the Timeline tab and focus the journey this route belongs to -
+    // Open the Timeline tab and focus the journey this route belongs to —
     // the same UX as clicking a visit or a track. Routes are point-derived and
     // carry no track id, so we pass the route's time window and let the
     // timeline resolve the matching journey by overlap. That works even when
@@ -630,7 +631,7 @@ export class EventHandlers {
   }
 
   /**
-   * Handle track click - opens the Timeline tab, navigates to the track's day,
+   * Handle track click — opens the Timeline tab, navigates to the track's day,
    * and expands the matching journey entry so the track's full details
    * (distance, speed, elevation, replay, show-points toggle) are shown inline.
    * Replaces the old Tools-tab flow.
@@ -652,7 +653,7 @@ export class EventHandlers {
       if (routeFeatures.length > 0) return
     }
 
-    // Track points take priority over tracks - clicking a point shows point info, not track info
+    // Track points take priority over tracks — clicking a point shows point info, not track info
     if (this.map.getLayer("track-points")) {
       const trackPointFeatures = this.map.queryRenderedFeatures(e.point, {
         layers: ["track-points"],
@@ -664,10 +665,11 @@ export class EventHandlers {
     if (!clickedFeature) return
 
     const properties = clickedFeature.properties
-    const fullFeature = this._getFullTrackFeature(properties) || clickedFeature
+    const classicFeature = this._getFullTrackFeature(properties)
+    const fullFeature = classicFeature || clickedFeature
     this.selectedTrackFeature = fullFeature
 
-    // Keep the on-map highlight + segment visualization - those are visual
+    // Keep the on-map highlight + segment visualization — those are visual
     // feedback for the click itself, independent of the info surface.
     try {
       const tracksLayer = this.controller.layerManager.getLayer("tracks")
@@ -677,10 +679,14 @@ export class EventHandlers {
     } catch (err) {
       console.warn("[EventHandlers] Failed to highlight track:", err)
     }
-    this._loadTrackSegments(properties.id, fullFeature)
+    // Only a tile-source click lacks real geometry (classicFeature null means
+    // the classic tracks layer holds no data — the tiled case).
+    this._loadTrackSegments(properties.id, fullFeature, {
+      preferFetchedGeometry: !classicFeature,
+    })
 
     // Derive the day from the track's start. `start_at` comes from our own
-    // serializer as an ISO8601 string - safe to slice the date portion.
+    // serializer as an ISO8601 string — safe to slice the date portion.
     const startAt =
       typeof properties.start_at === "string" ? properties.start_at : null
     const date = startAt ? startAt.slice(0, 10) : null
@@ -697,11 +703,31 @@ export class EventHandlers {
    * Load track segments from API (lazy loading)
    * @private
    */
-  async _loadTrackSegments(trackId, fullFeature) {
+  async _loadTrackSegments(
+    trackId,
+    fullFeature,
+    { preferFetchedGeometry = false } = {},
+  ) {
     try {
       const trackFeature =
         await this.controller.api.fetchTrackWithSegments(trackId)
       if (!trackFeature) return
+
+      // A click on an MVT track passes a per-tile fragment whose geometry is
+      // clipped and extent-quantized — useless for segment slicing. The fetch
+      // above returns the real linestring; prefer it ONLY on that path so the
+      // classic flow keeps its already-loaded feature untouched.
+      const displayFeature =
+        preferFetchedGeometry && trackFeature.geometry
+          ? trackFeature
+          : fullFeature
+      if (displayFeature !== fullFeature) {
+        this.selectedTrackFeature = displayFeature
+        const highlightLayer = this.controller.layerManager.getLayer("tracks")
+        if (highlightLayer?.setSelectedTrack) {
+          highlightLayer.setSelectedTrack(displayFeature)
+        }
+      }
 
       let segments = []
       try {
@@ -716,7 +742,7 @@ export class EventHandlers {
 
       const tracksLayer = this.controller.layerManager.getLayer("tracks")
       if (tracksLayer?.showSegments) {
-        tracksLayer.showSegments(fullFeature, segments)
+        tracksLayer.showSegments(displayFeature, segments)
         tracksLayer.setSegmentHoverCallback((segmentIndex) => {
           this._highlightSegmentOnMap(segmentIndex)
           this._dispatchSegmentHover(trackId, segments[segmentIndex]?.id)
@@ -727,9 +753,14 @@ export class EventHandlers {
         })
       }
 
-      this._createTrackSegmentMarkers(trackId, fullFeature, segments)
+      this._createTrackSegmentMarkers(trackId, displayFeature, segments)
     } catch (error) {
       console.error("Failed to load track segments:", error)
+      // Classic clicks already hold the real geometry — only the tiled path
+      // leaves the user on a clipped tile fragment, so only it warrants a toast.
+      if (preferFetchedGeometry) {
+        Toast.error(translate("messages.failed_to_load_track_details"))
+      }
     }
   }
 
