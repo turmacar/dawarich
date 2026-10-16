@@ -49,6 +49,25 @@ es:
           none: "Todavía no hay copias."
           import: "Importar"
           import_confirm: "¿Importar este archivo en la cuenta de %{email}? Añade los datos archivados a esa cuenta."
+          verify: "Verificar"
+          verify_confirm: "¿Verificar esta copia restaurándola en una base de datos temporal junto a la activa? Necesita espacio libre en disco similar al tamaño de la base de datos, y la copia temporal se borra después. La base de datos activa no se modifica."
+          verification:
+            running: "Verificando…"
+            passed: "Verificada %{time}"
+            failed: "La verificación falló %{time}"
+            counts: "%{users} usuarios, %{points} puntos"
+            problems:
+              unreadable: "No se pudo restaurar la copia: %{detail}"
+              not_dawarich: "La copia no contiene una base de datos de Dawarich."
+              newer_schema: "La copia se hizo con una versión más nueva de Dawarich. Actualiza antes de restaurarla."
+              undecryptable: "%{count} valores cifrados no se pueden descifrar con las claves de esta instancia. Restaurar requiere el mismo SECRET_KEY_BASE (o las claves OTP_ENCRYPTION_*) que la instancia que la hizo."
+              not_a_dump: "Solo se pueden verificar copias de base de datos completadas."
+              file_missing: "El archivo de la copia ya no está en el directorio de copias."
+              unavailable: "El directorio de copias no se puede usar: %{detail}"
+              busy: "Ya había otra verificación en curso."
+              error: "La verificación se detuvo con un error: %{detail}"
+            warnings:
+              older_schema: "Hecha con una versión anterior de Dawarich. Las migraciones de la base de datos se ejecutarán tras restaurar."
           columns:
             started: "Inicio"
             kind: "Tipo"
@@ -117,6 +136,12 @@ es:
         not_found: "No se encontró esa copia."
         not_an_archive: "Solo se pueden importar copias de datos de usuario completadas."
         user_gone: "La cuenta de la que se hizo esta copia ya no existe."
+        file_missing: "El archivo de la copia ya no está en el directorio de copias."
+      verify_backup:
+        started: "Verificación iniciada. Restaura la copia en una base de datos temporal, así que puede tardar un rato. Actualiza esta página para ver el resultado."
+        in_progress: "Ya hay una verificación en curso."
+        not_found: "No se encontró esa copia."
+        not_a_dump: "Solo se pueden verificar copias de base de datos completadas."
         file_missing: "El archivo de la copia ya no está en el directorio de copias."
   route_videos:
     route_video:

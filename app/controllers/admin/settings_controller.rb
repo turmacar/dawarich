@@ -78,6 +78,26 @@ module Admin
       backups_response(:alert, t('admin.settings.run_backup.unavailable', reason: e.message))
     end
 
+    def verify_backup
+      run = BackupRun.find_by(id: params[:backup_run_id])
+      return backups_response(:alert, t('admin.settings.verify_backup.not_found')) unless run
+
+      Backups::Verifier.new(run).check!
+      started = BackupRun.with_advisory_lock('backups-verify-start', timeout_seconds: 0) do
+        next false if BackupRun.verifying.exists?
+
+        run.start_verification!
+        Backups::VerifyJob.perform_later(run.id)
+      end
+      return backups_response(:alert, t('admin.settings.verify_backup.in_progress')) unless started
+
+      backups_response(:notice, t('admin.settings.verify_backup.started'))
+    rescue Backups::Verifier::Unavailable => e
+      backups_response(:alert, t("admin.settings.verify_backup.#{e.message}"))
+    rescue Backups::Destination::Unavailable => e
+      backups_response(:alert, t('admin.settings.run_backup.unavailable', reason: e.message))
+    end
+
     private
 
     def backups_response(type, message)
@@ -90,6 +110,7 @@ module Admin
     def load_backup_status
       @backup_runs = BackupRun.includes(:user).recent.limit(30)
       @backup_running = BackupRun.active.exists?
+      @backup_verifying = BackupRun.verifying.exists?
       @backup_destination = Backups::Destination.new
       @backup_destination.root
     rescue Backups::Destination::Unavailable => e

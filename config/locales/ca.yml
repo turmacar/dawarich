@@ -49,6 +49,25 @@ ca:
           none: "Encara no hi ha còpies."
           import: "Importa"
           import_confirm: "Vols importar aquest arxiu al compte de %{email}? Afegeix les dades arxivades a aquest compte."
+          verify: "Verifica"
+          verify_confirm: "Vols verificar aquesta còpia restaurant-la en una base de dades temporal al costat de l'activa? Necessita espai lliure al disc semblant a la mida de la base de dades, i la còpia temporal s'esborra després. La base de dades activa no es modifica."
+          verification:
+            running: "Verificant…"
+            passed: "Verificada %{time}"
+            failed: "La verificació ha fallat %{time}"
+            counts: "%{users} usuaris, %{points} punts"
+            problems:
+              unreadable: "No s'ha pogut restaurar la còpia: %{detail}"
+              not_dawarich: "La còpia no conté una base de dades de Dawarich."
+              newer_schema: "La còpia es va fer amb una versió més nova de Dawarich. Actualitza abans de restaurar-la."
+              undecryptable: "%{count} valors xifrats no es poden desxifrar amb les claus d'aquesta instància. Per restaurar cal el mateix SECRET_KEY_BASE (o les claus OTP_ENCRYPTION_*) que la instància que la va fer."
+              not_a_dump: "Només es poden verificar còpies de base de dades completades."
+              file_missing: "El fitxer de la còpia ja no és al directori de còpies."
+              unavailable: "El directori de còpies no es pot utilitzar: %{detail}"
+              busy: "Ja hi havia una altra verificació en curs."
+              error: "La verificació s'ha aturat amb un error: %{detail}"
+            warnings:
+              older_schema: "Feta amb una versió anterior de Dawarich. Les migracions de la base de dades s'executaran després de restaurar."
           columns:
             started: "Inici"
             kind: "Tipus"
@@ -117,6 +136,12 @@ ca:
         not_found: "No s'ha trobat aquesta còpia."
         not_an_archive: "Només es poden importar còpies de dades d'usuari completades."
         user_gone: "El compte del qual es va fer aquesta còpia ja no existeix."
+        file_missing: "El fitxer de la còpia ja no és al directori de còpies."
+      verify_backup:
+        started: "S'ha iniciat la verificació. Restaura la còpia en una base de dades temporal, així que pot trigar una estona. Actualitza aquesta pàgina per veure el resultat."
+        in_progress: "Ja hi ha una verificació en curs."
+        not_found: "No s'ha trobat aquesta còpia."
+        not_a_dump: "Només es poden verificar còpies de base de dades completades."
         file_missing: "El fitxer de la còpia ja no és al directori de còpies."
   activerecord:
     errors:

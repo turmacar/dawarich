@@ -51,6 +51,25 @@ zh:
           none: "还没有备份。"
           import: "导入"
           import_confirm: "将此归档导入 %{email} 的账户？归档数据将被添加到该账户。"
+          verify: "验证"
+          verify_confirm: "是否通过将此转储恢复到当前数据库旁边的临时数据库来验证它？这需要大约与数据库同等大小的可用磁盘空间，临时副本随后会被删除。当前数据库不会被修改。"
+          verification:
+            running: "正在验证…"
+            passed: "已验证 %{time}"
+            failed: "验证失败 %{time}"
+            counts: "%{users} 个用户，%{points} 个轨迹点"
+            problems:
+              unreadable: "无法恢复该转储：%{detail}"
+              not_dawarich: "该转储不包含 Dawarich 数据库。"
+              newer_schema: "该转储由更新版本的 Dawarich 创建。请先升级再恢复。"
+              undecryptable: "有 %{count} 个加密值无法用此实例的密钥解密。恢复需要与创建它的实例相同的 SECRET_KEY_BASE（或 OTP_ENCRYPTION_* 密钥）。"
+              not_a_dump: "只能验证已完成的数据库转储。"
+              file_missing: "转储文件已不在备份目录中。"
+              unavailable: "备份目录不可用：%{detail}"
+              busy: "已有另一个验证在运行。"
+              error: "验证因错误而停止：%{detail}"
+            warnings:
+              older_schema: "由旧版本的 Dawarich 创建。恢复后将运行数据库迁移。"
           columns:
             started: "开始时间"
             kind: "类型"
@@ -120,6 +139,12 @@ zh:
         not_an_archive: "只能导入已完成的用户数据备份。"
         user_gone: "创建此备份的账户已不存在。"
         file_missing: "备份文件已不在备份目录中。"
+      verify_backup:
+        started: "验证已开始。它会将转储恢复到临时数据库，可能需要一些时间。刷新此页面查看结果。"
+        in_progress: "已有验证正在运行。"
+        not_found: "找不到该备份。"
+        not_a_dump: "只能验证已完成的数据库转储。"
+        file_missing: "转储文件已不在备份目录中。"
   auth:
     account_links:
       challenge:

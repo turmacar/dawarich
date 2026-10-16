@@ -49,6 +49,25 @@ en:
           none: "No backups yet."
           import: "Import"
           import_confirm: "Import this archive into the account of %{email}? It adds the archived data to that account."
+          verify: "Verify"
+          verify_confirm: "Verify this dump by restoring it into a temporary database next to the live one? It needs free disk space about the size of the database, and the temporary copy is deleted afterwards. The live database is not changed."
+          verification:
+            running: "Verifying…"
+            passed: "Verified %{time}"
+            failed: "Verification failed %{time}"
+            counts: "%{users} users, %{points} points"
+            problems:
+              unreadable: "The dump could not be restored: %{detail}"
+              not_dawarich: "The dump does not contain a Dawarich database."
+              newer_schema: "The dump was made by a newer version of Dawarich. Upgrade before restoring it."
+              undecryptable: "%{count} encrypted values can't be decrypted with this instance's keys. Restoring needs the same SECRET_KEY_BASE (or OTP_ENCRYPTION_* keys) as the instance that made it."
+              not_a_dump: "Only completed database dumps can be verified."
+              file_missing: "The dump file is no longer in the backup directory."
+              unavailable: "The backup directory is not usable: %{detail}"
+              busy: "Another verification was already running."
+              error: "Verification stopped with an error: %{detail}"
+            warnings:
+              older_schema: "Made by an older version of Dawarich. Database migrations will run after a restore."
           columns:
             started: "Started"
             kind: "Type"
@@ -118,6 +137,12 @@ en:
         not_an_archive: "Only completed user data backups can be imported."
         user_gone: "The account this backup was made from no longer exists."
         file_missing: "The backup file is no longer in the backup directory."
+      verify_backup:
+        started: "Verification started. It restores the dump into a temporary database, so it can take a while. Refresh this page to see the result."
+        in_progress: "A verification is already running."
+        not_found: "That backup could not be found."
+        not_a_dump: "Only completed database dumps can be verified."
+        file_missing: "The dump file is no longer in the backup directory."
   activerecord:
     errors:
       models:

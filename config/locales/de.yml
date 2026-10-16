@@ -49,6 +49,25 @@ de:
           none: "Noch keine Sicherungen."
           import: "Importieren"
           import_confirm: "Dieses Archiv in das Konto von %{email} importieren? Die archivierten Daten werden diesem Konto hinzugefügt."
+          verify: "Prüfen"
+          verify_confirm: "Diesen Dump prüfen, indem er in eine temporäre Datenbank neben der laufenden wiederhergestellt wird? Dafür wird freier Speicherplatz etwa in der Größe der Datenbank benötigt, die temporäre Kopie wird danach gelöscht. Die laufende Datenbank wird nicht verändert."
+          verification:
+            running: "Wird geprüft…"
+            passed: "Geprüft %{time}"
+            failed: "Prüfung fehlgeschlagen %{time}"
+            counts: "%{users} Nutzer, %{points} Punkte"
+            problems:
+              unreadable: "Der Dump konnte nicht wiederhergestellt werden: %{detail}"
+              not_dawarich: "Der Dump enthält keine Dawarich-Datenbank."
+              newer_schema: "Der Dump stammt von einer neueren Dawarich-Version. Aktualisiere vor der Wiederherstellung."
+              undecryptable: "%{count} verschlüsselte Werte lassen sich mit den Schlüsseln dieser Instanz nicht entschlüsseln. Die Wiederherstellung braucht dieselbe SECRET_KEY_BASE (oder dieselben OTP_ENCRYPTION_*-Schlüssel) wie die Instanz, die ihn erstellt hat."
+              not_a_dump: "Nur abgeschlossene Datenbank-Dumps können geprüft werden."
+              file_missing: "Die Dump-Datei befindet sich nicht mehr im Sicherungsverzeichnis."
+              unavailable: "Das Sicherungsverzeichnis ist nicht nutzbar: %{detail}"
+              busy: "Es lief bereits eine andere Prüfung."
+              error: "Die Prüfung wurde mit einem Fehler abgebrochen: %{detail}"
+            warnings:
+              older_schema: "Mit einer älteren Dawarich-Version erstellt. Nach einer Wiederherstellung laufen die Datenbankmigrationen."
           columns:
             started: "Gestartet"
             kind: "Typ"
@@ -118,6 +137,12 @@ de:
         not_an_archive: "Nur abgeschlossene Nutzerdaten-Sicherungen können importiert werden."
         user_gone: "Das Konto, aus dem diese Sicherung stammt, existiert nicht mehr."
         file_missing: "Die Sicherungsdatei befindet sich nicht mehr im Sicherungsverzeichnis."
+      verify_backup:
+        started: "Prüfung gestartet. Der Dump wird in eine temporäre Datenbank wiederhergestellt, das kann eine Weile dauern. Lade diese Seite neu, um das Ergebnis zu sehen."
+        in_progress: "Es läuft bereits eine Prüfung."
+        not_found: "Diese Sicherung wurde nicht gefunden."
+        not_a_dump: "Nur abgeschlossene Datenbank-Dumps können geprüft werden."
+        file_missing: "Die Dump-Datei befindet sich nicht mehr im Sicherungsverzeichnis."
   route_videos:
     route_video:
       download: "MP4 herunterladen"
