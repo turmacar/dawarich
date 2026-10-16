@@ -57,6 +57,9 @@ en:
         pinned: "Refused: pinned by %{variables}."
         host_invalid: "The host must be a bare hostname with an optional port or path, with no spaces."
         chibigeo_key_required: "ChibiGeo needs an API key. The free Hobby plan includes 2,500 lookups per day — get your key at chibigeo.com."
+        backup_frequency_invalid: "Backup frequency must be one of: %{allowed}."
+        backup_path_invalid: "The backup path must be an absolute path without \"..\" segments."
+        backup_retention_invalid: "Backups to keep must be a whole number between %{min} and %{max}."
       test_geocoding:
         not_configured: "No geocoding provider is configured. Save a provider first."
         success: "Your provider resolved the test coordinates to %{place}."
