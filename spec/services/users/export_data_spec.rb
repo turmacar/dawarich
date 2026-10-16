@@ -131,6 +131,12 @@ RSpec.describe Users::ExportData, type: :service do
         service.export
       end
 
+      it 'sends no completion notification when notify is false' do
+        allow(Notifications::Create).to receive(:new).and_call_original
+
+        expect { described_class.new(user, notify: false).export }.not_to change(Notification, :count)
+      end
+
       it 'returns the export record' do
         result = service.export
 
