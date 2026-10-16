@@ -22,7 +22,8 @@ RSpec.describe Backups::RunJob, 'starting together', :non_transactional, type: :
     BackupRun.delete_all
     InstanceSetting.delete_all
     InstanceSettings::Resolver.reset!
-    @users.each(&:destroy)
+    # destroy only soft-deletes users, which would leave them behind for later specs.
+    User.unscoped.where(id: @users.map(&:id)).delete_all
   end
 
   def runs_for(users)
