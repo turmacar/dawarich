@@ -50,6 +50,25 @@ fr:
           none: "Aucune sauvegarde pour l'instant."
           import: "Importer"
           import_confirm: "Importer cette archive dans le compte de %{email} ? Les données archivées seront ajoutées à ce compte."
+          verify: "Vérifier"
+          verify_confirm: "Vérifier ce dump en le restaurant dans une base de données temporaire à côté de celle en service ? Il faut un espace disque libre d'environ la taille de la base, et la copie temporaire est supprimée ensuite. La base en service n'est pas modifiée."
+          verification:
+            running: "Vérification…"
+            passed: "Vérifié %{time}"
+            failed: "Échec de la vérification %{time}"
+            counts: "%{users} utilisateurs, %{points} points"
+            problems:
+              unreadable: "Le dump n'a pas pu être restauré : %{detail}"
+              not_dawarich: "Le dump ne contient pas de base de données Dawarich."
+              newer_schema: "Le dump a été créé par une version plus récente de Dawarich. Mettez à jour avant de le restaurer."
+              undecryptable: "%{count} valeurs chiffrées ne peuvent pas être déchiffrées avec les clés de cette instance. La restauration nécessite le même SECRET_KEY_BASE (ou les mêmes clés OTP_ENCRYPTION_*) que l'instance qui l'a créé."
+              not_a_dump: "Seuls les dumps de base de données terminés peuvent être vérifiés."
+              file_missing: "Le fichier du dump n'est plus dans le répertoire de sauvegarde."
+              unavailable: "Le répertoire de sauvegarde n'est pas utilisable : %{detail}"
+              busy: "Une autre vérification était déjà en cours."
+              error: "La vérification s'est arrêtée sur une erreur : %{detail}"
+            warnings:
+              older_schema: "Créé par une version plus ancienne de Dawarich. Les migrations de la base seront exécutées après une restauration."
           columns:
             started: "Début"
             kind: "Type"
@@ -119,6 +138,12 @@ fr:
         not_an_archive: "Seules les sauvegardes de données utilisateur terminées peuvent être importées."
         user_gone: "Le compte à l'origine de cette sauvegarde n'existe plus."
         file_missing: "Le fichier de sauvegarde n'est plus dans le répertoire de sauvegarde."
+      verify_backup:
+        started: "Vérification démarrée. Le dump est restauré dans une base temporaire, cela peut prendre un moment. Actualisez cette page pour voir le résultat."
+        in_progress: "Une vérification est déjà en cours."
+        not_found: "Cette sauvegarde est introuvable."
+        not_a_dump: "Seuls les dumps de base de données terminés peuvent être vérifiés."
+        file_missing: "Le fichier du dump n'est plus dans le répertoire de sauvegarde."
   route_videos:
     route_video:
       download: "Télécharger le MP4"

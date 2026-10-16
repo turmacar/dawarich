@@ -16,6 +16,24 @@ class BackupRun < ApplicationRecord
 
   scope :recent, -> { order(started_at: :desc, id: :desc) }
   scope :active, -> { status_running.where(started_at: STALE_AFTER.ago..) }
+  scope :verifying, -> { where("verification->>'state' = 'running'").where(updated_at: STALE_AFTER.ago..) }
+
+  def verification_state
+    state = verification&.dig('state')
+    state == 'running' && updated_at < STALE_AFTER.ago ? nil : state
+  end
+
+  def verifiable?
+    kind_database_dump? && status_completed? && file_name.present?
+  end
+
+  def start_verification!
+    update!(verification: { 'state' => 'running' }, verified_at: nil)
+  end
+
+  def finish_verification!(result)
+    update!(verification: result, verified_at: Time.current)
+  end
 
   def complete!(file_name:, bytes:)
     update!(status: :completed, file_name: file_name, bytes: bytes, finished_at: Time.current, error: nil)

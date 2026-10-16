@@ -192,6 +192,8 @@ RSpec.describe 'Admin::Settings backups' do
                 admin.settings.show.backups.import admin.settings.show.backups.columns.actions
                 admin.settings.import_backup.not_found admin.settings.import_backup.file_missing
                 devise.registrations.edit.import_from_automated_backups
+                admin.settings.show.backups.verify admin.settings.verify_backup.in_progress
+                admin.settings.show.backups.verification.problems.not_dawarich
                 jobs.backups.run.unavailable_title jobs.backups.database_dump.failed_content]
 
       %i[ca de es fr pl zh].product(keys).each do |locale, key|
@@ -202,6 +204,8 @@ RSpec.describe 'Admin::Settings backups' do
     it 'keeps every placeholder the English strings use' do
       %w[admin.settings.show.backups.destination_error admin.settings.update.backup_retention_invalid
          admin.settings.show.backups.import_confirm admin.settings.import_backup.started
+         admin.settings.show.backups.verification.problems.undecryptable
+         admin.settings.show.backups.verification.counts
          jobs.backups.user_export.failed_content].each do |key|
         placeholders = I18n.t(key, locale: :en).scan(/%\{(\w+)\}/).flatten.sort
 
@@ -291,6 +295,87 @@ RSpec.describe 'Admin::Settings backups' do
       get '/admin/settings', params: { section: 'backups' }
 
       expect(response.body.scan(%r{/admin/settings/import_backup\?backup_run_id=}).size).to eq(1)
+    end
+  end
+
+  describe 'POST verify_backup' do
+    before do
+      store('backup_export_path', @dir)
+      FileUtils.mkdir_p(File.join(@dir, 'database'))
+      File.binwrite(File.join(@dir, 'database', 'db.pgcustom'), 'dump-bytes')
+    end
+
+    def dump_run(**attributes)
+      create(:backup_run, :database_dump, :completed, file_name: 'db.pgcustom', **attributes)
+    end
+
+    it 'marks the dump as verifying and queues the job' do
+      run = dump_run
+      sign_in admin
+
+      expect { post '/admin/settings/verify_backup', params: { backup_run_id: run.id } }
+        .to have_enqueued_job(Backups::VerifyJob).with(run.id)
+
+      expect(run.reload.verification_state).to eq('running')
+      expect(flash[:notice]).to eq(I18n.t('admin.settings.verify_backup.started'))
+    end
+
+    it 'runs one verification at a time' do
+      dump_run.start_verification!
+      run = dump_run
+      sign_in admin
+
+      expect { post '/admin/settings/verify_backup', params: { backup_run_id: run.id } }
+        .not_to have_enqueued_job(Backups::VerifyJob)
+
+      expect(flash[:alert]).to eq(I18n.t('admin.settings.verify_backup.in_progress'))
+    end
+
+    it 'refuses user archives, missing files and unknown backups' do
+      sign_in admin
+
+      post '/admin/settings/verify_backup', params: { backup_run_id: create(:backup_run, :completed).id }
+      expect(flash[:alert]).to eq(I18n.t('admin.settings.verify_backup.not_a_dump'))
+
+      post '/admin/settings/verify_backup', params: { backup_run_id: dump_run(file_name: 'gone.pgcustom').id }
+      expect(flash[:alert]).to eq(I18n.t('admin.settings.verify_backup.file_missing'))
+
+      post '/admin/settings/verify_backup', params: { backup_run_id: 0 }
+      expect(flash[:alert]).to eq(I18n.t('admin.settings.verify_backup.not_found'))
+      expect(Backups::VerifyJob).not_to have_been_enqueued
+    end
+
+    it 'is refused for a non-admin and on a cloud instance' do
+      run = dump_run
+      sign_in non_admin
+      post '/admin/settings/verify_backup', params: { backup_run_id: run.id }
+
+      allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
+      sign_in admin
+      post '/admin/settings/verify_backup', params: { backup_run_id: run.id }
+
+      expect(Backups::VerifyJob).not_to have_been_enqueued
+      expect(run.reload.verification).to be_nil
+    end
+
+    it 'shows the Verify button for dumps and the result of a verification' do
+      passed = dump_run
+      passed.finish_verification!('state' => 'passed', 'counts' => { 'users' => 3, 'points' => 12_345 },
+                                  'problems' => [], 'warnings' => [{ 'code' => 'older_schema' }])
+      failed = dump_run
+      failed.finish_verification!('state' => 'failed', 'problems' => [{ 'code' => 'undecryptable', 'count' => 2 }],
+                                  'warnings' => [])
+      create(:backup_run, :completed)
+      sign_in admin
+
+      get '/admin/settings', params: { section: 'backups' }
+
+      expect(response.body.scan(%r{/admin/settings/verify_backup\?backup_run_id=}).size).to eq(2)
+      expect(response.body).to include('3 users, 12,345 points')
+      %w[warnings.older_schema problems.undecryptable].each do |key|
+        message = I18n.t("admin.settings.show.backups.verification.#{key}", count: 2)
+        expect(response.body).to include(CGI.escapeHTML(message))
+      end
     end
   end
 

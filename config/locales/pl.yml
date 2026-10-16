@@ -49,6 +49,25 @@ pl:
           none: "Brak kopii zapasowych."
           import: "Importuj"
           import_confirm: "Zaimportować to archiwum na konto %{email}? Zarchiwizowane dane zostaną dodane do tego konta."
+          verify: "Sprawdź"
+          verify_confirm: "Sprawdzić tę kopię, przywracając ją do tymczasowej bazy danych obok działającej? Potrzeba wolnego miejsca na dysku mniej więcej o rozmiarze bazy, a tymczasowa kopia jest potem usuwana. Działająca baza nie jest zmieniana."
+          verification:
+            running: "Sprawdzanie…"
+            passed: "Sprawdzono %{time}"
+            failed: "Sprawdzanie nie powiodło się %{time}"
+            counts: "Użytkownicy: %{users}, punkty: %{points}"
+            problems:
+              unreadable: "Nie udało się przywrócić kopii: %{detail}"
+              not_dawarich: "Kopia nie zawiera bazy danych Dawarich."
+              newer_schema: "Kopię utworzyła nowsza wersja Dawarich. Zaktualizuj przed przywróceniem."
+              undecryptable: "Zaszyfrowanych wartości, których nie da się odszyfrować kluczami tej instancji: %{count}. Przywrócenie wymaga tego samego SECRET_KEY_BASE (lub kluczy OTP_ENCRYPTION_*) co instancja, która ją utworzyła."
+              not_a_dump: "Można sprawdzać tylko ukończone kopie bazy danych."
+              file_missing: "Pliku kopii nie ma już w katalogu kopii zapasowych."
+              unavailable: "Katalogu kopii zapasowych nie można użyć: %{detail}"
+              busy: "Trwało już inne sprawdzanie."
+              error: "Sprawdzanie przerwał błąd: %{detail}"
+            warnings:
+              older_schema: "Utworzona przez starszą wersję Dawarich. Po przywróceniu zostaną uruchomione migracje bazy danych."
           columns:
             started: "Start"
             kind: "Typ"
@@ -117,6 +136,12 @@ pl:
         not_found: "Nie znaleziono tej kopii."
         not_an_archive: "Można importować tylko ukończone kopie danych użytkownika."
         user_gone: "Konto, z którego wykonano tę kopię, już nie istnieje."
+        file_missing: "Pliku kopii nie ma już w katalogu kopii zapasowych."
+      verify_backup:
+        started: "Rozpoczęto sprawdzanie. Kopia jest przywracana do tymczasowej bazy, więc może to chwilę potrwać. Odśwież stronę, aby zobaczyć wynik."
+        in_progress: "Sprawdzanie już trwa."
+        not_found: "Nie znaleziono tej kopii."
+        not_a_dump: "Można sprawdzać tylko ukończone kopie bazy danych."
         file_missing: "Pliku kopii nie ma już w katalogu kopii zapasowych."
   activerecord:
     errors:

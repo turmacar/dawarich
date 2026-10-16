@@ -1,0 +1,32 @@
+<% verification = run.verification %>
+<div class="mt-1 max-w-xs space-y-0.5 text-xs [overflow-wrap:anywhere]" data-testid="backup-verification" data-state="<%= run.verification_state %>">
+  <% case run.verification_state %>
+  <% when 'running' %>
+    <p class="text-base-content/70"><%= t('admin.settings.show.backups.verification.running') %></p>
+  <% when 'passed' %>
+    <p class="flex items-start gap-1 text-success">
+      <%= icon 'circle-check', class: 'size-3.5 shrink-0 mt-px' %>
+      <span><%= t('admin.settings.show.backups.verification.passed', time: l(run.verified_at, format: :short)) %></span>
+    </p>
+    <% counts = verification['counts'] || {} %>
+    <p class="text-base-content/70">
+      <%= t('admin.settings.show.backups.verification.counts',
+            users: number_with_delimiter(counts['users'].to_i), points: number_with_delimiter(counts['points'].to_i)) %>
+    </p>
+  <% else %>
+    <p class="flex items-start gap-1 text-error">
+      <%= icon 'triangle-alert', class: 'size-3.5 shrink-0 mt-px' %>
+      <span><%= t('admin.settings.show.backups.verification.failed', time: l(run.verified_at, format: :short)) %></span>
+    </p>
+    <% Array(verification['problems']).each do |problem| %>
+      <p class="text-base-content/70">
+        <%= t("admin.settings.show.backups.verification.problems.#{problem['code']}",
+              detail: problem['detail'], count: problem['count'].to_i,
+              default: t('admin.settings.show.backups.verification.problems.error', detail: problem['code'])) %>
+      </p>
+    <% end %>
+  <% end %>
+  <% Array(verification['warnings']).each do |warning| %>
+    <p class="text-warning"><%= t("admin.settings.show.backups.verification.warnings.#{warning['code']}") %></p>
+  <% end %>
+</div>
