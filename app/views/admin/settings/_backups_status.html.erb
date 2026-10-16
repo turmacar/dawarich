@@ -1,0 +1,68 @@
+<div class="border-t border-base-content/10 p-6 space-y-5" data-testid="backups-status">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+    <div class="min-w-0 text-sm" data-testid="backups-destination">
+      <% if @backup_destination_error %>
+        <p class="flex items-start gap-2">
+          <%= icon 'triangle-alert', class: 'size-4 shrink-0 mt-0.5 text-warning' %>
+          <span class="min-w-0 [overflow-wrap:anywhere]"><%= t('admin.settings.show.backups.destination_error', reason: @backup_destination_error) %></span>
+        </p>
+      <% else %>
+        <p class="flex items-start gap-2">
+          <%= icon 'circle-check', class: 'size-4 shrink-0 mt-0.5 text-success' %>
+          <span class="min-w-0 [overflow-wrap:anywhere]"><%= t('admin.settings.show.backups.destination_ok', path: @backup_destination.root.to_s) %></span>
+        </p>
+      <% end %>
+    </div>
+
+    <div class="shrink-0 sm:text-right">
+      <%= button_to t('admin.settings.show.backups.run_now'), run_backup_admin_settings_path,
+                    class: 'btn btn-sm btn-outline',
+                    disabled: @backup_destination_error.present? || @backup_running,
+                    form: { class: 'inline-block' },
+                    data: { turbo_submits_with: t('admin.settings.show.backups.starting') } %>
+      <% if @backup_running %>
+        <p class="mt-1.5 text-xs text-base-content/70"><%= t('admin.settings.show.backups.running') %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <h3 class="mb-2 text-sm font-semibold"><%= t('admin.settings.show.backups.recent') %></h3>
+    <% if @backup_runs.empty? %>
+      <p class="text-sm text-base-content/70"><%= t('admin.settings.show.backups.none') %></p>
+    <% else %>
+      <div class="overflow-x-auto">
+        <table class="table table-sm" data-testid="backups-runs">
+          <thead>
+            <tr>
+              <th><%= t('admin.settings.show.backups.columns.started') %></th>
+              <th><%= t('admin.settings.show.backups.columns.kind') %></th>
+              <th><%= t('admin.settings.show.backups.columns.file') %></th>
+              <th class="text-right"><%= t('admin.settings.show.backups.columns.size') %></th>
+              <th><%= t('admin.settings.show.backups.columns.status') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @backup_runs.each do |run| %>
+              <tr data-status="<%= run.status %>">
+                <td class="whitespace-nowrap"><%= l(run.started_at, format: :short) %></td>
+                <td>
+                  <%= t("admin.settings.show.backups.kinds.#{run.kind}") %>
+                  <% if run.user %><span class="block text-xs text-base-content/70"><%= run.user.email %></span><% end %>
+                </td>
+                <td class="[overflow-wrap:anywhere]"><%= run.file_name.presence || '-' %></td>
+                <td class="text-right tabular-nums"><%= run.bytes ? number_to_human_size(run.bytes) : '-' %></td>
+                <td>
+                  <%= t("admin.settings.show.backups.statuses.#{run.status}") %>
+                  <% if run.status_failed? && run.error.present? %>
+                    <span class="block max-w-xs text-xs text-base-content/70 [overflow-wrap:anywhere]"><%= run.error %></span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>

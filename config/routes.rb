@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     namespace :admin do
       resource :settings, only: %i[show update] do
         post :test_geocoding
+        post :run_backup
       end
     end
   end

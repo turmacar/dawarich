@@ -35,6 +35,14 @@
                <%= 'disabled' if setting.pinned? || locked_on %>
                <%= "aria-describedby=#{field_id}_hint" if hint %>>
       </div>
+    <% elsif setting.key == :backup_export_frequency %>
+      <select id="<%= field_id %>"
+              name="<%= field_name %>"
+              class="select select-bordered w-full disabled:border-base-content/10 disabled:bg-base-100"
+              <%= 'disabled' if setting.pinned? %>
+              <%= "aria-describedby=#{field_id}_hint" if hint %>>
+        <%= options_for_select(InstanceSettings::BackupInput::FREQUENCIES.map { |value| [t("admin.settings.show.backups.frequencies.#{value}"), value] }, setting.value) %>
+      </select>
     <% else %>
       <input type="<%= definition.secret? ? 'password' : definition.kind.in?(%i[integer float]) ? 'number' : 'text' %>"
              id="<%= field_id %>"

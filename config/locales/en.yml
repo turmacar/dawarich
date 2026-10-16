@@ -37,6 +37,34 @@ en:
           locationiq: "Hosted service. Needs an API key."
         points:
           title: "Points"
+        backups:
+          title: "Backups"
+          description: "Scheduled exports of every user's data, written to a directory you mount into the container. Optionally includes a full database dump for exact restores."
+          destination_ok: "Backups are written to %{path}."
+          destination_error: "The backup directory is not usable: %{reason}."
+          run_now: "Back up now"
+          starting: "Starting…"
+          running: "A backup is running."
+          recent: "Recent backups"
+          none: "No backups yet."
+          columns:
+            started: "Started"
+            kind: "Type"
+            file: "File"
+            size: "Size"
+            status: "Status"
+          kinds:
+            user_export: "User data"
+            database_dump: "Database"
+          statuses:
+            running: "Running"
+            completed: "Completed"
+            failed: "Failed"
+          frequencies:
+            "off": "Off"
+            daily: "Daily"
+            weekly: "Weekly"
+            monthly: "Monthly"
         fields:
           photon_api_host: "Host"
           photon_api_key: "API key"
@@ -48,6 +76,14 @@ en:
           locationiq_api_key: "API key"
           reverse_geocoding_rps: "Requests per second"
           store_geodata: "Geocode new points immediately"
+          backup_export_frequency: "Schedule"
+          backup_export_path: "Directory"
+          backup_export_retention: "Backups to keep"
+          backup_database_dump: "Also dump the database"
+          backup_export_frequency_hint: "How often every user's data is exported. The check runs daily at 04:15."
+          backup_export_path_hint: "Absolute path inside the container. It must already exist, for example a mounted share, and is never created for you."
+          backup_export_retention_hint: "Newest backups kept per user. Older files are deleted."
+          backup_database_dump_hint: "Adds a pg_dump of the whole database to each backup run."
           host_hint: "Bare hostname with optional port, e.g. photon.example.com:2322"
           rps_hint: "Leave blank for no limit. Set this to whatever your server or plan allows."
           api_key_keep_hint: "Leave blank to keep the saved key."
@@ -66,6 +102,10 @@ en:
         empty: "The provider responded but returned no results for the test coordinates."
         failure: "Test failed: %{error}"
         rate_limited: "The provider's rate limit is busy right now — try again in a moment."
+      run_backup:
+        started: "Backup started. It can take a few minutes, so refresh this page to see the result."
+        in_progress: "A backup is already running."
+        unavailable: "Backup not started: %{reason}."
   activerecord:
     errors:
       models:
