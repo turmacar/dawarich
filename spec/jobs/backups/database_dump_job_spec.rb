@@ -14,6 +14,7 @@ RSpec.describe Backups::DatabaseDumpJob, type: :job do
     InstanceSettings::Resolver.reset!
   end
 
+  let!(:run) { create(:backup_run, :database_dump) }
   let(:database_dir) { Pathname.new(@dir).join('database') }
 
   def written_files
@@ -32,10 +33,10 @@ RSpec.describe Backups::DatabaseDumpJob, type: :job do
   describe 'with a real pg_dump' do
     before { skip 'no pg_dump at least as new as the test database' unless compatible_pg_dump? }
 
-    it 'writes a dump that pg_restore can read and records the run' do
-      described_class.perform_now
+    it 'writes a dump that pg_restore can read and completes the run' do
+      described_class.perform_now(run.id)
 
-      run = BackupRun.kind_database_dump.last
+      run.reload
       expect(run).to be_status_completed
       expect(written_files).to eq([run.file_name])
       expect(run.file_name).to match(/\Adawarich_db_\d{8}_\d{6}\.pgcustom\z/)
@@ -59,7 +60,7 @@ RSpec.describe Backups::DatabaseDumpJob, type: :job do
       config = ActiveRecord::Base.connection_db_config.configuration_hash.merge(password: 's3cret-pw')
       allow(ActiveRecord::Base.connection_db_config).to receive(:configuration_hash).and_return(config)
 
-      described_class.perform_now
+      described_class.perform_now(run.id)
 
       env, *argv = captured
       expect(env).to eq('PGPASSWORD' => 's3cret-pw')
@@ -70,7 +71,7 @@ RSpec.describe Backups::DatabaseDumpJob, type: :job do
     it 'does not go through a shell' do
       allow(Open3).to receive(:capture3).and_return(['', '', success])
 
-      described_class.perform_now
+      described_class.perform_now(run.id)
 
       expect(Open3).to have_received(:capture3).with(Hash, 'pg_dump', any_args)
     end
@@ -85,7 +86,7 @@ RSpec.describe Backups::DatabaseDumpJob, type: :job do
       File.write(database_dir.join('old.pgcustom'), 'old')
       old = create(:backup_run, :database_dump, :completed, file_name: 'old.pgcustom', started_at: 2.days.ago)
 
-      described_class.perform_now
+      described_class.perform_now(run.id)
 
       expect(BackupRun.exists?(old.id)).to be(false)
       expect(written_files).not_to include('old.pgcustom')
@@ -95,25 +96,33 @@ RSpec.describe Backups::DatabaseDumpJob, type: :job do
 
   describe 'a failed dump' do
     let!(:admin) { create(:user, admin: true) }
-    let(:failure) { instance_double(Process::Status, success?: false) }
-
-    before { allow(Open3).to receive(:capture3).and_return(['', 'connection refused', failure]) }
 
     it 'records the error, tells the admins and leaves no partial file' do
-      expect { described_class.perform_now }.to change { admin.notifications.error.count }.by(1)
+      allow(Open3).to receive(:capture3)
+        .and_return(['', 'connection refused', instance_double(Process::Status, success?: false)])
 
-      run = BackupRun.kind_database_dump.last
-      expect(run).to be_status_failed
+      expect { described_class.perform_now(run.id) }.to change { admin.notifications.error.count }.by(1)
+
+      expect(run.reload).to be_status_failed
       expect(run.error).to include('connection refused')
       expect(database_dir.children).to be_empty
     end
+
+    it 'fails the run instead of writing elsewhere when the directory is gone' do
+      InstanceSetting.find_by!(key: 'backup_export_path').update!(value: File.join(@dir, 'gone'))
+      InstanceSettings::Resolver.reset!
+
+      expect { described_class.perform_now(run.id) }.to change { admin.notifications.error.count }.by(1)
+
+      expect(run.reload).to be_status_failed
+      expect(File.exist?(File.join(@dir, 'gone'))).to be(false)
+    end
   end
 
-  it 'refuses to run without a usable directory instead of writing elsewhere' do
-    InstanceSetting.where(key: 'backup_export_path').update_all(value: File.join(@dir, 'gone').to_json)
-    InstanceSettings::Resolver.reset!
+  it 'ignores a run that is no longer running or does not exist' do
+    run.complete!(file_name: 'done.pgcustom', bytes: 1)
 
-    expect { described_class.perform_now }.to raise_error(Backups::Destination::Unavailable)
-    expect(BackupRun.count).to eq(0)
+    expect { described_class.perform_now(run.id) }.not_to(change { BackupRun.status_failed.count })
+    expect { described_class.perform_now(0) }.not_to change(BackupRun, :count)
   end
 end

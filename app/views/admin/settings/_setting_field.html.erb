@@ -44,7 +44,7 @@
         <%= options_for_select(InstanceSettings::BackupInput::FREQUENCIES.map { |value| [t("admin.settings.show.backups.frequencies.#{value}"), value] }, setting.value) %>
       </select>
     <% else %>
-      <input type="<%= definition.secret? ? 'password' : definition.kind.in?(%i[integer float]) ? 'number' : 'text' %>"
+      <input type="<%= definition.secret? ? 'password' : setting.key == :backup_export_time ? 'time' : definition.kind.in?(%i[integer float]) ? 'number' : 'text' %>"
              id="<%= field_id %>"
              name="<%= field_name %>"
              value="<%= displayed %>"
