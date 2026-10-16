@@ -3814,6 +3814,9 @@ en:
       user_export:
         failed_title: Scheduled backup failed
         failed_content: 'The scheduled backup for %{email} failed: %{error}'
+      database_dump:
+        failed_title: Scheduled database dump failed
+        failed_content: 'The scheduled database dump failed: %{error}'
     tesla_mate:
       sync_job:
         teslamate_sync_failed: TeslaMateApi sync failed

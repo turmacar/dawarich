@@ -53,6 +53,20 @@ RSpec.describe Backups::RunJob, type: :job do
       expect { described_class.perform_now }.to have_enqueued_job(Backups::UserExportJob).with(user.id)
     end
 
+    it 'also dumps the database when that is switched on' do
+      configure(frequency: 'daily')
+      InstanceSetting.create!(key: 'backup_database_dump', value: true)
+      InstanceSettings::Resolver.reset!
+
+      expect { described_class.perform_now }.to have_enqueued_job(Backups::DatabaseDumpJob)
+    end
+
+    it 'leaves the database alone by default' do
+      configure(frequency: 'daily')
+
+      expect { described_class.perform_now }.not_to have_enqueued_job(Backups::DatabaseDumpJob)
+    end
+
     it 'is not held back by a failed attempt' do
       configure(frequency: 'daily')
       create(:backup_run, user: user, status: :failed, started_at: 1.hour.ago)
