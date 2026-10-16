@@ -3,6 +3,7 @@
 module InstanceSettings
   class BackupInput
     FREQUENCIES = %w[off daily weekly monthly].freeze
+    TIME_FORMAT = /\A([01]\d|2[0-3]):[0-5]\d\z/
     RETENTION_RANGE = (1..365)
 
     attr_reader :values, :errors
@@ -13,6 +14,7 @@ module InstanceSettings
 
       normalize
       validate_frequency
+      validate_time
       validate_path
       validate_retention
     end
@@ -25,6 +27,7 @@ module InstanceSettings
 
     def normalize
       values[:backup_export_frequency] = values[:backup_export_frequency].downcase if string?(:backup_export_frequency)
+      values[:backup_export_time] = values[:backup_export_time].strip if string?(:backup_export_time)
       return unless string?(:backup_export_path)
 
       values[:backup_export_path] = values[:backup_export_path].strip.sub(%r{(?<=.)/+\z}, '')
@@ -35,6 +38,13 @@ module InstanceSettings
       return if FREQUENCIES.include?(values[:backup_export_frequency])
 
       errors << I18n.t('admin.settings.update.backup_frequency_invalid', allowed: FREQUENCIES.join(', '))
+    end
+
+    def validate_time
+      return unless values.key?(:backup_export_time)
+      return if values[:backup_export_time].to_s.match?(TIME_FORMAT)
+
+      errors << I18n.t('admin.settings.update.backup_time_invalid')
     end
 
     # The directory must already exist; it is never created, so a missing bind

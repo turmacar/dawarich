@@ -76,7 +76,7 @@ lite_archival_warning_job:
   queue: archival
 
 backups_run_job:
-  cron: "15 4 * * *" # every day at 04:15, runs only when the configured frequency is due
+  cron: "*/15 * * * *" # every 15 minutes, runs only when a backup is due at the configured time
   class: "Backups::RunJob"
   queue: exports
 

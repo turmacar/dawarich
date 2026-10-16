@@ -88,6 +88,7 @@ services:
       STORE_GEODATA: ${STORE_GEODATA:-true}
       ### Scheduled backups, also configurable in Settings → Instance → Backups.
       # BACKUP_EXPORT_FREQUENCY: ${BACKUP_EXPORT_FREQUENCY:-off}
+      # BACKUP_EXPORT_TIME: ${BACKUP_EXPORT_TIME:-04:15}
       # BACKUP_EXPORT_PATH: ${BACKUP_EXPORT_PATH:-/backups}
       # BACKUP_EXPORT_RETENTION: ${BACKUP_EXPORT_RETENTION:-7}
       # BACKUP_DATABASE_DUMP: ${BACKUP_DATABASE_DUMP:-false}
@@ -161,6 +162,7 @@ services:
       STORE_GEODATA: ${STORE_GEODATA:-true}
       ### Scheduled backups, also configurable in Settings → Instance → Backups.
       # BACKUP_EXPORT_FREQUENCY: ${BACKUP_EXPORT_FREQUENCY:-off}
+      # BACKUP_EXPORT_TIME: ${BACKUP_EXPORT_TIME:-04:15}
       # BACKUP_EXPORT_PATH: ${BACKUP_EXPORT_PATH:-/backups}
       # BACKUP_EXPORT_RETENTION: ${BACKUP_EXPORT_RETENTION:-7}
       # BACKUP_DATABASE_DUMP: ${BACKUP_DATABASE_DUMP:-false}

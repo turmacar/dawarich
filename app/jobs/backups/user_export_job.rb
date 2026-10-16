@@ -6,13 +6,14 @@ class Backups::UserExportJob < ApplicationJob
 
   sidekiq_options retry: false
 
-  def perform(user_id)
-    user = find_user_or_skip(user_id) || return
-    directory = Backups::Destination.new.subdirectory('user-exports')
-    run = BackupRun.create!(kind: :user_export, user: user, started_at: Time.current)
+  def perform(run_id)
+    run = BackupRun.kind_user_export.status_running.find_by(id: run_id) || return
+    user = run.user
+    return run.destroy if user.nil?
 
     export = nil
     begin
+      directory = Backups::Destination.new.subdirectory('user-exports')
       export = Users::ExportData.new(user, notify: false).export
       filename = filename_for(user)
       result = Backups::Writer.new(directory).write(filename) do |file, _partial|
