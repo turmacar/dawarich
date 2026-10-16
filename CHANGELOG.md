@@ -17,6 +17,16 @@ up to the container's own disk. The settings can also be pinned with
 `BACKUP_EXPORT_FREQUENCY`, `BACKUP_EXPORT_TIME`, `BACKUP_EXPORT_PATH`,
 `BACKUP_EXPORT_RETENTION` and `BACKUP_DATABASE_DUMP`. Restore a user export
 through Imports, and a database dump with `pg_restore`.
+- Admins can import an automated user backup into the account it was made from,
+straight from the Backups page, linked from the account page's import section.
+- Database dumps can be verified from the Backups page: the dump is restored into
+a temporary database, checked (readable, made by this or an older version,
+encrypted settings decrypt with this instance's keys) and the temporary database
+is dropped.
+- A verified dump can be restored from the Backups page after typing `RESTORE`. A
+safety dump of the current database is written first, the restore runs in one
+transaction so a failure leaves the database unchanged, Dawarich shows a
+maintenance page meanwhile and background jobs wait and resume on their own.
 
 ## [1.15.3] - 2026-09-30, Berlin
 

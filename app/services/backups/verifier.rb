@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'open3'
-
 module Backups
   # Proves a database dump can be restored by restoring it into a temporary database next
   # to the live one, then checking what came back. The temporary database is always
@@ -55,7 +53,7 @@ module Backups
     end
 
     def config
-      @config ||= ActiveRecord::Base.connection_db_config.configuration_hash
+      Backups::Postgres.config
     end
 
     def connection
@@ -83,15 +81,9 @@ module Backups
     end
 
     def restore_into(name)
-      env = config[:password].present? ? { 'PGPASSWORD' => config[:password].to_s } : {}
-      args = ['pg_restore', '--no-owner', '--no-privileges', '--exit-on-error', '--dbname', name]
-      args += ['--host', config[:host].to_s] if config[:host].present?
-      args += ['--port', config[:port].to_s] if config[:port].present?
-      args += ['--username', config[:username].to_s] if config[:username].present?
-      args << path.to_s
-
-      _out, err, status = Open3.capture3(env, *args)
-      raise RestoreFailed, err.to_s.strip.truncate(500) unless status.success?
+      Backups::Postgres.restore(path, database: name)
+    rescue Backups::Postgres::Failed => e
+      raise RestoreFailed, e.message
     end
 
     def inspect_database(name, result)

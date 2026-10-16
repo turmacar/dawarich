@@ -51,6 +51,16 @@ ca:
           import_confirm: "Vols importar aquest arxiu al compte de %{email}? Afegeix les dades arxivades a aquest compte."
           verify: "Verifica"
           verify_confirm: "Vols verificar aquesta còpia restaurant-la en una base de dades temporal al costat de l'activa? Necessita espai lliure al disc semblant a la mida de la base de dades, i la còpia temporal s'esborra després. La base de dades activa no es modifica."
+          restore: "Restaura"
+          restore_title: "Restaura tota la base de dades"
+          restore_file: "Fitxer"
+          restore_made: "Feta"
+          restore_contents: "Contingut"
+          cancel: "Cancel·la"
+          restore_warning: "Tot el que hi ha a la base de dades torna a l'estat del %{time}, per a tots els usuaris: comptes, punts, importacions i configuració, incloent-hi aquesta configuració de còpies. Tot el que s'hagi afegit després es perd."
+          restore_steps: "Primer es desa una còpia de seguretat de la base de dades actual al directori de còpies, de manera que pots desfer-ho restaurant aquesta còpia. Dawarich mostra una pàgina de manteniment fins que acaba la restauració, i les tasques en segon pla esperen i continuen després."
+          restore_confirm_label: "Escriu %{word} per confirmar"
+          restore_submit: "Substitueix la base de dades"
           verification:
             running: "Verificant…"
             passed: "Verificada %{time}"
@@ -78,6 +88,7 @@ ca:
           kinds:
             user_export: "Dades d'usuari"
             database_dump: "Base de dades"
+            database_restore: "Restauració de la base de dades"
           statuses:
             running: "En curs"
             completed: "Completada"
@@ -143,6 +154,16 @@ ca:
         not_found: "No s'ha trobat aquesta còpia."
         not_a_dump: "Només es poden verificar còpies de base de dades completades."
         file_missing: "El fitxer de la còpia ja no és al directori de còpies."
+      restore_backup:
+        not_found: "No s'ha trobat aquesta còpia."
+        confirmation_mismatch: "Escriu exactament %{word} per confirmar la restauració."
+        not_verified: "Només es pot restaurar una còpia de base de dades que hagi superat la verificació."
+        file_missing: "El fitxer de la còpia ja no és al directori de còpies."
+        busy: "Hi ha una còpia, verificació o restauració en curs. Torna-ho a provar quan acabi."
+        changed: "El fitxer de la còpia ha canviat després de verificar-lo. Torna'l a verificar abans de restaurar."
+      maintenance:
+        title: "S'està restaurant la base de dades"
+        body: "Un administrador està restaurant Dawarich des d'una còpia. Aquesta pàgina es recarrega sola, i Dawarich tornarà a estar disponible quan acabi la restauració."
   activerecord:
     errors:
       models:
@@ -3859,6 +3880,11 @@ ca:
       database_dump:
         failed_title: "El bolcat programat de la base de dades ha fallat"
         failed_content: "El bolcat programat de la base de dades ha fallat: %{error}"
+      restore:
+        restored_title: "Base de dades restaurada"
+        restored_content: "La base de dades s'ha restaurat des de %{file}. La base de dades tal com era abans s'ha desat com a %{safety}."
+        failed_title: "La restauració de la base de dades ha fallat"
+        failed_content: "La restauració de la base de dades ha fallat: %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: La sincronització amb TeslaMateApi ha fallat

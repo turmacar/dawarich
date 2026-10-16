@@ -51,6 +51,16 @@ es:
           import_confirm: "¿Importar este archivo en la cuenta de %{email}? Añade los datos archivados a esa cuenta."
           verify: "Verificar"
           verify_confirm: "¿Verificar esta copia restaurándola en una base de datos temporal junto a la activa? Necesita espacio libre en disco similar al tamaño de la base de datos, y la copia temporal se borra después. La base de datos activa no se modifica."
+          restore: "Restaurar"
+          restore_title: "Restaurar toda la base de datos"
+          restore_file: "Archivo"
+          restore_made: "Creada"
+          restore_contents: "Contenido"
+          cancel: "Cancelar"
+          restore_warning: "Todo lo que hay en la base de datos vuelve a su estado del %{time}, para todos los usuarios: cuentas, puntos, importaciones y ajustes, incluidos estos ajustes de copias. Todo lo añadido desde entonces se pierde."
+          restore_steps: "Primero se guarda una copia de seguridad de la base de datos actual en el directorio de copias, así que puedes deshacerlo restaurando esa copia. Dawarich muestra una página de mantenimiento hasta que termina la restauración, y las tareas en segundo plano esperan y continúan después."
+          restore_confirm_label: "Escribe %{word} para confirmar"
+          restore_submit: "Reemplazar la base de datos"
           verification:
             running: "Verificando…"
             passed: "Verificada %{time}"
@@ -78,6 +88,7 @@ es:
           kinds:
             user_export: "Datos de usuario"
             database_dump: "Base de datos"
+            database_restore: "Restauración de la base de datos"
           statuses:
             running: "En curso"
             completed: "Completada"
@@ -143,6 +154,16 @@ es:
         not_found: "No se encontró esa copia."
         not_a_dump: "Solo se pueden verificar copias de base de datos completadas."
         file_missing: "El archivo de la copia ya no está en el directorio de copias."
+      restore_backup:
+        not_found: "No se encontró esa copia."
+        confirmation_mismatch: "Escribe exactamente %{word} para confirmar la restauración."
+        not_verified: "Solo se puede restaurar una copia de base de datos que haya pasado la verificación."
+        file_missing: "El archivo de la copia ya no está en el directorio de copias."
+        busy: "Hay una copia, verificación o restauración en curso. Inténtalo de nuevo cuando termine."
+        changed: "El archivo de la copia cambió después de verificarlo. Vuelve a verificarlo antes de restaurar."
+      maintenance:
+        title: "Restaurando la base de datos"
+        body: "Un administrador está restaurando Dawarich desde una copia. Esta página se recarga sola, y Dawarich volverá en cuanto termine la restauración."
   route_videos:
     route_video:
       download: "Descargar MP4"
@@ -3866,6 +3887,11 @@ es:
       database_dump:
         failed_title: "Falló el volcado programado de la base de datos"
         failed_content: "Falló el volcado programado de la base de datos: %{error}"
+      restore:
+        restored_title: "Base de datos restaurada"
+        restored_content: "La base de datos se restauró desde %{file}. La base de datos tal como estaba antes se guardó como %{safety}."
+        failed_title: "Falló la restauración de la base de datos"
+        failed_content: "Falló la restauración de la base de datos: %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: Sincronización de TeslaMateApi fallida
