@@ -13,19 +13,30 @@ class Backups::RunJob < ApplicationJob
   TOLERANCE = 1.hour
   # A failed attempt is retried the next day at most, even for weekly and monthly schedules.
   RETRY_AFTER = 1.day
+  LOCK_KEY = 'backups-run'
 
   def perform(force: false)
+    queued = ActiveRecord::Base.with_advisory_lock(LOCK_KEY, timeout_seconds: 0) do
+      start(force)
+      true
+    end
+    log_skip('another backup is being queued') unless queued
+  rescue Backups::Destination::Unavailable => e
+    notify_admins(e.message)
+  end
+
+  private
+
+  # Checking for a running backup and creating the runs share one lock, so two ticks or two
+  # clicks cannot both pass the check before either has created a run.
+  def start(force)
     return unless force || due?
     return log_skip('a backup is already running') if BackupRun.active.exists?
 
     Backups::Destination.new.root
     User.find_each { |user| queue(Backups::UserExportJob, kind: :user_export, user: user) }
     queue(Backups::DatabaseDumpJob, kind: :database_dump) if InstanceSettings::Resolver.value(:backup_database_dump)
-  rescue Backups::Destination::Unavailable => e
-    notify_admins(e.message)
   end
-
-  private
 
   # The run row exists before the worker starts, so a backed-up queue cannot cause the next
   # tick to queue the same backup again.
