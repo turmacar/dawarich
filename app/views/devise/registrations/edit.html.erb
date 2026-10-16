@@ -210,6 +210,9 @@
                   turbo_method: :get
                 } %>
               <button type="button" class='btn btn-outline w-full sm:w-auto' onclick="import_modal.showModal()"><%= t('.import_my_data') %></button>
+              <% if current_user.admin? && DawarichSettings.self_hosted? %>
+                <%= link_to t('.import_from_automated_backups'), admin_settings_path(section: 'backups'), class: 'btn btn-outline w-full sm:w-auto' %>
+              <% end %>
             </div>
 
             <div class="rounded-2xl border border-error/30 bg-error/5 p-4">

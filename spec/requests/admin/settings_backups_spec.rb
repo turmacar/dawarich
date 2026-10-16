@@ -189,6 +189,9 @@ RSpec.describe 'Admin::Settings backups' do
                 admin.settings.show.fields.backup_export_time admin.settings.show.fields.backup_export_time_hint
                 admin.settings.update.backup_path_invalid admin.settings.update.backup_time_invalid
                 admin.settings.run_backup.started
+                admin.settings.show.backups.import admin.settings.show.backups.columns.actions
+                admin.settings.import_backup.not_found admin.settings.import_backup.file_missing
+                devise.registrations.edit.import_from_automated_backups
                 jobs.backups.run.unavailable_title jobs.backups.database_dump.failed_content]
 
       %i[ca de es fr pl zh].product(keys).each do |locale, key|
@@ -198,6 +201,7 @@ RSpec.describe 'Admin::Settings backups' do
 
     it 'keeps every placeholder the English strings use' do
       %w[admin.settings.show.backups.destination_error admin.settings.update.backup_retention_invalid
+         admin.settings.show.backups.import_confirm admin.settings.import_backup.started
          jobs.backups.user_export.failed_content].each do |key|
         placeholders = I18n.t(key, locale: :en).scan(/%\{(\w+)\}/).flatten.sort
 
@@ -207,6 +211,116 @@ RSpec.describe 'Admin::Settings backups' do
           expect(found).to eq(placeholders), "#{key} placeholders differ in #{locale}"
         end
       end
+    end
+  end
+
+  describe 'POST import_backup' do
+    let(:owner) { create(:user, email: 'owner@example.com') }
+
+    before do
+      store('backup_export_path', @dir)
+      FileUtils.mkdir_p(File.join(@dir, 'user-exports'))
+      File.binwrite(File.join(@dir, 'user-exports', 'owner.zip'), 'archive-bytes')
+    end
+
+    def archive_run(**attributes)
+      create(:backup_run, :completed, user: owner, file_name: 'owner.zip', **attributes)
+    end
+
+    it 'imports the archive into the account it was made from, not the admin' do
+      run = archive_run
+      sign_in admin
+
+      expect { post '/admin/settings/import_backup', params: { backup_run_id: run.id } }
+        .to change { owner.imports.count }.by(1).and have_enqueued_job(Import::ProcessJob)
+
+      expect(admin.imports.count).to eq(0)
+      expect(owner.imports.last).to have_attributes(source: 'user_data_archive', name: 'owner.zip')
+      expect(flash[:notice]).to eq(I18n.t('admin.settings.import_backup.started', email: 'owner@example.com'))
+    end
+
+    it 'refuses a database dump or an unfinished backup' do
+      dump = create(:backup_run, :database_dump, :completed, file_name: 'owner.zip')
+      running = create(:backup_run, user: owner, file_name: 'owner.zip')
+      sign_in admin
+
+      [dump, running].each do |run|
+        expect { post '/admin/settings/import_backup', params: { backup_run_id: run.id } }
+          .not_to(change { Import.count })
+        expect(flash[:alert]).to eq(I18n.t('admin.settings.import_backup.not_an_archive'))
+      end
+    end
+
+    it 'says so when the backup does not exist' do
+      sign_in admin
+
+      post '/admin/settings/import_backup', params: { backup_run_id: 0 }
+
+      expect(flash[:alert]).to eq(I18n.t('admin.settings.import_backup.not_found'))
+    end
+
+    it 'says so when the file is gone from the directory' do
+      run = archive_run(file_name: 'gone.zip')
+      sign_in admin
+
+      expect { post '/admin/settings/import_backup', params: { backup_run_id: run.id } }.not_to(change { Import.count })
+
+      expect(flash[:alert]).to eq(I18n.t('admin.settings.import_backup.file_missing'))
+    end
+
+    it 'is refused for a non-admin' do
+      run = archive_run
+      sign_in non_admin
+
+      expect { post '/admin/settings/import_backup', params: { backup_run_id: run.id } }.not_to(change { Import.count })
+    end
+
+    it 'is not available on a cloud instance' do
+      run = archive_run
+      allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
+      sign_in admin
+
+      expect { post '/admin/settings/import_backup', params: { backup_run_id: run.id } }.not_to(change { Import.count })
+    end
+
+    it 'offers the Import button only for completed user archives' do
+      archive_run
+      create(:backup_run, :database_dump, :completed, file_name: 'dump.pgcustom')
+      sign_in admin
+
+      get '/admin/settings', params: { section: 'backups' }
+
+      expect(response.body.scan(%r{/admin/settings/import_backup\?backup_run_id=}).size).to eq(1)
+    end
+  end
+
+  describe 'the link from the account page' do
+    let(:label) { I18n.t('devise.registrations.edit.import_from_automated_backups') }
+
+    it 'is shown to an admin on a self-hosted instance and points at the Backups section' do
+      sign_in admin
+
+      get edit_user_registration_path
+
+      expect(response.body).to include(label)
+      expect(response.body).to include('/admin/settings?section=backups')
+    end
+
+    it 'is not shown to a regular user' do
+      sign_in non_admin
+
+      get edit_user_registration_path
+
+      expect(response.body).not_to include(label)
+    end
+
+    it 'is not shown on a cloud instance' do
+      allow(DawarichSettings).to receive(:self_hosted?).and_return(false)
+      sign_in admin
+
+      get edit_user_registration_path
+
+      expect(response.body).not_to include(label)
     end
   end
 

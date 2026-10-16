@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       resource :settings, only: %i[show update] do
         post :test_geocoding
         post :run_backup
+        post :import_backup
       end
     end
   end
