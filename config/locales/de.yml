@@ -51,6 +51,16 @@ de:
           import_confirm: "Dieses Archiv in das Konto von %{email} importieren? Die archivierten Daten werden diesem Konto hinzugefügt."
           verify: "Prüfen"
           verify_confirm: "Diesen Dump prüfen, indem er in eine temporäre Datenbank neben der laufenden wiederhergestellt wird? Dafür wird freier Speicherplatz etwa in der Größe der Datenbank benötigt, die temporäre Kopie wird danach gelöscht. Die laufende Datenbank wird nicht verändert."
+          restore: "Wiederherstellen"
+          restore_title: "Die gesamte Datenbank wiederherstellen"
+          restore_file: "Datei"
+          restore_made: "Erstellt"
+          restore_contents: "Inhalt"
+          cancel: "Abbrechen"
+          restore_warning: "Alles in der Datenbank wird auf den Stand vom %{time} zurückgesetzt, für alle Nutzer: Konten, Punkte, Importe und Einstellungen, auch diese Sicherungseinstellungen. Alles, was seitdem hinzugekommen ist, geht verloren."
+          restore_steps: "Zuerst wird ein Sicherheits-Dump der aktuellen Datenbank im Sicherungsverzeichnis gespeichert, damit du die Wiederherstellung rückgängig machen kannst, indem du diesen Dump wiederherstellst. Dawarich zeigt eine Wartungsseite, bis die Wiederherstellung fertig ist; Hintergrundjobs warten und laufen danach weiter."
+          restore_confirm_label: "Gib %{word} ein, um zu bestätigen"
+          restore_submit: "Datenbank ersetzen"
           verification:
             running: "Wird geprüft…"
             passed: "Geprüft %{time}"
@@ -78,6 +88,7 @@ de:
           kinds:
             user_export: "Nutzerdaten"
             database_dump: "Datenbank"
+            database_restore: "Datenbank-Wiederherstellung"
           statuses:
             running: "Läuft"
             completed: "Abgeschlossen"
@@ -143,6 +154,16 @@ de:
         not_found: "Diese Sicherung wurde nicht gefunden."
         not_a_dump: "Nur abgeschlossene Datenbank-Dumps können geprüft werden."
         file_missing: "Die Dump-Datei befindet sich nicht mehr im Sicherungsverzeichnis."
+      restore_backup:
+        not_found: "Diese Sicherung wurde nicht gefunden."
+        confirmation_mismatch: "Gib genau %{word} ein, um die Wiederherstellung zu bestätigen."
+        not_verified: "Nur ein Datenbank-Dump, der die Prüfung bestanden hat, kann wiederhergestellt werden."
+        file_missing: "Die Dump-Datei befindet sich nicht mehr im Sicherungsverzeichnis."
+        busy: "Eine Sicherung, Prüfung oder Wiederherstellung läuft. Versuche es erneut, wenn sie fertig ist."
+        changed: "Die Dump-Datei hat sich nach der Prüfung geändert. Prüfe sie vor der Wiederherstellung erneut."
+      maintenance:
+        title: "Datenbank wird wiederhergestellt"
+        body: "Ein Administrator stellt Dawarich aus einer Sicherung wieder her. Diese Seite lädt sich selbst neu, und Dawarich ist wieder da, sobald die Wiederherstellung fertig ist."
   route_videos:
     route_video:
       download: "MP4 herunterladen"
@@ -3969,6 +3990,11 @@ de:
       database_dump:
         failed_title: "Geplanter Datenbank-Dump fehlgeschlagen"
         failed_content: "Der geplante Datenbank-Dump ist fehlgeschlagen: %{error}"
+      restore:
+        restored_title: "Datenbank wiederhergestellt"
+        restored_content: "Die Datenbank wurde aus %{file} wiederhergestellt. Die Datenbank im vorherigen Zustand ist als %{safety} gespeichert."
+        failed_title: "Datenbank-Wiederherstellung fehlgeschlagen"
+        failed_content: "Die Datenbank-Wiederherstellung ist fehlgeschlagen: %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: TeslaMateApi-Synchronisation fehlgeschlagen

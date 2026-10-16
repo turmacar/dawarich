@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         post :run_backup
         post :import_backup
         post :verify_backup
+        post :restore_backup
       end
     end
   end

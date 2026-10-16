@@ -51,6 +51,16 @@ pl:
           import_confirm: "Zaimportować to archiwum na konto %{email}? Zarchiwizowane dane zostaną dodane do tego konta."
           verify: "Sprawdź"
           verify_confirm: "Sprawdzić tę kopię, przywracając ją do tymczasowej bazy danych obok działającej? Potrzeba wolnego miejsca na dysku mniej więcej o rozmiarze bazy, a tymczasowa kopia jest potem usuwana. Działająca baza nie jest zmieniana."
+          restore: "Przywróć"
+          restore_title: "Przywróć całą bazę danych"
+          restore_file: "Plik"
+          restore_made: "Utworzono"
+          restore_contents: "Zawartość"
+          cancel: "Anuluj"
+          restore_warning: "Cała zawartość bazy wraca do stanu z %{time}, dla wszystkich użytkowników: konta, punkty, importy i ustawienia, w tym te ustawienia kopii zapasowych. Wszystko, co dodano później, zostanie utracone."
+          restore_steps: "Najpierw w katalogu kopii zapasowych zapisywany jest zrzut bezpieczeństwa obecnej bazy, więc można to cofnąć, przywracając ten zrzut. Dawarich pokazuje stronę konserwacji do zakończenia przywracania, a zadania w tle czekają i wznawiają się potem."
+          restore_confirm_label: "Wpisz %{word}, aby potwierdzić"
+          restore_submit: "Zastąp bazę danych"
           verification:
             running: "Sprawdzanie…"
             passed: "Sprawdzono %{time}"
@@ -78,6 +88,7 @@ pl:
           kinds:
             user_export: "Dane użytkownika"
             database_dump: "Baza danych"
+            database_restore: "Przywracanie bazy danych"
           statuses:
             running: "W toku"
             completed: "Ukończona"
@@ -143,6 +154,16 @@ pl:
         not_found: "Nie znaleziono tej kopii."
         not_a_dump: "Można sprawdzać tylko ukończone kopie bazy danych."
         file_missing: "Pliku kopii nie ma już w katalogu kopii zapasowych."
+      restore_backup:
+        not_found: "Nie znaleziono tej kopii."
+        confirmation_mismatch: "Wpisz dokładnie %{word}, aby potwierdzić przywracanie."
+        not_verified: "Można przywrócić tylko kopię bazy danych, która przeszła sprawdzanie."
+        file_missing: "Pliku kopii nie ma już w katalogu kopii zapasowych."
+        busy: "Trwa tworzenie kopii, sprawdzanie lub przywracanie. Spróbuj ponownie po zakończeniu."
+        changed: "Plik kopii zmienił się po sprawdzeniu. Sprawdź go ponownie przed przywróceniem."
+      maintenance:
+        title: "Przywracanie bazy danych"
+        body: "Administrator przywraca Dawarich z kopii zapasowej. Ta strona odświeża się sama, a Dawarich wróci zaraz po zakończeniu przywracania."
   activerecord:
     errors:
       models:
@@ -3968,6 +3989,11 @@ pl:
       database_dump:
         failed_title: "Zaplanowany zrzut bazy danych nie powiódł się"
         failed_content: "Zaplanowany zrzut bazy danych nie powiódł się: %{error}"
+      restore:
+        restored_title: "Przywrócono bazę danych"
+        restored_content: "Bazę danych przywrócono z %{file}. Baza w poprzednim stanie została zapisana jako %{safety}."
+        failed_title: "Przywracanie bazy danych nie powiodło się"
+        failed_content: "Przywracanie bazy danych nie powiodło się: %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: Synchronizacja TeslaMateApi nie powiodła się

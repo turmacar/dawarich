@@ -51,6 +51,16 @@ en:
           import_confirm: "Import this archive into the account of %{email}? It adds the archived data to that account."
           verify: "Verify"
           verify_confirm: "Verify this dump by restoring it into a temporary database next to the live one? It needs free disk space about the size of the database, and the temporary copy is deleted afterwards. The live database is not changed."
+          restore: "Restore"
+          restore_title: "Restore the whole database"
+          restore_file: "File"
+          restore_made: "Made"
+          restore_contents: "Contents"
+          cancel: "Cancel"
+          restore_warning: "Everything in the database goes back to how it was on %{time}, for every user: accounts, points, imports and settings, including these backup settings. Anything added since then is lost."
+          restore_steps: "A safety dump of the current database is saved to the backup directory first, so you can undo this by restoring that dump. Dawarich shows a maintenance page until the restore finishes, and background jobs wait and resume afterwards."
+          restore_confirm_label: "Type %{word} to confirm"
+          restore_submit: "Replace the database"
           verification:
             running: "Verifying…"
             passed: "Verified %{time}"
@@ -78,6 +88,7 @@ en:
           kinds:
             user_export: "User data"
             database_dump: "Database"
+            database_restore: "Database restore"
           statuses:
             running: "Running"
             completed: "Completed"
@@ -143,6 +154,16 @@ en:
         not_found: "That backup could not be found."
         not_a_dump: "Only completed database dumps can be verified."
         file_missing: "The dump file is no longer in the backup directory."
+      restore_backup:
+        not_found: "That backup could not be found."
+        confirmation_mismatch: "Type %{word} exactly to confirm the restore."
+        not_verified: "Only a database dump that passed verification can be restored."
+        file_missing: "The dump file is no longer in the backup directory."
+        busy: "A backup, verification or restore is running. Try again when it has finished."
+        changed: "The dump file changed after it was verified. Verify it again before restoring."
+      maintenance:
+        title: "Restoring the database"
+        body: "An administrator is restoring Dawarich from a backup. This page reloads by itself, and Dawarich is back as soon as the restore finishes."
   activerecord:
     errors:
       models:
@@ -3895,6 +3916,11 @@ en:
       database_dump:
         failed_title: Scheduled database dump failed
         failed_content: 'The scheduled database dump failed: %{error}'
+      restore:
+        restored_title: Database restored
+        restored_content: 'The database was restored from %{file}. The database as it was before is saved as %{safety}.'
+        failed_title: Database restore failed
+        failed_content: 'The database restore failed: %{error}'
     tesla_mate:
       sync_job:
         teslamate_sync_failed: TeslaMateApi sync failed

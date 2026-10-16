@@ -52,6 +52,16 @@ fr:
           import_confirm: "Importer cette archive dans le compte de %{email} ? Les données archivées seront ajoutées à ce compte."
           verify: "Vérifier"
           verify_confirm: "Vérifier ce dump en le restaurant dans une base de données temporaire à côté de celle en service ? Il faut un espace disque libre d'environ la taille de la base, et la copie temporaire est supprimée ensuite. La base en service n'est pas modifiée."
+          restore: "Restaurer"
+          restore_title: "Restaurer toute la base de données"
+          restore_file: "Fichier"
+          restore_made: "Créé"
+          restore_contents: "Contenu"
+          cancel: "Annuler"
+          restore_warning: "Tout le contenu de la base revient à son état du %{time}, pour tous les utilisateurs : comptes, points, imports et paramètres, y compris ces paramètres de sauvegarde. Tout ce qui a été ajouté depuis est perdu."
+          restore_steps: "Un dump de sécurité de la base actuelle est d'abord enregistré dans le répertoire de sauvegarde, pour pouvoir annuler en restaurant ce dump. Dawarich affiche une page de maintenance jusqu'à la fin de la restauration ; les tâches de fond attendent puis reprennent ensuite."
+          restore_confirm_label: "Saisissez %{word} pour confirmer"
+          restore_submit: "Remplacer la base de données"
           verification:
             running: "Vérification…"
             passed: "Vérifié %{time}"
@@ -79,6 +89,7 @@ fr:
           kinds:
             user_export: "Données utilisateur"
             database_dump: "Base de données"
+            database_restore: "Restauration de la base"
           statuses:
             running: "En cours"
             completed: "Terminée"
@@ -144,6 +155,16 @@ fr:
         not_found: "Cette sauvegarde est introuvable."
         not_a_dump: "Seuls les dumps de base de données terminés peuvent être vérifiés."
         file_missing: "Le fichier du dump n'est plus dans le répertoire de sauvegarde."
+      restore_backup:
+        not_found: "Cette sauvegarde est introuvable."
+        confirmation_mismatch: "Saisissez exactement %{word} pour confirmer la restauration."
+        not_verified: "Seul un dump de base de données qui a réussi la vérification peut être restauré."
+        file_missing: "Le fichier du dump n'est plus dans le répertoire de sauvegarde."
+        busy: "Une sauvegarde, une vérification ou une restauration est en cours. Réessayez quand elle sera terminée."
+        changed: "Le fichier du dump a changé depuis sa vérification. Vérifiez-le à nouveau avant de le restaurer."
+      maintenance:
+        title: "Restauration de la base de données"
+        body: "Un administrateur restaure Dawarich depuis une sauvegarde. Cette page se recharge toute seule, et Dawarich revient dès que la restauration est terminée."
   route_videos:
     route_video:
       download: "Télécharger le MP4"
@@ -5072,6 +5093,11 @@ fr:
       database_dump:
         failed_title: "Échec du dump planifié de la base de données"
         failed_content: "Le dump planifié de la base de données a échoué : %{error}"
+      restore:
+        restored_title: "Base de données restaurée"
+        restored_content: "La base de données a été restaurée depuis %{file}. La base telle qu'elle était avant est enregistrée sous %{safety}."
+        failed_title: "Échec de la restauration de la base de données"
+        failed_content: "La restauration de la base de données a échoué : %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: La synchronisation TeslaMateApi a échoué

@@ -4,6 +4,9 @@ Sidekiq.configure_server do |config|
   config.redis = { url: ENV['REDIS_URL'], db: ENV.fetch('RAILS_JOB_QUEUE_DB', 1) }
   config.logger = Sidekiq::Logger.new($stdout)
 
+  require 'dawarich/maintenance_defer'
+  config.server_middleware { |chain| chain.add Dawarich::MaintenanceDefer }
+
   # The worker process caches instance settings independently of the web
   # process, so it needs its own subscriber to notice a change made in the UI.
   config.on(:startup) do

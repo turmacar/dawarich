@@ -53,6 +53,16 @@ zh:
           import_confirm: "将此归档导入 %{email} 的账户？归档数据将被添加到该账户。"
           verify: "验证"
           verify_confirm: "是否通过将此转储恢复到当前数据库旁边的临时数据库来验证它？这需要大约与数据库同等大小的可用磁盘空间，临时副本随后会被删除。当前数据库不会被修改。"
+          restore: "恢复"
+          restore_title: "恢复整个数据库"
+          restore_file: "文件"
+          restore_made: "创建时间"
+          restore_contents: "内容"
+          cancel: "取消"
+          restore_warning: "数据库中的所有内容都会回到 %{time} 时的状态，对所有用户生效：账户、轨迹点、导入和设置，包括这些备份设置。此后添加的任何内容都会丢失。"
+          restore_steps: "会先将当前数据库的安全转储保存到备份目录，因此可以通过恢复该转储来撤销。恢复完成前 Dawarich 会显示维护页面，后台任务会等待并在之后继续。"
+          restore_confirm_label: "输入 %{word} 以确认"
+          restore_submit: "替换数据库"
           verification:
             running: "正在验证…"
             passed: "已验证 %{time}"
@@ -80,6 +90,7 @@ zh:
           kinds:
             user_export: "用户数据"
             database_dump: "数据库"
+            database_restore: "数据库恢复"
           statuses:
             running: "进行中"
             completed: "已完成"
@@ -145,6 +156,16 @@ zh:
         not_found: "找不到该备份。"
         not_a_dump: "只能验证已完成的数据库转储。"
         file_missing: "转储文件已不在备份目录中。"
+      restore_backup:
+        not_found: "找不到该备份。"
+        confirmation_mismatch: "请准确输入 %{word} 以确认恢复。"
+        not_verified: "只能恢复通过验证的数据库转储。"
+        file_missing: "转储文件已不在备份目录中。"
+        busy: "有备份、验证或恢复正在运行。请在完成后重试。"
+        changed: "转储文件在验证后发生了变化。恢复前请重新验证。"
+      maintenance:
+        title: "正在恢复数据库"
+        body: "管理员正在从备份恢复 Dawarich。此页面会自动刷新，恢复完成后 Dawarich 即可恢复使用。"
   auth:
     account_links:
       challenge:
@@ -3973,6 +3994,11 @@ zh:
       database_dump:
         failed_title: "计划数据库转储失败"
         failed_content: "计划数据库转储失败：%{error}"
+      restore:
+        restored_title: "数据库已恢复"
+        restored_content: "数据库已从 %{file} 恢复。恢复前的数据库已保存为 %{safety}。"
+        failed_title: "数据库恢复失败"
+        failed_content: "数据库恢复失败：%{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: TeslaMateApi 同步失败

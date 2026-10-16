@@ -98,6 +98,30 @@ module Admin
       backups_response(:alert, t('admin.settings.run_backup.unavailable', reason: e.message))
     end
 
+    def restore_backup
+      source = BackupRun.find_by(id: params[:backup_run_id])
+      return backups_response(:alert, t('admin.settings.restore_backup.not_found')) unless source
+      unless params[:confirmation].to_s.strip == Backups::Restorer::CONFIRMATION
+        return backups_response(:alert, t('admin.settings.restore_backup.confirmation_mismatch',
+                                          word: Backups::Restorer::CONFIRMATION))
+      end
+
+      started = BackupRun.with_advisory_lock('backups-restore-start', timeout_seconds: 0) do
+        Backups::Restorer.new(source).check!
+        run = BackupRun.create!(kind: :database_restore, status: :running, started_at: Time.current,
+                                file_name: source.file_name)
+        Backups::Maintenance.start!(run_id: run.id, step: 'queued', ttl: Backups::Maintenance::QUEUED_TTL)
+        Backups::RestoreJob.perform_later(run.id, source.id)
+      end
+      return backups_response(:alert, t('admin.settings.restore_backup.busy')) unless started
+
+      redirect_to admin_settings_path(section: 'backups'), status: :see_other
+    rescue Backups::Restorer::Unavailable => e
+      backups_response(:alert, t("admin.settings.restore_backup.#{e.message}"))
+    rescue Backups::Destination::Unavailable => e
+      backups_response(:alert, t('admin.settings.run_backup.unavailable', reason: e.message))
+    end
+
     private
 
     def backups_response(type, message)
