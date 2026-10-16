@@ -49,12 +49,15 @@ zh:
           running: "备份正在进行。"
           recent: "最近的备份"
           none: "还没有备份。"
+          import: "导入"
+          import_confirm: "将此归档导入 %{email} 的账户？归档数据将被添加到该账户。"
           columns:
             started: "开始时间"
             kind: "类型"
             file: "文件"
             size: "大小"
             status: "状态"
+            actions: "操作"
           kinds:
             user_export: "用户数据"
             database_dump: "数据库"
@@ -111,6 +114,12 @@ zh:
         started: "备份已开始。可能需要几分钟，请刷新页面查看结果。"
         in_progress: "已有备份正在进行。"
         unavailable: "备份未启动：%{reason}。"
+      import_backup:
+        started: "已开始为 %{email} 导入。完成后你将收到通知。"
+        not_found: "找不到该备份。"
+        not_an_archive: "只能导入已完成的用户数据备份。"
+        user_gone: "创建此备份的账户已不存在。"
+        file_missing: "备份文件已不在备份目录中。"
   auth:
     account_links:
       challenge:
@@ -212,6 +221,7 @@ zh:
         data_tools: 数据工具
         export_a_backup_or_restore_a_previous_archive: 导出备份或恢复以前的存档。
         import_my_data: 导入我的数据
+        import_from_automated_backups: 从自动备份导入
         danger_zone: 危险区域
         deleting_your_account_is_permanent_and_removes_all_your_data: 删除您的帐户是永久性操作，且会删除您的所有数据。
         cancel_my_account: 注销我的帐户

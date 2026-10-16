@@ -47,12 +47,15 @@ es:
           running: "Hay una copia en curso."
           recent: "Copias recientes"
           none: "Todavía no hay copias."
+          import: "Importar"
+          import_confirm: "¿Importar este archivo en la cuenta de %{email}? Añade los datos archivados a esa cuenta."
           columns:
             started: "Inicio"
             kind: "Tipo"
             file: "Archivo"
             size: "Tamaño"
             status: "Estado"
+            actions: "Acciones"
           kinds:
             user_export: "Datos de usuario"
             database_dump: "Base de datos"
@@ -109,6 +112,12 @@ es:
         started: "Copia iniciada. Puede tardar unos minutos; actualiza la página para ver el resultado."
         in_progress: "Ya hay una copia en curso."
         unavailable: "No se inició la copia: %{reason}."
+      import_backup:
+        started: "Importación iniciada para %{email}. Recibirás una notificación cuando termine."
+        not_found: "No se encontró esa copia."
+        not_an_archive: "Solo se pueden importar copias de datos de usuario completadas."
+        user_gone: "La cuenta de la que se hizo esta copia ya no existe."
+        file_missing: "El archivo de la copia ya no está en el directorio de copias."
   route_videos:
     route_video:
       download: "Descargar MP4"
@@ -268,6 +277,7 @@ es:
         data_tools: Herramientas de datos
         export_a_backup_or_restore_a_previous_archive: Exporta un respaldo o restaura una copia anterior.
         import_my_data: Importar mis datos
+        import_from_automated_backups: Importar desde las copias automáticas
         danger_zone: Zona peligrosa
         deleting_your_account_is_permanent_and_removes_all_your_data: Eliminar tu cuenta es permanente y elimina todos tus datos.
         cancel_my_account: Eliminar mi cuenta

@@ -48,12 +48,15 @@ fr:
           running: "Une sauvegarde est en cours."
           recent: "Sauvegardes récentes"
           none: "Aucune sauvegarde pour l'instant."
+          import: "Importer"
+          import_confirm: "Importer cette archive dans le compte de %{email} ? Les données archivées seront ajoutées à ce compte."
           columns:
             started: "Début"
             kind: "Type"
             file: "Fichier"
             size: "Taille"
             status: "Statut"
+            actions: "Actions"
           kinds:
             user_export: "Données utilisateur"
             database_dump: "Base de données"
@@ -110,6 +113,12 @@ fr:
         started: "Sauvegarde démarrée. Elle peut prendre quelques minutes, actualisez la page pour voir le résultat."
         in_progress: "Une sauvegarde est déjà en cours."
         unavailable: "Sauvegarde non démarrée : %{reason}."
+      import_backup:
+        started: "Importation démarrée pour %{email}. Vous serez averti lorsqu'elle sera terminée."
+        not_found: "Cette sauvegarde est introuvable."
+        not_an_archive: "Seules les sauvegardes de données utilisateur terminées peuvent être importées."
+        user_gone: "Le compte à l'origine de cette sauvegarde n'existe plus."
+        file_missing: "Le fichier de sauvegarde n'est plus dans le répertoire de sauvegarde."
   route_videos:
     route_video:
       download: "Télécharger le MP4"
@@ -693,6 +702,7 @@ fr:
         export_a_backup_or_restore_a_previous_archive: Exporter une sauvegarde ou
           restaurer une archive précédente.
         import_my_data: Importer mes données
+        import_from_automated_backups: Importer depuis les sauvegardes automatiques
         danger_zone: Zone rouge
         deleting_your_account_is_permanent_and_removes_all_your_data: La suppression
           de votre compte est définitive et entraîne la suppression de toutes vos

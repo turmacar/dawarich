@@ -58,17 +58,29 @@ module Admin
 
     def run_backup
       Backups::Destination.new.root
-      return run_backup_response(:alert, t('admin.settings.run_backup.in_progress')) if BackupRun.active.exists?
+      return backups_response(:alert, t('admin.settings.run_backup.in_progress')) if BackupRun.active.exists?
 
       Backups::RunJob.perform_later(force: true)
-      run_backup_response(:notice, t('admin.settings.run_backup.started'))
+      backups_response(:notice, t('admin.settings.run_backup.started'))
     rescue Backups::Destination::Unavailable => e
-      run_backup_response(:alert, t('admin.settings.run_backup.unavailable', reason: e.message))
+      backups_response(:alert, t('admin.settings.run_backup.unavailable', reason: e.message))
+    end
+
+    def import_backup
+      run = BackupRun.find_by(id: params[:backup_run_id])
+      import = Backups::ArchiveImporter.new(run).call if run
+      return backups_response(:alert, t('admin.settings.import_backup.not_found')) unless import
+
+      backups_response(:notice, t('admin.settings.import_backup.started', email: run.user.email))
+    rescue Backups::ArchiveImporter::Unavailable => e
+      backups_response(:alert, t("admin.settings.import_backup.#{e.message}"))
+    rescue Backups::Destination::Unavailable => e
+      backups_response(:alert, t('admin.settings.run_backup.unavailable', reason: e.message))
     end
 
     private
 
-    def run_backup_response(type, message)
+    def backups_response(type, message)
       respond_to do |format|
         format.turbo_stream { render turbo_stream: stream_flash(type == :notice ? :notice : :error, message) }
         format.html { redirect_to admin_settings_path(section: 'backups'), type => message, status: :see_other }
@@ -76,7 +88,7 @@ module Admin
     end
 
     def load_backup_status
-      @backup_runs = BackupRun.includes(:user).recent.limit(10)
+      @backup_runs = BackupRun.includes(:user).recent.limit(30)
       @backup_running = BackupRun.active.exists?
       @backup_destination = Backups::Destination.new
       @backup_destination.root

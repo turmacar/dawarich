@@ -47,12 +47,15 @@ en:
           running: "A backup is running."
           recent: "Recent backups"
           none: "No backups yet."
+          import: "Import"
+          import_confirm: "Import this archive into the account of %{email}? It adds the archived data to that account."
           columns:
             started: "Started"
             kind: "Type"
             file: "File"
             size: "Size"
             status: "Status"
+            actions: "Actions"
           kinds:
             user_export: "User data"
             database_dump: "Database"
@@ -109,6 +112,12 @@ en:
         started: "Backup started. It can take a few minutes, so refresh this page to see the result."
         in_progress: "A backup is already running."
         unavailable: "Backup not started: %{reason}."
+      import_backup:
+        started: "Import started for %{email}. You will be notified when it finishes."
+        not_found: "That backup could not be found."
+        not_an_archive: "Only completed user data backups can be imported."
+        user_gone: "The account this backup was made from no longer exists."
+        file_missing: "The backup file is no longer in the backup directory."
   activerecord:
     errors:
       models:
@@ -221,6 +230,7 @@ en:
         data_tools: Data tools
         export_a_backup_or_restore_a_previous_archive: Export a backup or restore a previous archive.
         import_my_data: Import my data
+        import_from_automated_backups: Import from automated backups
         danger_zone: Danger zone
         deleting_your_account_is_permanent_and_removes_all_your_data: Deleting your account is permanent and removes all your data.
         cancel_my_account: Cancel my account
