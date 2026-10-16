@@ -67,6 +67,7 @@ module Admin
       when :reverse_geocoding_rps then t('admin.settings.show.fields.rps_hint')
       when :store_geodata then t('admin.settings.show.fields.store_geodata_hint')
       when :backup_export_frequency then t('admin.settings.show.fields.backup_export_frequency_hint')
+      when :backup_export_time then t('admin.settings.show.fields.backup_export_time_hint')
       when :backup_export_path then t('admin.settings.show.fields.backup_export_path_hint')
       when :backup_export_retention then t('admin.settings.show.fields.backup_export_retention_hint')
       when :backup_database_dump then t('admin.settings.show.fields.backup_database_dump_hint')

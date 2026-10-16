@@ -9,13 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Self-hosted admins can schedule backups in Settings → Instance → Backups:
-every user's data is exported daily, weekly or monthly to a directory mounted
-into the container, the newest copies are kept per user, and a full `pg_dump`
-of the database can be added to each run. The directory must already exist, so
-a missing mount fails loudly instead of backing up to the container's own disk.
-The settings can also be pinned with `BACKUP_EXPORT_FREQUENCY`,
-`BACKUP_EXPORT_PATH`, `BACKUP_EXPORT_RETENTION` and `BACKUP_DATABASE_DUMP`.
-Restore a user export through Imports, and a database dump with `pg_restore`.
+every user's data is exported daily, weekly or monthly, at a time of day you
+choose, to a directory mounted into the container, the newest copies are kept per
+user, and a full `pg_dump` of the database can be added to each run. The
+directory must already exist, so a missing mount fails loudly instead of backing
+up to the container's own disk. The settings can also be pinned with
+`BACKUP_EXPORT_FREQUENCY`, `BACKUP_EXPORT_TIME`, `BACKUP_EXPORT_PATH`,
+`BACKUP_EXPORT_RETENTION` and `BACKUP_DATABASE_DUMP`. Restore a user export
+through Imports, and a database dump with `pg_restore`.
 
 ## [1.15.3] - 2026-09-30, Berlin
 

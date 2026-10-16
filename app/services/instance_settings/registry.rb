@@ -51,6 +51,7 @@ module InstanceSettings
       Definition.new(key: :store_geodata, env_var: 'STORE_GEODATA', kind: :boolean, default: true),
       Definition.new(key: :backup_export_frequency, env_var: 'BACKUP_EXPORT_FREQUENCY', kind: :string,
                      default: 'off'),
+      Definition.new(key: :backup_export_time, env_var: 'BACKUP_EXPORT_TIME', kind: :string, default: '04:15'),
       Definition.new(key: :backup_export_path, env_var: 'BACKUP_EXPORT_PATH', kind: :string),
       Definition.new(key: :backup_export_retention, env_var: 'BACKUP_EXPORT_RETENTION', kind: :integer,
                      default: 7),

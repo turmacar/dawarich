@@ -14,7 +14,8 @@ module Admin
       'locationiq' => %i[locationiq_api_key],
       'rate_limit' => %i[reverse_geocoding_rps],
       'points' => %i[store_geodata],
-      'backups' => %i[backup_export_frequency backup_export_path backup_export_retention backup_database_dump]
+      'backups' => %i[backup_export_frequency backup_export_time backup_export_path backup_export_retention
+                      backup_database_dump]
     }.freeze
 
     before_action :authenticate_user!

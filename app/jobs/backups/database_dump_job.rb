@@ -8,12 +8,12 @@ class Backups::DatabaseDumpJob < ApplicationJob
 
   sidekiq_options retry: false
 
-  def perform
-    directory = Backups::Destination.new.subdirectory('database')
-    run = BackupRun.create!(kind: :database_dump, started_at: Time.current)
+  def perform(run_id)
+    run = BackupRun.kind_database_dump.status_running.find_by(id: run_id) || return
     filename = "dawarich_db_#{Time.current.strftime('%Y%m%d_%H%M%S')}.pgcustom"
 
     begin
+      directory = Backups::Destination.new.subdirectory('database')
       result = Backups::Writer.new(directory).write(filename) { |_file, partial| dump_to(partial) }
       run.complete!(file_name: filename, bytes: result.bytes)
       prune(directory)

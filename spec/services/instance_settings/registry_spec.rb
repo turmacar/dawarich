@@ -10,7 +10,7 @@ RSpec.describe InstanceSettings::Registry do
         :nominatim_api_host, :nominatim_api_key, :nominatim_api_use_https,
         :geoapify_api_key, :locationiq_api_key,
         :reverse_geocoding_rps, :store_geodata,
-        :backup_export_frequency, :backup_export_path,
+        :backup_export_frequency, :backup_export_time, :backup_export_path,
         :backup_export_retention, :backup_database_dump
       )
     end
@@ -39,8 +39,9 @@ RSpec.describe InstanceSettings::Registry do
       expect(described_class.fetch(:reverse_geocoding_rps).default).to be_nil
     end
 
-    it 'ships scheduled backups switched off, with no destination and seven kept' do
+    it 'ships scheduled backups switched off, at 04:15, with no destination and seven kept' do
       expect(described_class.fetch(:backup_export_frequency).default).to eq('off')
+      expect(described_class.fetch(:backup_export_time).default).to eq('04:15')
       expect(described_class.fetch(:backup_export_path).default).to be_nil
       expect(described_class.fetch(:backup_export_retention).default).to eq(7)
       expect(described_class.fetch(:backup_database_dump).default).to be(false)

@@ -7,7 +7,9 @@ RSpec.describe 'Admin::Settings backups' do
 
   let(:admin) { create(:user, admin: true) }
   let(:non_admin) { create(:user) }
-  let(:backup_env) { %w[BACKUP_EXPORT_FREQUENCY BACKUP_EXPORT_PATH BACKUP_EXPORT_RETENTION BACKUP_DATABASE_DUMP] }
+  let(:backup_env) do
+    %w[BACKUP_EXPORT_FREQUENCY BACKUP_EXPORT_TIME BACKUP_EXPORT_PATH BACKUP_EXPORT_RETENTION BACKUP_DATABASE_DUMP]
+  end
 
   around do |example|
     saved = backup_env.index_with { ENV.fetch(_1, nil) }
@@ -39,9 +41,25 @@ RSpec.describe 'Admin::Settings backups' do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('data-testid="instance-settings-section-backups"')
-      %w[backup_export_frequency backup_export_path backup_export_retention backup_database_dump].each do |key|
+      %w[backup_export_frequency backup_export_time backup_export_path backup_export_retention
+         backup_database_dump].each do |key|
         expect(response.body).to include("id=\"instance_settings_#{key}\"")
       end
+    end
+
+    it 'renders the time as a time input showing the default' do
+      get '/admin/settings', params: { section: 'backups' }
+
+      field = /<input type="time"[^>]*id="instance_settings_backup_export_time"[^>]*value="04:15"/m
+      expect(response.body).to match(field)
+    end
+
+    it 'shows the stored time' do
+      store('backup_export_time', '23:40')
+
+      get '/admin/settings', params: { section: 'backups' }
+
+      expect(response.body).to match(/id="instance_settings_backup_export_time"[^>]*value="23:40"/m)
     end
 
     it 'does not touch the backup directory when another section is open' do
@@ -106,11 +124,12 @@ RSpec.describe 'Admin::Settings backups' do
     end
 
     it 'stores a valid schedule' do
-      save(backup_export_frequency: 'weekly', backup_export_path: "#{@dir}/", backup_export_retention: '14',
-           backup_database_dump: 'true')
+      save(backup_export_frequency: 'weekly', backup_export_time: '02:30', backup_export_path: "#{@dir}/",
+           backup_export_retention: '14', backup_database_dump: 'true')
 
       expect(flash[:notice]).to eq(I18n.t('admin.settings.update.saved'))
       expect(stored('backup_export_frequency')).to eq('weekly')
+      expect(stored('backup_export_time')).to eq('02:30')
       expect(stored('backup_export_path')).to eq(@dir)
       expect(stored('backup_export_retention')).to eq(14)
       expect(stored('backup_database_dump')).to be(true)
@@ -121,6 +140,13 @@ RSpec.describe 'Admin::Settings backups' do
 
       expect(flash[:alert]).to include('daily')
       expect(stored('backup_export_frequency')).to be_nil
+    end
+
+    it 'rejects a time that is not a 24-hour HH:MM and stores nothing' do
+      save(backup_export_time: '25:99')
+
+      expect(flash[:alert]).to eq(I18n.t('admin.settings.update.backup_time_invalid'))
+      expect(stored('backup_export_time')).to be_nil
     end
 
     it 'rejects a relative or parent-escaping path' do
@@ -160,7 +186,9 @@ RSpec.describe 'Admin::Settings backups' do
     it 'defines the backup strings in every shipped locale' do
       keys = %w[admin.settings.show.backups.title admin.settings.show.backups.frequencies.daily
                 admin.settings.show.backups.statuses.failed admin.settings.show.fields.backup_export_path_hint
-                admin.settings.update.backup_path_invalid admin.settings.run_backup.started
+                admin.settings.show.fields.backup_export_time admin.settings.show.fields.backup_export_time_hint
+                admin.settings.update.backup_path_invalid admin.settings.update.backup_time_invalid
+                admin.settings.run_backup.started
                 jobs.backups.run.unavailable_title jobs.backups.database_dump.failed_content]
 
       %i[ca de es fr pl zh].product(keys).each do |locale, key|

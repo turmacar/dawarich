@@ -29,6 +29,27 @@ RSpec.describe InstanceSettings::BackupInput do
     end
   end
 
+  describe 'time' do
+    %w[00:00 04:15 09:05 23:59].each do |time|
+      it "accepts #{time}" do
+        expect(input(backup_export_time: time)).to be_valid
+      end
+    end
+
+    it 'ignores surrounding whitespace' do
+      result = input(backup_export_time: ' 04:15 ')
+
+      expect(result).to be_valid
+      expect(result.values[:backup_export_time]).to eq('04:15')
+    end
+
+    it 'rejects values that are not a 24-hour HH:MM time' do
+      ['4:15', '24:00', '12:60', '04:15:30', '4pm', '', nil].each do |time|
+        expect(input(backup_export_time: time)).not_to be_valid, "expected #{time.inspect} to be rejected"
+      end
+    end
+  end
+
   describe 'path' do
     it 'accepts an absolute path and drops trailing slashes' do
       result = input(backup_export_path: '/backups/dawarich//')
