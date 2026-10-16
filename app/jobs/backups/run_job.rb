@@ -17,6 +17,7 @@ class Backups::RunJob < ApplicationJob
 
     Backups::Destination.new.root
     User.find_each { |user| Backups::UserExportJob.perform_later(user.id) }
+    Backups::DatabaseDumpJob.perform_later if InstanceSettings::Resolver.value(:backup_database_dump)
   rescue Backups::Destination::Unavailable => e
     notify_admins(e.message)
   end
