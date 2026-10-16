@@ -16,6 +16,27 @@ RSpec.describe InstanceSettings::Resolver do
   end
 
   describe 'precedence' do
+    it 'pins the backup destination to BACKUP_EXPORT_PATH and refuses to store over it' do
+      with_env('BACKUP_EXPORT_PATH', '/backups/pinned') do
+        described_class.reset!
+
+        expect(described_class.get(:backup_export_path)).to be_pinned
+        expect { described_class.set(:backup_export_path, '/backups/other') }
+          .to raise_error(described_class::PinnedSettingError, /BACKUP_EXPORT_PATH/)
+        expect(described_class.value(:backup_export_path)).to eq('/backups/pinned')
+      end
+    end
+
+    it 'stores the backup frequency when nothing pins it' do
+      with_env('BACKUP_EXPORT_FREQUENCY', nil) do
+        described_class.reset!
+        described_class.set(:backup_export_frequency, 'weekly')
+
+        expect(described_class.get(:backup_export_frequency).source).to eq(:stored)
+        expect(described_class.value(:backup_export_frequency)).to eq('weekly')
+      end
+    end
+
     it 'prefers the environment over a stored value' do
       InstanceSetting.create!(key: 'photon_api_host', value: 'stored.example.com')
 

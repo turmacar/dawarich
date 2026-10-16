@@ -4,12 +4,14 @@ require 'rails_helper'
 
 RSpec.describe InstanceSettings::Registry do
   describe '.keys' do
-    it 'declares exactly the ten geocoding pilot keys' do
+    it 'declares the geocoding keys and the backup keys' do
       expect(described_class.keys).to contain_exactly(
         :photon_api_host, :photon_api_key, :photon_api_use_https,
         :nominatim_api_host, :nominatim_api_key, :nominatim_api_use_https,
         :geoapify_api_key, :locationiq_api_key,
-        :reverse_geocoding_rps, :store_geodata
+        :reverse_geocoding_rps, :store_geodata,
+        :backup_export_frequency, :backup_export_path,
+        :backup_export_retention, :backup_database_dump
       )
     end
   end
@@ -35,6 +37,17 @@ RSpec.describe InstanceSettings::Registry do
 
     it 'defaults the rate ceiling to nil, meaning unlimited' do
       expect(described_class.fetch(:reverse_geocoding_rps).default).to be_nil
+    end
+
+    it 'ships scheduled backups switched off, with no destination and seven kept' do
+      expect(described_class.fetch(:backup_export_frequency).default).to eq('off')
+      expect(described_class.fetch(:backup_export_path).default).to be_nil
+      expect(described_class.fetch(:backup_export_retention).default).to eq(7)
+      expect(described_class.fetch(:backup_database_dump).default).to be(false)
+    end
+
+    it 'reads a blank retention as the default rather than zero' do
+      expect(described_class.fetch(:backup_export_retention).coerce('')).to eq(7)
     end
   end
 
