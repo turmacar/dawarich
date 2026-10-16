@@ -37,6 +37,34 @@ ca:
           locationiq: "Servei allotjat. Necessita una clau d'API."
         points:
           title: "Punts"
+        backups:
+          title: "Còpies de seguretat"
+          description: "Exportacions programades de les dades de tots els usuaris, escrites en un directori que munteu al contenidor. Opcionalment inclou un bolcat complet de la base de dades per a restauracions exactes."
+          destination_ok: "Les còpies s'escriuen a %{path}."
+          destination_error: "El directori de còpies no és utilitzable: %{reason}."
+          run_now: "Fes una còpia ara"
+          starting: "Iniciant…"
+          running: "Hi ha una còpia en curs."
+          recent: "Còpies recents"
+          none: "Encara no hi ha còpies."
+          columns:
+            started: "Inici"
+            kind: "Tipus"
+            file: "Fitxer"
+            size: "Mida"
+            status: "Estat"
+          kinds:
+            user_export: "Dades d'usuari"
+            database_dump: "Base de dades"
+          statuses:
+            running: "En curs"
+            completed: "Completada"
+            failed: "Fallida"
+          frequencies:
+            "off": "Desactivada"
+            daily: "Diària"
+            weekly: "Setmanal"
+            monthly: "Mensual"
         fields:
           photon_api_host: "Amfitrió"
           photon_api_key: "Clau d'API"
@@ -48,6 +76,14 @@ ca:
           locationiq_api_key: "Clau d'API"
           reverse_geocoding_rps: "Peticions per segon"
           store_geodata: "Geocodifica els punts nous immediatament"
+          backup_export_frequency: "Programació"
+          backup_export_path: "Directori"
+          backup_export_retention: "Còpies a conservar"
+          backup_database_dump: "Bolca també la base de dades"
+          backup_export_frequency_hint: "Amb quina freqüència s'exporten les dades de cada usuari. La comprovació s'executa cada dia a les 04:15."
+          backup_export_path_hint: "Ruta absoluta dins del contenidor. Ja ha d'existir, per exemple un recurs muntat, i mai es crea automàticament."
+          backup_export_retention_hint: "Còpies més recents que es conserven per usuari. Els fitxers més antics se suprimeixen."
+          backup_database_dump_hint: "Afegeix un pg_dump de tota la base de dades a cada execució."
           host_hint: "Nom d'amfitrió simple amb port opcional, p. ex. photon.example.com:2322"
           rps_hint: "Deixa-ho en blanc per no posar-hi límit. Ajusta-ho al que permeti el teu servidor o el teu pla."
           api_key_keep_hint: "Deixa-ho en blanc per mantenir la clau desada."
@@ -57,12 +93,19 @@ ca:
         pinned: "Rebutjat: fixat per %{variables}."
         host_invalid: "L'amfitrió ha de ser un nom simple, amb un port o un camí opcionals i sense espais."
         chibigeo_key_required: "ChibiGeo necessita una clau d'API. El pla gratuït Hobby inclou 2.500 cerques al dia; obtén la teva clau a chibigeo.com."
+        backup_frequency_invalid: "La freqüència de les còpies ha de ser una d'aquestes: %{allowed}."
+        backup_path_invalid: "La ruta de les còpies ha de ser absoluta i no pot contenir segments \"..\"."
+        backup_retention_invalid: "Les còpies a conservar han de ser un nombre enter entre %{min} i %{max}."
       test_geocoding:
         not_configured: "No hi ha cap proveïdor de geocodificació configurat. Desa primer un proveïdor."
         success: "Fet! El teu proveïdor ha convertit les coordenades de prova en: %{place}."
         empty: "El proveïdor ha respost, però no ha retornat cap resultat per a les coordenades de prova."
         failure: "La prova ha fallat: %{error}"
         rate_limited: "El límit de peticions del proveïdor està ocupat ara mateix; torna-ho a provar d'aquí a un moment."
+      run_backup:
+        started: "Còpia iniciada. Pot trigar uns minuts; actualitza la pàgina per veure el resultat."
+        in_progress: "Ja hi ha una còpia en curs."
+        unavailable: "No s'ha iniciat la còpia: %{reason}."
   activerecord:
     errors:
       models:
@@ -3816,6 +3859,16 @@ ca:
         weekday_preference: Viatges més entre setmana que els caps de setmana
         with_suggestion: "%{insight} %{suggestion}"
   jobs:
+    backups:
+      run:
+        unavailable_title: "Còpia programada omesa"
+        unavailable_content: "El directori de còpies no és utilitzable: %{reason}."
+      user_export:
+        failed_title: "La còpia programada ha fallat"
+        failed_content: "La còpia programada de %{email} ha fallat: %{error}"
+      database_dump:
+        failed_title: "El bolcat programat de la base de dades ha fallat"
+        failed_content: "El bolcat programat de la base de dades ha fallat: %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: La sincronització amb TeslaMateApi ha fallat

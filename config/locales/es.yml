@@ -37,6 +37,34 @@ es:
           locationiq: "Servicio alojado. Necesita una clave de API."
         points:
           title: "Puntos"
+        backups:
+          title: "Copias de seguridad"
+          description: "Exportaciones programadas de los datos de todos los usuarios, escritas en un directorio que montas en el contenedor. Opcionalmente incluye un volcado completo de la base de datos para restauraciones exactas."
+          destination_ok: "Las copias se escriben en %{path}."
+          destination_error: "El directorio de copias no se puede usar: %{reason}."
+          run_now: "Hacer copia ahora"
+          starting: "Iniciando…"
+          running: "Hay una copia en curso."
+          recent: "Copias recientes"
+          none: "Todavía no hay copias."
+          columns:
+            started: "Inicio"
+            kind: "Tipo"
+            file: "Archivo"
+            size: "Tamaño"
+            status: "Estado"
+          kinds:
+            user_export: "Datos de usuario"
+            database_dump: "Base de datos"
+          statuses:
+            running: "En curso"
+            completed: "Completada"
+            failed: "Fallida"
+          frequencies:
+            "off": "Desactivada"
+            daily: "Diaria"
+            weekly: "Semanal"
+            monthly: "Mensual"
         fields:
           photon_api_host: "Host"
           photon_api_key: "Clave de API"
@@ -48,6 +76,14 @@ es:
           locationiq_api_key: "Clave de API"
           reverse_geocoding_rps: "Peticiones por segundo"
           store_geodata: "Geocodificar puntos nuevos de inmediato"
+          backup_export_frequency: "Programación"
+          backup_export_path: "Directorio"
+          backup_export_retention: "Copias que se conservan"
+          backup_database_dump: "Volcar también la base de datos"
+          backup_export_frequency_hint: "Con qué frecuencia se exportan los datos de cada usuario. La comprobación se ejecuta cada día a las 04:15."
+          backup_export_path_hint: "Ruta absoluta dentro del contenedor. Debe existir ya, por ejemplo un recurso montado, y nunca se crea por ti."
+          backup_export_retention_hint: "Copias más recientes que se conservan por usuario. Los archivos más antiguos se eliminan."
+          backup_database_dump_hint: "Añade un pg_dump de toda la base de datos a cada ejecución."
           host_hint: "Nombre de host con puerto opcional, p. ej. photon.example.com:2322"
           rps_hint: "Déjalo vacío para no limitar. Indica lo que permita tu servidor o tu plan."
           api_key_keep_hint: "Déjalo vacío para conservar la clave guardada."
@@ -57,12 +93,19 @@ es:
         pinned: "Rechazado: fijado por %{variables}."
         host_invalid: "El host debe ser un nombre de host sin más, con un puerto o una ruta opcionales y sin espacios."
         chibigeo_key_required: "ChibiGeo necesita una clave de API. El plan gratuito Hobby incluye 2.500 consultas al día; obtén tu clave en chibigeo.com."
+        backup_frequency_invalid: "La frecuencia de las copias debe ser una de estas: %{allowed}."
+        backup_path_invalid: "La ruta de las copias debe ser absoluta y no puede contener segmentos \"..\"."
+        backup_retention_invalid: "Las copias que se conservan deben ser un número entero entre %{min} y %{max}."
       test_geocoding:
         not_configured: "No hay ningún proveedor de geocodificación configurado. Guarda primero un proveedor."
         success: "Tu proveedor resolvió las coordenadas de prueba como: %{place}."
         empty: "El proveedor respondió, pero no devolvió resultados para las coordenadas de prueba."
         failure: "La prueba falló: %{error}"
         rate_limited: "El límite de peticiones del proveedor está ocupado ahora mismo. Vuelve a intentarlo en un momento."
+      run_backup:
+        started: "Copia iniciada. Puede tardar unos minutos; actualiza la página para ver el resultado."
+        in_progress: "Ya hay una copia en curso."
+        unavailable: "No se inició la copia: %{reason}."
   route_videos:
     route_video:
       download: "Descargar MP4"
@@ -3823,6 +3866,16 @@ es:
         weekday_preference: Viajas más en días laborables que en fines de semana
         with_suggestion: "%{insight} %{suggestion}"
   jobs:
+    backups:
+      run:
+        unavailable_title: "Copia programada omitida"
+        unavailable_content: "El directorio de copias no se puede usar: %{reason}."
+      user_export:
+        failed_title: "Falló la copia programada"
+        failed_content: "Falló la copia programada de %{email}: %{error}"
+      database_dump:
+        failed_title: "Falló el volcado programado de la base de datos"
+        failed_content: "Falló el volcado programado de la base de datos: %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: Sincronización de TeslaMateApi fallida

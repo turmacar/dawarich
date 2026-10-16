@@ -37,6 +37,34 @@ pl:
           locationiq: "Usługa hostowana. Wymaga klucza API."
         points:
           title: "Punkty"
+        backups:
+          title: "Kopie zapasowe"
+          description: "Zaplanowane eksporty danych wszystkich użytkowników, zapisywane w katalogu montowanym w kontenerze. Opcjonalnie obejmują pełny zrzut bazy danych do dokładnego przywracania."
+          destination_ok: "Kopie zapasowe są zapisywane w %{path}."
+          destination_error: "Katalog kopii zapasowych jest nieużyteczny: %{reason}."
+          run_now: "Utwórz kopię teraz"
+          starting: "Uruchamianie…"
+          running: "Trwa tworzenie kopii."
+          recent: "Ostatnie kopie"
+          none: "Brak kopii zapasowych."
+          columns:
+            started: "Start"
+            kind: "Typ"
+            file: "Plik"
+            size: "Rozmiar"
+            status: "Status"
+          kinds:
+            user_export: "Dane użytkownika"
+            database_dump: "Baza danych"
+          statuses:
+            running: "W toku"
+            completed: "Ukończona"
+            failed: "Nieudana"
+          frequencies:
+            "off": "Wyłączone"
+            daily: "Codziennie"
+            weekly: "Co tydzień"
+            monthly: "Co miesiąc"
         fields:
           photon_api_host: "Host"
           photon_api_key: "Klucz API"
@@ -48,6 +76,14 @@ pl:
           locationiq_api_key: "Klucz API"
           reverse_geocoding_rps: "Zapytania na sekundę"
           store_geodata: "Geokoduj nowe punkty od razu"
+          backup_export_frequency: "Harmonogram"
+          backup_export_path: "Katalog"
+          backup_export_retention: "Liczba kopii do zachowania"
+          backup_database_dump: "Zrzut również bazy danych"
+          backup_export_frequency_hint: "Jak często eksportowane są dane każdego użytkownika. Sprawdzenie uruchamia się codziennie o 04:15."
+          backup_export_path_hint: "Ścieżka bezwzględna wewnątrz kontenera. Katalog musi już istnieć, na przykład zamontowany udział, i nigdy nie jest tworzony automatycznie."
+          backup_export_retention_hint: "Liczba najnowszych kopii zachowywanych dla każdego użytkownika. Starsze pliki są usuwane."
+          backup_database_dump_hint: "Dodaje pg_dump całej bazy danych do każdego uruchomienia."
           host_hint: "Sama nazwa hosta z opcjonalnym portem, np. photon.example.com:2322"
           rps_hint: "Pozostaw puste, aby nie stosować limitu. Ustaw wartość, na jaką pozwala Twój serwer lub plan."
           api_key_keep_hint: "Pozostaw puste, aby zachować zapisany klucz."
@@ -57,12 +93,19 @@ pl:
         pinned: "Odrzucono: ustalone przez %{variables}."
         host_invalid: "Host musi być samą nazwą hosta z opcjonalnym portem lub ścieżką, bez spacji."
         chibigeo_key_required: "ChibiGeo wymaga klucza API. Darmowy plan Hobby obejmuje 2500 zapytań dziennie — odbierz swój klucz na chibigeo.com."
+        backup_frequency_invalid: "Częstotliwość kopii zapasowych musi być jedną z wartości: %{allowed}."
+        backup_path_invalid: "Ścieżka kopii zapasowych musi być bezwzględna i nie może zawierać segmentów \"..\"."
+        backup_retention_invalid: "Liczba kopii do zachowania musi być liczbą całkowitą od %{min} do %{max}."
       test_geocoding:
         not_configured: "Nie skonfigurowano dostawcy geokodowania. Najpierw zapisz dostawcę."
         success: "Udało się! Twój dostawca rozpoznał testowe współrzędne jako: %{place}."
         empty: "Dostawca odpowiedział, ale nie zwrócił wyników dla testowych współrzędnych."
         failure: "Test nie powiódł się: %{error}"
         rate_limited: "Limit zapytań dostawcy jest w tej chwili wyczerpany — spróbuj ponownie za chwilę."
+      run_backup:
+        started: "Rozpoczęto tworzenie kopii. Może to potrwać kilka minut, odśwież stronę, aby zobaczyć wynik."
+        in_progress: "Kopia jest już tworzona."
+        unavailable: "Nie rozpoczęto tworzenia kopii: %{reason}."
   activerecord:
     errors:
       models:
@@ -3877,6 +3920,16 @@ pl:
         weekday_preference: Podróżujesz częściej w dni robocze niż w weekendy
         with_suggestion: "%{insight} %{suggestion}"
   jobs:
+    backups:
+      run:
+        unavailable_title: "Pominięto zaplanowaną kopię zapasową"
+        unavailable_content: "Katalog kopii zapasowych jest nieużyteczny: %{reason}."
+      user_export:
+        failed_title: "Zaplanowana kopia zapasowa nie powiodła się"
+        failed_content: "Zaplanowana kopia zapasowa dla %{email} nie powiodła się: %{error}"
+      database_dump:
+        failed_title: "Zaplanowany zrzut bazy danych nie powiódł się"
+        failed_content: "Zaplanowany zrzut bazy danych nie powiódł się: %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: Synchronizacja TeslaMateApi nie powiodła się

@@ -39,6 +39,34 @@ zh:
           locationiq: "托管服务。需要 API 密钥。"
         points:
           title: "轨迹点"
+        backups:
+          title: "备份"
+          description: "按计划导出所有用户的数据，写入你挂载到容器中的目录。可选包含完整数据库转储，用于精确恢复。"
+          destination_ok: "备份将写入 %{path}。"
+          destination_error: "备份目录不可用：%{reason}。"
+          run_now: "立即备份"
+          starting: "正在启动…"
+          running: "备份正在进行。"
+          recent: "最近的备份"
+          none: "还没有备份。"
+          columns:
+            started: "开始时间"
+            kind: "类型"
+            file: "文件"
+            size: "大小"
+            status: "状态"
+          kinds:
+            user_export: "用户数据"
+            database_dump: "数据库"
+          statuses:
+            running: "进行中"
+            completed: "已完成"
+            failed: "失败"
+          frequencies:
+            "off": "关闭"
+            daily: "每天"
+            weekly: "每周"
+            monthly: "每月"
         fields:
           photon_api_host: "主机"
           photon_api_key: "API 密钥"
@@ -50,6 +78,14 @@ zh:
           locationiq_api_key: "API 密钥"
           reverse_geocoding_rps: "每秒请求数"
           store_geodata: "立即对新轨迹点进行地理编码"
+          backup_export_frequency: "计划"
+          backup_export_path: "目录"
+          backup_export_retention: "保留的备份数"
+          backup_database_dump: "同时转储数据库"
+          backup_export_frequency_hint: "每位用户的数据导出频率。检查每天 04:15 运行。"
+          backup_export_path_hint: "容器内的绝对路径。该目录必须已存在，例如已挂载的共享，不会自动创建。"
+          backup_export_retention_hint: "每位用户保留的最新备份数量。更早的文件会被删除。"
+          backup_database_dump_hint: "每次备份运行时附加整个数据库的 pg_dump。"
           host_hint: "仅主机名，可附带端口，例如 photon.example.com:2322"
           rps_hint: "留空表示不限制。请设置为您的服务器或套餐允许的值。"
           api_key_keep_hint: "留空则保留已保存的密钥。"
@@ -59,12 +95,19 @@ zh:
         pinned: "已拒绝：由 %{variables} 固定。"
         host_invalid: "主机必须是单纯的主机名，可附带端口或路径，不能包含空格。"
         chibigeo_key_required: "ChibiGeo 需要 API 密钥。免费的 Hobby 套餐每天包含 2,500 次查询——请在 chibigeo.com 获取密钥。"
+        backup_frequency_invalid: "备份频率必须是以下之一：%{allowed}。"
+        backup_path_invalid: "备份路径必须是不含“..”片段的绝对路径。"
+        backup_retention_invalid: "保留的备份数必须是 %{min} 到 %{max} 之间的整数。"
       test_geocoding:
         not_configured: "尚未配置地理编码提供商。请先保存一个提供商。"
         success: "您的提供商将测试坐标解析为 %{place}。"
         empty: "提供商已响应，但测试坐标没有返回结果。"
         failure: "测试失败：%{error}"
         rate_limited: "提供商的速率限制当前繁忙——请稍后再试。"
+      run_backup:
+        started: "备份已开始。可能需要几分钟，请刷新页面查看结果。"
+        in_progress: "已有备份正在进行。"
+        unavailable: "备份未启动：%{reason}。"
   auth:
     account_links:
       challenge:
@@ -3882,6 +3925,16 @@ zh:
         weekday_preference: 您在工作日出行的次数比周末多
         with_suggestion: "%{insight} %{suggestion}"
   jobs:
+    backups:
+      run:
+        unavailable_title: "已跳过计划备份"
+        unavailable_content: "备份目录不可用：%{reason}。"
+      user_export:
+        failed_title: "计划备份失败"
+        failed_content: "%{email} 的计划备份失败：%{error}"
+      database_dump:
+        failed_title: "计划数据库转储失败"
+        failed_content: "计划数据库转储失败：%{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: TeslaMateApi 同步失败

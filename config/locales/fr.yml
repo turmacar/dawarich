@@ -38,6 +38,34 @@ fr:
           locationiq: "Service hébergé. Nécessite une clé d'API."
         points:
           title: "Points"
+        backups:
+          title: "Sauvegardes"
+          description: "Exportations planifiées des données de tous les utilisateurs, écrites dans un répertoire que vous montez dans le conteneur. Inclut en option un dump complet de la base de données pour des restaurations exactes."
+          destination_ok: "Les sauvegardes sont écrites dans %{path}."
+          destination_error: "Le répertoire de sauvegarde est inutilisable : %{reason}."
+          run_now: "Sauvegarder maintenant"
+          starting: "Démarrage…"
+          running: "Une sauvegarde est en cours."
+          recent: "Sauvegardes récentes"
+          none: "Aucune sauvegarde pour l'instant."
+          columns:
+            started: "Début"
+            kind: "Type"
+            file: "Fichier"
+            size: "Taille"
+            status: "Statut"
+          kinds:
+            user_export: "Données utilisateur"
+            database_dump: "Base de données"
+          statuses:
+            running: "En cours"
+            completed: "Terminée"
+            failed: "Échouée"
+          frequencies:
+            "off": "Désactivée"
+            daily: "Quotidienne"
+            weekly: "Hebdomadaire"
+            monthly: "Mensuelle"
         fields:
           photon_api_host: "Hôte"
           photon_api_key: "Clé d'API"
@@ -49,6 +77,14 @@ fr:
           locationiq_api_key: "Clé d'API"
           reverse_geocoding_rps: "Requêtes par seconde"
           store_geodata: "Géocoder immédiatement les nouveaux points"
+          backup_export_frequency: "Planification"
+          backup_export_path: "Répertoire"
+          backup_export_retention: "Sauvegardes à conserver"
+          backup_database_dump: "Sauvegarder aussi la base de données"
+          backup_export_frequency_hint: "Fréquence d'exportation des données de chaque utilisateur. La vérification s'exécute chaque jour à 04:15."
+          backup_export_path_hint: "Chemin absolu dans le conteneur. Il doit déjà exister, par exemple un partage monté, et n'est jamais créé pour vous."
+          backup_export_retention_hint: "Nombre de sauvegardes les plus récentes conservées par utilisateur. Les fichiers plus anciens sont supprimés."
+          backup_database_dump_hint: "Ajoute un pg_dump de toute la base de données à chaque exécution."
           host_hint: "Nom d'hôte avec port facultatif, par ex. photon.example.com:2322"
           rps_hint: "Laissez vide pour ne pas limiter. Indiquez ce que votre serveur ou votre offre autorise."
           api_key_keep_hint: "Laissez vide pour conserver la clé enregistrée."
@@ -58,12 +94,19 @@ fr:
         pinned: "Refusé : fixé par %{variables}."
         host_invalid: "L'hôte doit être un simple nom d'hôte, avec un port ou un chemin facultatif, sans espaces."
         chibigeo_key_required: "ChibiGeo nécessite une clé d'API. Le forfait gratuit Hobby inclut 2 500 requêtes par jour : obtenez votre clé sur chibigeo.com."
+        backup_frequency_invalid: "La fréquence des sauvegardes doit être l'une des suivantes : %{allowed}."
+        backup_path_invalid: "Le chemin de sauvegarde doit être un chemin absolu sans segment \"..\"."
+        backup_retention_invalid: "Le nombre de sauvegardes à conserver doit être un entier entre %{min} et %{max}."
       test_geocoding:
         not_configured: "Aucun fournisseur de géocodage n'est configuré. Enregistrez d'abord un fournisseur."
         success: "Votre fournisseur a résolu les coordonnées de test en : %{place}."
         empty: "Le fournisseur a répondu, mais n'a renvoyé aucun résultat pour les coordonnées de test."
         failure: "Échec du test : %{error}"
         rate_limited: "La limite de requêtes du fournisseur est atteinte pour le moment. Réessayez dans un instant."
+      run_backup:
+        started: "Sauvegarde démarrée. Elle peut prendre quelques minutes, actualisez la page pour voir le résultat."
+        in_progress: "Une sauvegarde est déjà en cours."
+        unavailable: "Sauvegarde non démarrée : %{reason}."
   route_videos:
     route_video:
       download: "Télécharger le MP4"
@@ -4981,6 +5024,16 @@ fr:
         weekday_preference: Vous voyagez plus en semaine que les week-ends
         with_suggestion: "%{insight} %{suggestion}"
   jobs:
+    backups:
+      run:
+        unavailable_title: "Sauvegarde planifiée ignorée"
+        unavailable_content: "Le répertoire de sauvegarde est inutilisable : %{reason}."
+      user_export:
+        failed_title: "Échec de la sauvegarde planifiée"
+        failed_content: "La sauvegarde planifiée de %{email} a échoué : %{error}"
+      database_dump:
+        failed_title: "Échec du dump planifié de la base de données"
+        failed_content: "Le dump planifié de la base de données a échoué : %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: La synchronisation TeslaMateApi a échoué
