@@ -175,6 +175,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_02_120000) do
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.jsonb "verification"
+    t.datetime "verified_at"
     t.index ["export_id"], name: "index_backup_runs_on_export_id"
     t.index ["kind", "started_at"], name: "index_backup_runs_on_kind_and_started_at"
     t.index ["user_id"], name: "index_backup_runs_on_user_id"

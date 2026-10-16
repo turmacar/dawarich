@@ -35,6 +35,7 @@ Rails.application.routes.draw do
         post :test_geocoding
         post :run_backup
         post :import_backup
+        post :verify_backup
       end
     end
   end

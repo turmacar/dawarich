@@ -58,8 +58,17 @@
                   <% if run.status_failed? && run.error.present? %>
                     <span class="block max-w-xs text-xs text-base-content/70 [overflow-wrap:anywhere]"><%= run.error %></span>
                   <% end %>
+                  <% if run.verifiable? && run.verification_state %>
+                    <%= render 'admin/settings/backup_verification', run: run %>
+                  <% end %>
                 </td>
                 <td class="text-right whitespace-nowrap">
+                  <% if run.verifiable? %>
+                    <%= button_to t('admin.settings.show.backups.verify'), verify_backup_admin_settings_path(backup_run_id: run.id),
+                                  class: 'btn btn-xs btn-outline', form: { class: 'inline-block' },
+                                  disabled: @backup_verifying || @backup_destination_error.present?,
+                                  data: { turbo_confirm: t('admin.settings.show.backups.verify_confirm') } %>
+                  <% end %>
                   <% if run.kind_user_export? && run.status_completed? && run.user %>
                     <%= button_to t('admin.settings.show.backups.import'), import_backup_admin_settings_path(backup_run_id: run.id),
                                   class: 'btn btn-xs btn-outline', form: { class: 'inline-block' },
