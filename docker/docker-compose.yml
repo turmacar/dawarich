@@ -56,6 +56,8 @@ services:
       - dawarich_watched:/var/app/tmp/imports/watched
       - dawarich_storage:/var/app/storage
       - dawarich_db_data:/dawarich_db_data
+      ### Scheduled backups: mount the directory BACKUP_EXPORT_PATH points to.
+      # - ./backups:/backups
     networks:
       - dawarich
     ports:
@@ -84,6 +86,11 @@ services:
       RAILS_LOG_TO_STDOUT: ${RAILS_LOG_TO_STDOUT:-true}
       SELF_HOSTED: ${SELF_HOSTED:-true}
       STORE_GEODATA: ${STORE_GEODATA:-true}
+      ### Scheduled backups, also configurable in Settings → Instance → Backups.
+      # BACKUP_EXPORT_FREQUENCY: ${BACKUP_EXPORT_FREQUENCY:-off}
+      # BACKUP_EXPORT_PATH: ${BACKUP_EXPORT_PATH:-/backups}
+      # BACKUP_EXPORT_RETENTION: ${BACKUP_EXPORT_RETENTION:-7}
+      # BACKUP_DATABASE_DUMP: ${BACKUP_DATABASE_DUMP:-false}
       # One preloaded Puma worker is plenty for a household instance and
       # halves idle memory. Raise for busier instances.
       WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
@@ -122,6 +129,8 @@ services:
       - dawarich_public:/var/app/public
       - dawarich_watched:/var/app/tmp/imports/watched
       - dawarich_storage:/var/app/storage
+      ### Scheduled backups: mount the directory BACKUP_EXPORT_PATH points to.
+      # - ./backups:/backups
     networks:
       - dawarich
     stdin_open: true
@@ -150,6 +159,11 @@ services:
       RAILS_LOG_TO_STDOUT: ${RAILS_LOG_TO_STDOUT:-true}
       SELF_HOSTED: ${SELF_HOSTED:-true}
       STORE_GEODATA: ${STORE_GEODATA:-true}
+      ### Scheduled backups, also configurable in Settings → Instance → Backups.
+      # BACKUP_EXPORT_FREQUENCY: ${BACKUP_EXPORT_FREQUENCY:-off}
+      # BACKUP_EXPORT_PATH: ${BACKUP_EXPORT_PATH:-/backups}
+      # BACKUP_EXPORT_RETENTION: ${BACKUP_EXPORT_RETENTION:-7}
+      # BACKUP_DATABASE_DUMP: ${BACKUP_DATABASE_DUMP:-false}
       ### OTP encryption keys are required if you want to use 2FA
       # OTP_ENCRYPTION_PRIMARY_KEY: ${OTP_ENCRYPTION_PRIMARY_KEY:-}
       # OTP_ENCRYPTION_DETERMINISTIC_KEY: ${OTP_ENCRYPTION_DETERMINISTIC_KEY:-}
