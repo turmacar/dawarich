@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'open3'
-
 # Dumps the whole database with pg_dump in custom format, for exact restores with pg_restore.
 class Backups::DatabaseDumpJob < ApplicationJob
   queue_as :exports
@@ -14,7 +12,7 @@ class Backups::DatabaseDumpJob < ApplicationJob
 
     begin
       directory = Backups::Destination.new.subdirectory('database')
-      result = Backups::Writer.new(directory).write(filename) { |_file, partial| dump_to(partial) }
+      result = Backups::Writer.new(directory).write(filename) { |_file, partial| Backups::Postgres.dump(partial) }
       run.complete!(file_name: filename, bytes: result.bytes)
       prune(directory)
     rescue StandardError => e
@@ -25,23 +23,6 @@ class Backups::DatabaseDumpJob < ApplicationJob
   end
 
   private
-
-  def dump_to(path)
-    config = ActiveRecord::Base.connection_db_config.configuration_hash
-    # The password travels in the environment, never on the command line.
-    env = config[:password].present? ? { 'PGPASSWORD' => config[:password].to_s } : {}
-
-    _out, err, status = Open3.capture3(env, *command(config, path))
-    raise "pg_dump failed: #{err.to_s.strip.truncate(500)}" unless status.success?
-  end
-
-  def command(config, path)
-    args = ['pg_dump', '--format=custom', '--file', path.to_s]
-    args += ['--host', config[:host].to_s] if config[:host].present?
-    args += ['--port', config[:port].to_s] if config[:port].present?
-    args += ['--username', config[:username].to_s] if config[:username].present?
-    args << config[:database].to_s
-  end
 
   def prune(directory)
     Backups::Retention.new(

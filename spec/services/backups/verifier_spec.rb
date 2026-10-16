@@ -26,7 +26,7 @@ RSpec.describe Backups::Verifier, :non_transactional do
 
   def dump_database
     FileUtils.mkdir_p(dump_path.dirname)
-    Backups::DatabaseDumpJob.new.send(:dump_to, dump_path)
+    Backups::Postgres.dump(dump_path)
   end
 
   before { FileUtils.mkdir_p(dir.join('database')) }

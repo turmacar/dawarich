@@ -8,7 +8,7 @@ class BackupRun < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :export, optional: true
 
-  enum :kind, { user_export: 0, database_dump: 1 }, prefix: :kind
+  enum :kind, { user_export: 0, database_dump: 1, database_restore: 2 }, prefix: :kind
   enum :status, { running: 0, completed: 1, failed: 2 }, prefix: :status
 
   validates :kind, :started_at, presence: true
