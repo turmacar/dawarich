@@ -13,7 +13,8 @@ module Admin
       'nominatim' => %i[nominatim_api_host nominatim_api_key nominatim_api_use_https],
       'locationiq' => %i[locationiq_api_key],
       'rate_limit' => %i[reverse_geocoding_rps],
-      'points' => %i[store_geodata]
+      'points' => %i[store_geodata],
+      'backups' => %i[backup_export_frequency backup_export_path backup_export_retention backup_database_dump]
     }.freeze
 
     before_action :authenticate_user!
@@ -26,12 +27,15 @@ module Admin
       @geocoding = Geocoding::Config.resolved_config
       @legacy_user_geocoding = ServiceSetting.service_geocoding.where(active: true).exists?
       @section = params[:section].presence_in(SECTIONS.keys) || default_section
+      load_backup_status if @section == 'backups'
     end
 
     def update
       back = admin_settings_path(section: params[:section].presence_in(SECTIONS.keys))
-      input = InstanceSettings::GeocodingInput.new(submitted_values)
-      return redirect_to back, alert: input.errors.join(' '), status: :see_other unless input.valid?
+      geocoding_input = InstanceSettings::GeocodingInput.new(submitted_values)
+      input = InstanceSettings::BackupInput.new(geocoding_input.values)
+      errors = geocoding_input.errors + input.errors
+      return redirect_to back, alert: errors.join(' '), status: :see_other if errors.any?
 
       refused = apply_settings(input.values)
 
@@ -51,7 +55,33 @@ module Admin
       end
     end
 
+    def run_backup
+      Backups::Destination.new.root
+      return run_backup_response(:alert, t('admin.settings.run_backup.in_progress')) if BackupRun.active.exists?
+
+      Backups::RunJob.perform_later(force: true)
+      run_backup_response(:notice, t('admin.settings.run_backup.started'))
+    rescue Backups::Destination::Unavailable => e
+      run_backup_response(:alert, t('admin.settings.run_backup.unavailable', reason: e.message))
+    end
+
     private
+
+    def run_backup_response(type, message)
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: stream_flash(type == :notice ? :notice : :error, message) }
+        format.html { redirect_to admin_settings_path(section: 'backups'), type => message, status: :see_other }
+      end
+    end
+
+    def load_backup_status
+      @backup_runs = BackupRun.includes(:user).recent.limit(10)
+      @backup_running = BackupRun.active.exists?
+      @backup_destination = Backups::Destination.new
+      @backup_destination.root
+    rescue Backups::Destination::Unavailable => e
+      @backup_destination_error = e.message
+    end
 
     def default_section
       @geocoding.enabled? ? @geocoding.provider.to_s : SECTIONS.keys.first

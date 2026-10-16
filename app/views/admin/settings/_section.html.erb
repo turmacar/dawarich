@@ -33,6 +33,10 @@
         <% end %>
       <% end %>
 
+      <% if section == 'backups' %>
+        <p class="text-sm text-base-content/70 [text-wrap:pretty]"><%= t('admin.settings.show.backups.description') %></p>
+      <% end %>
+
       <div class="divide-y divide-base-content/10">
         <% keys.each do |key| %>
           <%= render 'admin/settings/setting_field', setting: @settings.fetch(key), settings: @settings,
@@ -48,4 +52,6 @@
       <% end %>
     </div>
   <% end %>
+
+  <%= render 'admin/settings/backups_status' if section == 'backups' %>
 </div>
