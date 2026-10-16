@@ -59,8 +59,9 @@ require 'zip'
 class Users::ExportData
   FORMAT_VERSION = 2
 
-  def initialize(user)
+  def initialize(user, notify: true)
     @user = user
+    @notify = notify
     @monthly_files = { points: [], visits: [], stats: [], tracks: [], digests: [] }
     @entity_counts = nil
   end
@@ -95,8 +96,7 @@ class Users::ExportData
 
       export_record.update!(status: :completed)
 
-      create_success_notification
-
+      create_success_notification if @notify
       export_record
     rescue StandardError => e
       export_record&.update!(status: :failed)

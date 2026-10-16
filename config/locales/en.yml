@@ -3807,6 +3807,13 @@ en:
         weekday_preference: You travel more on weekdays than weekends
         with_suggestion: "%{insight} %{suggestion}"
   jobs:
+    backups:
+      run:
+        unavailable_title: Scheduled backup skipped
+        unavailable_content: 'The backup directory is not usable: %{reason}.'
+      user_export:
+        failed_title: Scheduled backup failed
+        failed_content: 'The scheduled backup for %{email} failed: %{error}'
     tesla_mate:
       sync_job:
         teslamate_sync_failed: TeslaMateApi sync failed

@@ -75,6 +75,11 @@ lite_archival_warning_job:
   class: "Lite::ArchivalWarningJob"
   queue: archival
 
+backups_run_job:
+  cron: "15 4 * * *" # every day at 04:15, runs only when the configured frequency is due
+  class: "Backups::RunJob"
+  queue: exports
+
 # Raw data archival pipeline — enable when ready for production use.
 # Pipeline: archive (1st) → verify (daily) → clear (8th, 7 days after archive).
 # See https://github.com/Freika/dawarich/issues/XXXX for tracking.
