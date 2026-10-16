@@ -37,6 +37,34 @@ de:
           locationiq: "Gehosteter Dienst. Benötigt einen API-Schlüssel."
         points:
           title: "Punkte"
+        backups:
+          title: "Datensicherungen"
+          description: "Geplante Exporte der Daten aller Nutzer in ein Verzeichnis, das du in den Container einbindest. Optional mit vollständigem Datenbank-Dump für exakte Wiederherstellungen."
+          destination_ok: "Sicherungen werden nach %{path} geschrieben."
+          destination_error: "Das Sicherungsverzeichnis ist nicht nutzbar: %{reason}."
+          run_now: "Jetzt sichern"
+          starting: "Wird gestartet…"
+          running: "Eine Sicherung läuft."
+          recent: "Letzte Sicherungen"
+          none: "Noch keine Sicherungen."
+          columns:
+            started: "Gestartet"
+            kind: "Typ"
+            file: "Datei"
+            size: "Größe"
+            status: "Status"
+          kinds:
+            user_export: "Nutzerdaten"
+            database_dump: "Datenbank"
+          statuses:
+            running: "Läuft"
+            completed: "Abgeschlossen"
+            failed: "Fehlgeschlagen"
+          frequencies:
+            "off": "Aus"
+            daily: "Täglich"
+            weekly: "Wöchentlich"
+            monthly: "Monatlich"
         fields:
           photon_api_host: "Host"
           photon_api_key: "API-Schlüssel"
@@ -48,6 +76,14 @@ de:
           locationiq_api_key: "API-Schlüssel"
           reverse_geocoding_rps: "Anfragen pro Sekunde"
           store_geodata: "Neue Punkte sofort geokodieren"
+          backup_export_frequency: "Zeitplan"
+          backup_export_path: "Verzeichnis"
+          backup_export_retention: "Aufzubewahrende Sicherungen"
+          backup_database_dump: "Datenbank ebenfalls sichern"
+          backup_export_frequency_hint: "Wie oft die Daten jedes Nutzers exportiert werden. Die Prüfung läuft täglich um 04:15 Uhr."
+          backup_export_path_hint: "Absoluter Pfad im Container. Er muss bereits existieren, zum Beispiel eine eingebundene Freigabe, und wird nie automatisch angelegt."
+          backup_export_retention_hint: "Neueste Sicherungen pro Nutzer, die behalten werden. Ältere Dateien werden gelöscht."
+          backup_database_dump_hint: "Fügt jedem Sicherungslauf einen pg_dump der gesamten Datenbank hinzu."
           host_hint: "Hostname mit optionalem Port, z. B. photon.example.com:2322"
           rps_hint: "Leer lassen für kein Limit. Trage ein, was dein Server oder Tarif erlaubt."
           api_key_keep_hint: "Leer lassen, um den gespeicherten Schlüssel zu behalten."
@@ -57,12 +93,19 @@ de:
         pinned: "Abgelehnt: festgelegt durch %{variables}."
         host_invalid: "Der Host muss ein reiner Hostname mit optionalem Port oder Pfad sein, ohne Leerzeichen."
         chibigeo_key_required: "ChibiGeo benötigt einen API-Schlüssel. Der kostenlose Hobby-Tarif umfasst 2.500 Abfragen pro Tag – deinen Schlüssel bekommst du auf chibigeo.com."
+        backup_frequency_invalid: "Die Sicherungshäufigkeit muss einer dieser Werte sein: %{allowed}."
+        backup_path_invalid: "Der Sicherungspfad muss ein absoluter Pfad ohne \"..\"-Segmente sein."
+        backup_retention_invalid: "Die Anzahl der aufzubewahrenden Sicherungen muss eine ganze Zahl zwischen %{min} und %{max} sein."
       test_geocoding:
         not_configured: "Es ist kein Geokodierungsanbieter konfiguriert. Speichere zuerst einen Anbieter."
         success: "Dein Anbieter hat die Testkoordinaten aufgelöst zu: %{place}."
         empty: "Der Anbieter hat geantwortet, aber keine Ergebnisse für die Testkoordinaten geliefert."
         failure: "Test fehlgeschlagen: %{error}"
         rate_limited: "Das Anfragelimit des Anbieters ist gerade ausgeschöpft. Versuche es gleich noch einmal."
+      run_backup:
+        started: "Sicherung gestartet. Sie kann einige Minuten dauern, lade die Seite neu, um das Ergebnis zu sehen."
+        in_progress: "Es läuft bereits eine Sicherung."
+        unavailable: "Sicherung nicht gestartet: %{reason}."
   route_videos:
     route_video:
       download: "MP4 herunterladen"
@@ -3830,6 +3873,16 @@ de:
         weekday_preference: Du reist mehr an Werktagen als an Wochenenden
         with_suggestion: "%{insight} %{suggestion}"
   jobs:
+    backups:
+      run:
+        unavailable_title: "Geplante Sicherung übersprungen"
+        unavailable_content: "Das Sicherungsverzeichnis ist nicht nutzbar: %{reason}."
+      user_export:
+        failed_title: "Geplante Sicherung fehlgeschlagen"
+        failed_content: "Die geplante Sicherung für %{email} ist fehlgeschlagen: %{error}"
+      database_dump:
+        failed_title: "Geplanter Datenbank-Dump fehlgeschlagen"
+        failed_content: "Der geplante Datenbank-Dump ist fehlgeschlagen: %{error}"
     tesla_mate:
       sync_job:
         teslamate_sync_failed: TeslaMateApi-Synchronisation fehlgeschlagen

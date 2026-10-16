@@ -156,6 +156,32 @@ RSpec.describe 'Admin::Settings backups' do
     end
   end
 
+  describe 'locale parity' do
+    it 'defines the backup strings in every shipped locale' do
+      keys = %w[admin.settings.show.backups.title admin.settings.show.backups.frequencies.daily
+                admin.settings.show.backups.statuses.failed admin.settings.show.fields.backup_export_path_hint
+                admin.settings.update.backup_path_invalid admin.settings.run_backup.started
+                jobs.backups.run.unavailable_title jobs.backups.database_dump.failed_content]
+
+      %i[ca de es fr pl zh].product(keys).each do |locale, key|
+        expect(I18n.t(key, locale: locale, default: nil)).to be_present, "missing #{key} for #{locale}"
+      end
+    end
+
+    it 'keeps every placeholder the English strings use' do
+      %w[admin.settings.show.backups.destination_error admin.settings.update.backup_retention_invalid
+         jobs.backups.user_export.failed_content].each do |key|
+        placeholders = I18n.t(key, locale: :en).scan(/%\{(\w+)\}/).flatten.sort
+
+        %i[ca de es fr pl zh].each do |locale|
+          found = I18n.t(key, locale: locale).scan(/%\{(\w+)\}/).flatten.sort
+
+          expect(found).to eq(placeholders), "#{key} placeholders differ in #{locale}"
+        end
+      end
+    end
+  end
+
   describe 'POST run_backup' do
     it 'enqueues a forced backup when the directory is usable' do
       store('backup_export_path', @dir)
