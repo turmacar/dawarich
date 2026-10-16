@@ -40,6 +40,7 @@
               <th><%= t('admin.settings.show.backups.columns.file') %></th>
               <th class="text-right"><%= t('admin.settings.show.backups.columns.size') %></th>
               <th><%= t('admin.settings.show.backups.columns.status') %></th>
+              <th><span class="sr-only"><%= t('admin.settings.show.backups.columns.actions') %></span></th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +57,13 @@
                   <%= t("admin.settings.show.backups.statuses.#{run.status}") %>
                   <% if run.status_failed? && run.error.present? %>
                     <span class="block max-w-xs text-xs text-base-content/70 [overflow-wrap:anywhere]"><%= run.error %></span>
+                  <% end %>
+                </td>
+                <td class="text-right whitespace-nowrap">
+                  <% if run.kind_user_export? && run.status_completed? && run.user %>
+                    <%= button_to t('admin.settings.show.backups.import'), import_backup_admin_settings_path(backup_run_id: run.id),
+                                  class: 'btn btn-xs btn-outline', form: { class: 'inline-block' },
+                                  data: { turbo_confirm: t('admin.settings.show.backups.import_confirm', email: run.user.email) } %>
                   <% end %>
                 </td>
               </tr>

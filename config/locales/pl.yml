@@ -47,12 +47,15 @@ pl:
           running: "Trwa tworzenie kopii."
           recent: "Ostatnie kopie"
           none: "Brak kopii zapasowych."
+          import: "Importuj"
+          import_confirm: "Zaimportować to archiwum na konto %{email}? Zarchiwizowane dane zostaną dodane do tego konta."
           columns:
             started: "Start"
             kind: "Typ"
             file: "Plik"
             size: "Rozmiar"
             status: "Status"
+            actions: "Akcje"
           kinds:
             user_export: "Dane użytkownika"
             database_dump: "Baza danych"
@@ -109,6 +112,12 @@ pl:
         started: "Rozpoczęto tworzenie kopii. Może to potrwać kilka minut, odśwież stronę, aby zobaczyć wynik."
         in_progress: "Kopia jest już tworzona."
         unavailable: "Nie rozpoczęto tworzenia kopii: %{reason}."
+      import_backup:
+        started: "Rozpoczęto import dla %{email}. Dostaniesz powiadomienie po zakończeniu."
+        not_found: "Nie znaleziono tej kopii."
+        not_an_archive: "Można importować tylko ukończone kopie danych użytkownika."
+        user_gone: "Konto, z którego wykonano tę kopię, już nie istnieje."
+        file_missing: "Pliku kopii nie ma już w katalogu kopii zapasowych."
   activerecord:
     errors:
       models:
@@ -228,6 +237,7 @@ pl:
         data_tools: Narzędzia danych
         export_a_backup_or_restore_a_previous_archive: Wyeksportuj kopię zapasową lub przywróć wcześniejsze archiwum.
         import_my_data: Importuj moje dane
+        import_from_automated_backups: Importuj z automatycznych kopii zapasowych
         danger_zone: Strefa niebezpieczna
         deleting_your_account_is_permanent_and_removes_all_your_data: Usunięcie konta jest nieodwracalne i powoduje usunięcie wszystkich danych.
         cancel_my_account: Usuń moje konto

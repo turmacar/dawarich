@@ -47,12 +47,15 @@ de:
           running: "Eine Sicherung läuft."
           recent: "Letzte Sicherungen"
           none: "Noch keine Sicherungen."
+          import: "Importieren"
+          import_confirm: "Dieses Archiv in das Konto von %{email} importieren? Die archivierten Daten werden diesem Konto hinzugefügt."
           columns:
             started: "Gestartet"
             kind: "Typ"
             file: "Datei"
             size: "Größe"
             status: "Status"
+            actions: "Aktionen"
           kinds:
             user_export: "Nutzerdaten"
             database_dump: "Datenbank"
@@ -109,6 +112,12 @@ de:
         started: "Sicherung gestartet. Sie kann einige Minuten dauern, lade die Seite neu, um das Ergebnis zu sehen."
         in_progress: "Es läuft bereits eine Sicherung."
         unavailable: "Sicherung nicht gestartet: %{reason}."
+      import_backup:
+        started: "Import für %{email} gestartet. Du wirst benachrichtigt, wenn er fertig ist."
+        not_found: "Diese Sicherung wurde nicht gefunden."
+        not_an_archive: "Nur abgeschlossene Nutzerdaten-Sicherungen können importiert werden."
+        user_gone: "Das Konto, aus dem diese Sicherung stammt, existiert nicht mehr."
+        file_missing: "Die Sicherungsdatei befindet sich nicht mehr im Sicherungsverzeichnis."
   route_videos:
     route_video:
       download: "MP4 herunterladen"
@@ -275,6 +284,7 @@ de:
         data_tools: Daten-Tools
         export_a_backup_or_restore_a_previous_archive: Exportiere eine Sicherung oder stelle ein vorheriges Archiv wieder her.
         import_my_data: Meine Daten importieren
+        import_from_automated_backups: Aus automatischen Sicherungen importieren
         danger_zone: Gefahrenzone
         deleting_your_account_is_permanent_and_removes_all_your_data: Das Löschen deines Kontos ist endgültig und entfernt alle deine Daten.
         cancel_my_account: Mein Konto löschen

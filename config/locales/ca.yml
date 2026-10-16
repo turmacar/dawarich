@@ -47,12 +47,15 @@ ca:
           running: "Hi ha una còpia en curs."
           recent: "Còpies recents"
           none: "Encara no hi ha còpies."
+          import: "Importa"
+          import_confirm: "Vols importar aquest arxiu al compte de %{email}? Afegeix les dades arxivades a aquest compte."
           columns:
             started: "Inici"
             kind: "Tipus"
             file: "Fitxer"
             size: "Mida"
             status: "Estat"
+            actions: "Accions"
           kinds:
             user_export: "Dades d'usuari"
             database_dump: "Base de dades"
@@ -109,6 +112,12 @@ ca:
         started: "Còpia iniciada. Pot trigar uns minuts; actualitza la pàgina per veure el resultat."
         in_progress: "Ja hi ha una còpia en curs."
         unavailable: "No s'ha iniciat la còpia: %{reason}."
+      import_backup:
+        started: "S'ha iniciat la importació per a %{email}. Rebràs una notificació quan acabi."
+        not_found: "No s'ha trobat aquesta còpia."
+        not_an_archive: "Només es poden importar còpies de dades d'usuari completades."
+        user_gone: "El compte del qual es va fer aquesta còpia ja no existeix."
+        file_missing: "El fitxer de la còpia ja no és al directori de còpies."
   activerecord:
     errors:
       models:
@@ -228,6 +237,7 @@ ca:
         data_tools: Eines de dades
         export_a_backup_or_restore_a_previous_archive: Exporta una còpia de seguretat o restaura un arxiu anterior.
         import_my_data: Importa les meves dades
+        import_from_automated_backups: Importa des de les còpies automàtiques
         danger_zone: Zona de perill
         deleting_your_account_is_permanent_and_removes_all_your_data: Suprimir el teu compte és permanent i elimina totes les teves dades.
         cancel_my_account: Cancel·la el meu compte
