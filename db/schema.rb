@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_14_120100) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_16_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -89,6 +89,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_120100) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_areas_on_user_id"
+  end
+
+  create_table "backup_runs", force: :cascade do |t|
+    t.bigint "bytes"
+    t.datetime "created_at", null: false
+    t.text "error"
+    t.bigint "export_id"
+    t.string "file_name"
+    t.datetime "finished_at"
+    t.integer "kind", null: false
+    t.datetime "started_at", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["export_id"], name: "index_backup_runs_on_export_id"
+    t.index ["kind", "started_at"], name: "index_backup_runs_on_kind_and_started_at"
+    t.index ["user_id"], name: "index_backup_runs_on_user_id"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -868,6 +885,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_120100) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "areas", "users"
+  add_foreign_key "backup_runs", "exports", on_delete: :nullify
+  add_foreign_key "backup_runs", "users", on_delete: :nullify
   add_foreign_key "digests", "users"
   add_foreign_key "families", "users", column: "creator_id"
   add_foreign_key "family_invitations", "families"
