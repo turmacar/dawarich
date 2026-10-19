@@ -76,15 +76,32 @@ RSpec.describe Backups::Verifier, :non_transactional do
 
     it 'fails for a dump made by newer code and warns for older code' do
       dump_database
-      dumped = verifier.code_version
+      versions = verifier.code_versions
 
-      allow(verifier).to receive(:code_version).and_return(dumped - 1)
+      allow(verifier).to receive(:code_versions).and_return(versions - [versions.max])
       expect(verifier.call['problems']).to include({ 'code' => 'newer_schema' })
 
-      allow(verifier).to receive(:code_version).and_return(dumped + 1)
+      allow(verifier).to receive(:code_versions).and_return(versions + [versions.max + 1])
       result = verifier.call
       expect(result['state']).to eq('passed')
       expect(result['warnings']).to include({ 'code' => 'older_schema' })
+    end
+
+    it 'warns when the code has a migration the dump lacks, even below the dump newest version' do
+      dump_database
+      versions = verifier.code_versions
+      allow(verifier).to receive(:code_versions).and_return(versions + [versions.min - 1])
+
+      result = verifier.call
+
+      expect(result['state']).to eq('passed')
+      expect(result['warnings']).to include({ 'code' => 'older_schema' })
+    end
+
+    it 'does not warn when the dump has every migration the code has' do
+      dump_database
+
+      expect(verifier.call['warnings']).to be_empty
     end
 
     it 'drops a temporary database left behind by a killed worker' do

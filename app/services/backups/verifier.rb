@@ -39,7 +39,11 @@ module Backups
     end
 
     def code_version
-      ActiveRecord::Base.connection_pool.migration_context.migrations.map(&:version).max
+      code_versions.max
+    end
+
+    def code_versions
+      ActiveRecord::Base.connection_pool.migration_context.migrations.map(&:version)
     end
 
     private
@@ -104,13 +108,13 @@ module Backups
     end
 
     def check_schema(scratch, result)
-      dumped = scratch.exec('SELECT max(version::bigint) FROM schema_migrations').getvalue(0, 0).to_i
-      result['schema_version'] = dumped
+      dumped = scratch.exec('SELECT version::bigint FROM schema_migrations').column_values(0).map(&:to_i)
+      result['schema_version'] = dumped.max
       result['code_version'] = code_version
 
-      if dumped > code_version
+      if dumped.max > code_version
         result['problems'] << { 'code' => 'newer_schema' }
-      elsif dumped < code_version
+      elsif (code_versions - dumped).any?
         result['warnings'] << { 'code' => 'older_schema' }
       end
     end
