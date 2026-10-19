@@ -164,6 +164,58 @@ RSpec.describe Backups::RunJob, type: :job do
 
       expect { described_class.perform_now }.not_to change(BackupRun, :count)
     end
+
+    it 'goes back to the configured time after a manual run late in the day' do
+      configure(frequency: 'daily')
+      create(:backup_run, :completed, user: user, started_at: Time.zone.local(2026, 10, 15, 12, 53, 0))
+
+      travel_to(Time.zone.local(2026, 10, 16, 4, 14, 59))
+      expect { described_class.perform_now }.not_to change(BackupRun, :count)
+
+      travel_to(Time.zone.local(2026, 10, 16, 4, 15, 0))
+      expect { described_class.perform_now }.to change(BackupRun, :count).by(1)
+    end
+
+    it 'does not run again the same day after a manual run before the configured time' do
+      configure(frequency: 'daily')
+      create(:backup_run, :completed, user: user, started_at: Time.zone.local(2026, 10, 16, 3, 0, 0))
+
+      travel_to(Time.zone.local(2026, 10, 16, 4, 15, 0))
+
+      expect { described_class.perform_now }.not_to change(BackupRun, :count)
+    end
+
+    it 'keeps a weekly schedule on the weekday and time of the last run' do
+      configure(frequency: 'weekly')
+      create(:backup_run, :completed, user: user, started_at: Time.zone.local(2026, 10, 9, 12, 53, 0))
+
+      travel_to(Time.zone.local(2026, 10, 15, 23, 0, 0))
+      expect { described_class.perform_now }.not_to change(BackupRun, :count)
+
+      travel_to(Time.zone.local(2026, 10, 16, 4, 14, 59))
+      expect { described_class.perform_now }.not_to change(BackupRun, :count)
+
+      travel_to(Time.zone.local(2026, 10, 16, 4, 15, 0))
+      expect { described_class.perform_now }.to change(BackupRun, :count).by(1)
+    end
+
+    it 'keeps a monthly schedule on the day of the month of the last run' do
+      configure(frequency: 'monthly')
+      create(:backup_run, :completed, user: user, started_at: Time.zone.local(2026, 9, 16, 12, 53, 0))
+
+      travel_to(Time.zone.local(2026, 10, 15, 12, 0, 0))
+      expect { described_class.perform_now }.not_to change(BackupRun, :count)
+
+      travel_to(Time.zone.local(2026, 10, 16, 4, 15, 0))
+      expect { described_class.perform_now }.to change(BackupRun, :count).by(1)
+    end
+
+    it 'catches up at the next check after downtime' do
+      configure(frequency: 'daily')
+      create(:backup_run, :completed, user: user, started_at: Time.zone.local(2026, 10, 12, 4, 15, 30))
+
+      expect { described_class.perform_now }.to change(BackupRun, :count).by(1)
+    end
   end
 
   describe 'after a failure' do

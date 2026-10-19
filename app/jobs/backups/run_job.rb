@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 # Cron entry point, ticking every 15 minutes. Decides whether a scheduled backup is due
-# (frequency elapsed and the configured time of day reached) and queues the work; the
-# admin's "Back up now" passes force: true.
+# (a full interval of calendar days since the last run, at the configured time of day) and
+# queues the work; the admin's "Back up now" passes force: true.
 class Backups::RunJob < ApplicationJob
   queue_as :exports
 
   sidekiq_options retry: false
 
   INTERVALS = { 'daily' => 1.day, 'weekly' => 1.week, 'monthly' => 1.month }.freeze
-  # The configured time anchors each run, so a run may start a little before the full interval.
-  TOLERANCE = 1.hour
   # A failed attempt is retried the next day at most, even for weekly and monthly schedules.
   RETRY_AFTER = 1.day
   LOCK_KEY = 'backups-run'
@@ -47,15 +45,27 @@ class Backups::RunJob < ApplicationJob
 
   def due?
     interval = INTERVALS[InstanceSettings::Resolver.value(:backup_export_frequency)]
-    return false if interval.nil? || !time_reached?
+    return false if interval.nil?
 
-    completed_long_ago?(interval) && attempted_long_ago?(interval)
+    slot = latest_slot
+    interval_elapsed?(BackupRun.kind_user_export.status_completed.maximum(:started_at), interval, slot) &&
+      interval_elapsed?(BackupRun.kind_user_export.maximum(:started_at), [interval, RETRY_AFTER].min, slot)
   end
 
-  def time_reached?
+  # The latest moment the configured time of day has come, today's or yesterday's.
+  def latest_slot
     now = Time.zone.now
     hour, minute = configured_time.split(':').map(&:to_i)
-    now >= now.change(hour: hour, min: minute)
+    slot = now.change(hour: hour, min: minute)
+    slot > now ? slot - 1.day : slot
+  end
+
+  # Counts calendar days from the date of the last run, so the run stays at the configured time
+  # instead of drifting with how long a run took or how late a manual run was.
+  def interval_elapsed?(last, interval, slot)
+    return slot.to_date == Time.zone.today if last.nil? # the first backup also waits for today's time
+
+    last < slot && slot.to_date >= last.in_time_zone.to_date + interval
   end
 
   # A pinned variable skips the form validation, so a malformed value must not stop backups.
@@ -64,16 +74,6 @@ class Backups::RunJob < ApplicationJob
     return value if value.match?(InstanceSettings::BackupInput::TIME_FORMAT)
 
     InstanceSettings::Registry.fetch(:backup_export_time).default
-  end
-
-  def completed_long_ago?(interval)
-    last = BackupRun.kind_user_export.status_completed.maximum(:started_at)
-    last.nil? || last <= (interval - TOLERANCE).ago
-  end
-
-  def attempted_long_ago?(interval)
-    last = BackupRun.kind_user_export.maximum(:started_at)
-    last.nil? || last <= ([interval, RETRY_AFTER].min - TOLERANCE).ago
   end
 
   def log_skip(reason)
